@@ -162,6 +162,11 @@
   .customlist .row{display:flex; align-items:center; gap:8px; padding:7px 0; font-size:13.5px}
   .customlist .row .sym{color:var(--faint); font-size:11.5px}
 
+  /* ---------- Social ---------- */
+  .socialbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  a.btn{display:inline-block; text-decoration:none; color:var(--ink)}
+  a.btn:hover{text-decoration:none; border-color:var(--orange)}
+
   /* ---------- Simulator ---------- */
   .statgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:6px}
   @media(max-width:700px){ .statgrid{grid-template-columns:1fr 1fr} }
@@ -295,6 +300,7 @@ const BASE_STOCKS = [
       ir:'https://corporate.eventim.de/'
     },
     profil:'Europas führender Ticketing-Konzern (eventim.de und viele Landes-Plattformen) plus Live Entertainment: Festivals, Venues, Konzertveranstalter. MDAX-Wert, geführt vom Großaktionär Klaus-Peter Schulenberg.',
+    socQuery:'Eventim',
     charakter:'<span class="chip g">Qualitätswert</span><span class="chip n">Strukturelles Wachstum</span> Deutlich ruhiger als Verbio/Nordex. Reagiert auf Konsumklima und die Konzertsaison.',
     treiber:[
       'Konzert- und Festivalsaison (Q2/Q3 sind die starken Quartale)',
@@ -377,7 +383,7 @@ function buildOverview(){
   v.appendChild(el(
     '<div class="grid2">' +
       '<div class="card"><h3><span class="dot">▮</span> So nutzt du das Cockpit</h3>' +
-      '<div class="kv"><b>Aktien-Tabs</b><span>Chart, Technik-Rating, Kennzahlen, News, Insider &amp; Spickzettel je Aktie.</span></div>' +
+      '<div class="kv"><b>Aktien-Tabs</b><span>Chart, Technik-Rating, Kennzahlen, News, Social Media, Insider &amp; Spickzettel je Aktie.</span></div>' +
       '<div class="kv"><b>Markt</b><span>DAX &amp; Co., Wirtschaftskalender und ein Screener für neue Ideen.</span></div>' +
       '<div class="kv"><b>Simulator</b><span>Übungsdepot mit Spielgeld – Trades risikofrei testen, bevor echtes Geld fließt.</span></div>' +
       '<div class="kv"><b>Tools</b><span>Knock-Out-Rechner, Positionsgrößen-Rechner, Steuer-Infos für Österreich.</span></div>' +
@@ -404,6 +410,7 @@ function initOverview(){
 /* ---- Aktien-Detail ---- */
 function stockViewHTML(st){
   const usTicker = (st.symbol.match(/^(?:NASDAQ|NYSE|AMEX|BATS|OTC):([A-Z0-9.]+)$/) || [])[1];
+  const socQ = st.socQuery || st.name;
   const insiderIntro = usTicker
     ? 'US-Aktie: Insider müssen Käufe/Verkäufe binnen 2 Werktagen an die SEC melden (Form 4). Finviz &amp; OpenInsider zeigen das gratis und tagesaktuell. Insider-<b>Käufe</b> gelten oft als Vertrauenssignal – Verkäufe sind mehrdeutig.'
     : 'Vorstand &amp; Aufsichtsrat müssen eigene Käufe/Verkäufe ab 20.000&nbsp;€ pro Jahr binnen 3 Werktagen an die BaFin melden (Art. 19 MAR). Insider-<b>Käufe</b> gelten oft als Vertrauenssignal – Verkäufe sind mehrdeutig (können private Gründe haben).';
@@ -454,6 +461,16 @@ function stockViewHTML(st){
       '<p class="sub">Auch Ad-hoc- und Insider-Meldungen (EQS) tauchen hier auf.</p>' +
       '<div data-slot="news"></div></div>' +
     '</div>' +
+    '<div class="card"><h3><span class="dot">▮</span> Social Media: ' + st.name + '</h3>' +
+    '<p class="sub">Ein Tipp öffnet die fertige Live-Suche zu ' + st.name + ' direkt in der jeweiligen App – dort bist du eingeloggt und siehst alles aktuell. (Reddit, X &amp; Bluesky erlauben leider kein kostenloses Einbetten fremder Inhalte mehr – dieser Weg ist dafür immer aktuell, ohne Agent, ohne Verbrauch.)</p>' +
+    '<div class="socialbar">' +
+      '<a class="btn mini" href="https://www.reddit.com/search/?q=' + encodeURIComponent(socQ) + '&sort=new" target="_blank" rel="noopener">Reddit ↗</a>' +
+      '<a class="btn mini" href="https://www.reddit.com/r/mauerstrassenwetten/search/?q=' + encodeURIComponent(socQ) + '&restrict_sr=1&sort=new" target="_blank" rel="noopener">r/Mauerstraßenwetten ↗</a>' +
+      '<a class="btn mini" href="https://x.com/search?q=' + encodeURIComponent(usTicker ? '$' + usTicker : socQ) + '&f=live" target="_blank" rel="noopener">X (Twitter) ↗</a>' +
+      '<a class="btn mini" href="https://bsky.app/search?q=' + encodeURIComponent(socQ) + '" target="_blank" rel="noopener">Bluesky ↗</a>' +
+      '<a class="btn mini" href="https://www.youtube.com/results?search_query=' + encodeURIComponent(socQ + ' Aktie') + '" target="_blank" rel="noopener">YouTube ↗</a>' +
+      (usTicker ? '<a class="btn mini" href="https://stocktwits.com/symbol/' + usTicker + '" target="_blank" rel="noopener">StockTwits ↗</a>' : '') +
+    '</div></div>' +
     '<div class="grid2">' +
       '<div class="card"><h3><span class="dot">▮</span> Insiderkäufe (Directors&#39; Dealings)</h3>' +
       '<p class="sub">' + insiderIntro + '</p>' +
