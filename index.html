@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aktien-Cockpit</title>
+<meta name="description" content="Privates Aktien-Cockpit: Live-Kurse, Charts, Kennzahlen, News und Insider-Links für Verbio, Nordex und CTS Eventim.">
+<meta name="theme-color" content="#0E1113">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cockpit">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E1113; --card:#171B1E; --card2:#1C2125; --line:#262C31;
+    --ink:#E8ECEF; --muted:#9AA5AD; --faint:#6B757D;
+    --green:#4CAF50; --red:#EF5350; --orange:#F5A623; --blue:#4FC3F7;
+    --green-bg:rgba(76,175,80,.12); --red-bg:rgba(239,83,80,.12);
+    --orange-bg:rgba(245,166,35,.12); --neutral-bg:#22282C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    font-size:15px; line-height:1.5;
+    padding-bottom:48px;
+  }
+  a{color:var(--blue); text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50; background:rgba(14,17,19,.92);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:calc(10px + env(safe-area-inset-top)) 14px 0 14px;
+  }
+  .brandrow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-bottom:8px}
+  .brand{font-weight:800; letter-spacing:.14em; font-size:15px; text-transform:uppercase}
+  .brand em{color:var(--orange); font-style:normal}
+  .livedot{width:7px;height:7px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 6px var(--green); animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .spacer{flex:1}
+  .clock{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums}
+  .pill{font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    padding:4px 9px; border-radius:5px; border:1px solid var(--line); color:var(--muted);
+    background:var(--neutral-bg); white-space:nowrap}
+  .pill.open{color:var(--green); border-color:rgba(76,175,80,.4); background:var(--green-bg)}
+  .pill.closed{color:var(--muted)}
+  .tabs{display:flex; gap:6px; overflow-x:auto; padding:2px 0 10px 0; scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    flex:0 0 auto; cursor:pointer; border:1px solid var(--line); background:var(--card);
+    color:var(--muted); font:inherit; font-size:12px; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; padding:8px 14px; border-radius:7px;
+  }
+  .tab.active{color:#0E1113; background:var(--orange); border-color:var(--orange)}
+  .tab.add{color:var(--orange); border-color:rgba(245,166,35,.45); font-size:14px; padding:8px 12px}
+
+  /* ---------- Layout ---------- */
+  main{max-width:1180px; margin:0 auto; padding:14px}
+  .view{display:none}
+  .view.active{display:block}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:14px}
+  @media(max-width:860px){ .grid2,.grid3{grid-template-columns:1fr} }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:16px; margin-top:14px; overflow:hidden;
+  }
+  .grid2>.card,.grid3>.card{margin-top:0}
+  .card.pad0{padding:6px}
+  .card h3{
+    font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink); margin-bottom:4px;
+  }
+  .card h3 .dot{color:var(--orange)}
+  .sub{font-size:12.5px; color:var(--muted); margin-bottom:10px}
+  .hint{font-size:11.5px; color:var(--faint); padding:8px 10px 4px}
+  .stamp{display:inline-block; font-size:10.5px; color:var(--faint); letter-spacing:.05em;
+    text-transform:uppercase; margin-bottom:10px}
+  .chartbox{height:520px}
+  @media(max-width:700px){ .chartbox{height:420px} }
+
+  /* ---------- Listen / Spickzettel ---------- */
+  ul.clean{list-style:none}
+  ul.clean li{
+    padding:7px 0 7px 18px; position:relative; font-size:13.5px; color:var(--ink);
+    border-bottom:1px solid rgba(38,44,49,.6);
+  }
+  ul.clean li:last-child{border-bottom:none}
+  ul.clean li::before{content:'▸'; position:absolute; left:0; color:var(--orange); font-size:12px}
+  ul.clean li.risk::before{content:'▾'; color:var(--red)}
+  ul.links{list-style:none}
+  ul.links li{padding:8px 0; border-bottom:1px solid rgba(38,44,49,.6); font-size:13.5px}
+  ul.links li:last-child{border-bottom:none}
+  ul.links li span{display:block; font-size:11.5px; color:var(--faint)}
+  .kv{display:flex; gap:8px; font-size:13px; padding:6px 0; border-bottom:1px solid rgba(38,44,49,.6)}
+  .kv:last-child{border-bottom:none}
+  .kv b{color:var(--muted); font-weight:600; min-width:110px; font-size:12px; text-transform:uppercase; letter-spacing:.06em}
+  .chip{display:inline-block; font-size:10.5px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.08em; padding:3px 8px; border-radius:5px; margin:2px 4px 2px 0}
+  .chip.g{color:var(--green); background:var(--green-bg); border:1px solid rgba(76,175,80,.35)}
+  .chip.r{color:var(--red); background:var(--red-bg); border:1px solid rgba(239,83,80,.35)}
+  .chip.o{color:var(--orange); background:var(--orange-bg); border:1px solid rgba(245,166,35,.35)}
+  .chip.n{color:var(--muted); background:var(--neutral-bg); border:1px solid var(--line)}
+
+  /* ---------- Übersicht ---------- */
+  .stockhead{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+  .stockhead .nm{font-weight:700; font-size:15px}
+  .stockhead .sym{font-size:11px; color:var(--faint); letter-spacing:.06em}
+  .openbtn{
+    margin-left:auto; cursor:pointer; border:1px solid rgba(245,166,35,.45);
+    background:var(--orange-bg); color:var(--orange); font:inherit; font-size:11px;
+    font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    padding:6px 11px; border-radius:6px;
+  }
+
+  /* ---------- Rechner ---------- */
+  .seg{display:flex; gap:0; border:1px solid var(--line); border-radius:8px; overflow:hidden; margin-bottom:12px}
+  .seg button{flex:1; cursor:pointer; border:0; background:var(--card2); color:var(--muted);
+    font:inherit; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:9px}
+  .seg button.on.long{background:var(--green-bg); color:var(--green)}
+  .seg button.on.short{background:var(--red-bg); color:var(--red)}
+  .frow{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px}
+  @media(max-width:480px){ .frow{grid-template-columns:1fr} }
+  label.f{display:block; font-size:11px; font-weight:700; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--muted)}
+  label.f input, label.f select{
+    display:block; width:100%; margin-top:5px; background:var(--bg); color:var(--ink);
+    border:1px solid var(--line); border-radius:8px; padding:10px 12px;
+    font:inherit; font-size:16px; font-variant-numeric:tabular-nums;
+  }
+  label.f input:focus, label.f select:focus{outline:none; border-color:var(--orange)}
+  .results{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:4px 14px; margin-top:4px}
+  .res{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(38,44,49,.6)}
+  .res:last-child{border-bottom:none}
+  .res .lbl{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; font-weight:600}
+  .res .val{margin-left:auto; font-weight:700; font-size:15.5px; font-variant-numeric:tabular-nums}
+  .res .val.g{color:var(--green)} .res .val.r{color:var(--red)} .res .val.o{color:var(--orange)}
+
+  /* ---------- Dialog ---------- */
+  dialog{
+    border:1px solid var(--line); border-radius:14px; background:var(--card); color:var(--ink);
+    padding:20px; width:min(430px, 92vw); margin:auto;
+  }
+  dialog::backdrop{background:rgba(0,0,0,.6); backdrop-filter:blur(3px)}
+  .dlgrow{display:flex; gap:8px; margin-top:14px}
+  .btn{cursor:pointer; border:1px solid var(--line); background:var(--card2); color:var(--ink);
+    font:inherit; font-size:13px; font-weight:700; padding:10px 16px; border-radius:8px}
+  .btn.primary{background:var(--orange); border-color:var(--orange); color:#0E1113}
+  .btn.danger{color:var(--red); border-color:rgba(239,83,80,.4); background:var(--red-bg);
+    font-size:11px; padding:5px 10px}
+  .customlist{margin-top:14px; border-top:1px solid var(--line); padding-top:10px}
+  .customlist .row{display:flex; align-items:center; gap:8px; padding:7px 0; font-size:13.5px}
+  .customlist .row .sym{color:var(--faint); font-size:11.5px}
+
+  /* ---------- Simulator ---------- */
+  .statgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:6px}
+  @media(max-width:700px){ .statgrid{grid-template-columns:1fr 1fr} }
+  .stat{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px}
+  .stat .l{font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+  .stat .v{font-weight:800; font-size:16px; font-variant-numeric:tabular-nums; margin-top:2px}
+  .stat .v.g{color:var(--green)} .stat .v.r{color:var(--red)}
+  .pos{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px; margin-top:10px}
+  .pos .top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .pos .nm{font-weight:700}
+  .pos .meta{font-size:12px; color:var(--muted); margin-top:4px}
+  .pos .plrow{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:10px}
+  .pos input.cur{width:130px; background:var(--card2); color:var(--ink); border:1px solid var(--line);
+    border-radius:8px; padding:8px 10px; font:inherit; font-size:16px; font-variant-numeric:tabular-nums}
+  .pos input.cur:focus{outline:none; border-color:var(--orange)}
+  .pl{font-weight:800; font-variant-numeric:tabular-nums; font-size:14px}
+  .pl.g{color:var(--green)} .pl.r{color:var(--red)}
+  .btn.mini{font-size:11px; padding:7px 10px}
+  .simstatus{font-size:12px; color:var(--faint); margin-top:8px; min-height:16px}
+
+  .tv-copy{display:none}
+  footer{max-width:1180px; margin:26px auto 0; padding:0 14px; font-size:11.5px; color:var(--faint)}
+  footer a{color:var(--muted)}
+  .tape{border-bottom:1px solid var(--line); background:var(--bg)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brandrow">
+    <span class="livedot"></span>
+    <span class="brand">Aktien<em>·</em>Cockpit</span>
+    <span class="spacer"></span>
+    <span class="pill" id="pill-xetra">Xetra …</span>
+    <span class="pill" id="pill-ls">L&amp;S …</span>
+    <span class="clock" id="clock">–:–</span>
+  </div>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+
+<div class="tape" id="tape"></div>
+
+<main id="main"></main>
+
+<footer>
+  <p><b>Wichtig:</b> Dieses Cockpit ist ein privates Informations-Tool – <b>keine Anlageberatung, keine Kauf- oder Verkaufsempfehlung.</b>
+  Kurse deutscher Börsen (Xetra) sind in der kostenlosen Ansicht i.&nbsp;d.&nbsp;R. 15 Minuten verzögert.
+  Alle Angaben ohne Gewähr. Kurse, Charts &amp; Kennzahlen: <a href="https://de.tradingview.com/" target="_blank" rel="noopener">TradingView</a> ·
+  Insider-Meldungen: <a href="https://portal.mvp.bafin.de/database/DealingsInfo/" target="_blank" rel="noopener">BaFin</a></p>
+</footer>
+
+<dialog id="dlg">
+  <h3 style="font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Aktie hinzufügen</h3>
+  <p class="sub">Trag den Namen und das TradingView-Symbol ein, z.&nbsp;B. <b>XETR:BAYN</b> für Bayer auf Xetra
+  oder <b>NASDAQ:TSLA</b> für Tesla (US-Aktien bekommen automatisch Finviz-Insider-Links).
+  Symbol findest du über die <a href="https://de.tradingview.com/symbols/" target="_blank" rel="noopener">TradingView-Suche</a>.
+  Tipp: Sag es einfach Claude – dann wird die Aktie fix eingebaut, inklusive Spickzettel.</p>
+  <label class="f">Name
+    <input id="addName" type="text" placeholder="z. B. Bayer" autocomplete="off">
+  </label>
+  <div style="height:10px"></div>
+  <label class="f">TradingView-Symbol
+    <input id="addSym" type="text" placeholder="z. B. XETR:BAYN" autocomplete="off" style="text-transform:uppercase">
+  </label>
+  <div class="dlgrow">
+    <button class="btn primary" id="addSave">Speichern</button>
+    <button class="btn" id="addClose">Abbrechen</button>
+  </div>
+  <div class="customlist" id="customList"></div>
+</dialog>
+
+<script>
+/* ================= Konfiguration ================= */
+const BAFIN = 'https://portal.mvp.bafin.de/database/DealingsInfo/';
+
+const BASE_STOCKS = [
+  {
+    id:'verbio', name:'Verbio', symbol:'XETR:VBK', isin:'DE000A0JL9W6',
+    links:{
+      tv:'https://de.tradingview.com/symbols/XETR-VBK/',
+      fn:'https://www.finanzen.net/aktien/verbio-aktie',
+      fnInsider:'https://www.finanzen.net/insidertrades/verbio',
+      ir:'https://www.verbio.de/'
+    },
+    profil:'Hersteller von Biokraftstoffen (Biodiesel, Bioethanol, Biomethan) plus Spezialchemie-Nebenprodukte. Werke in Deutschland, USA, Indien und Kanada. Achtung: Das Geschäftsjahr endet am 30. Juni – die "Jahreszahlen" kommen daher schon Ende September!',
+    charakter:'<span class="chip o">Sehr newsgetrieben</span><span class="chip r">Hohe Volatilität</span><span class="chip n">Politik-Titel</span> Eher ein Trading-Wert als ein Kaufen-und-Vergessen-Wert. Reagiert heftig auf politische Meldungen.',
+    treiber:[
+      'THG-Quotenpreise in Deutschland (wichtigster Gewinnhebel)',
+      'EU-/Berlin-Politik: RED III, E10/E20, Quotenanhebungen oder -senkungen',
+      'Rohstoffpreise: Raps, Getreide, Stroh – und der Erdgaspreis (Konkurrenz zu Biomethan)',
+      'US-Geschäft: Quoten (RFS) und Steuergutschriften',
+      'Meldungen über (mutmaßlich betrügerische) Billig-Importe von Biodiesel/HVO aus Asien'
+    ],
+    risiken:[
+      'Quotenpreis-Verfall drückt direkt auf die Marge',
+      'Politische Kehrtwenden können die Story über Nacht ändern',
+      'Relativ geringer Streubesitz → große Kurssprünge in beide Richtungen'
+    ],
+    termine:'Jahreszahlen ~Ende September (GJ endet 30.6.), Quartale versetzt ~Nov / Feb / Mai. Genaue Daten: IR-Seite → Finanzkalender.'
+  },
+  {
+    id:'nordex', name:'Nordex', symbol:'XETR:NDX1', isin:'DE000A0D6554',
+    links:{
+      tv:'https://de.tradingview.com/symbols/XETR-NDX1/',
+      fn:'https://www.finanzen.net/aktien/nordex-aktie',
+      fnInsider:'https://www.finanzen.net/insidertrades/nordex',
+      ir:'https://www.nordex-online.com/'
+    },
+    profil:'Hersteller von Onshore-Windturbinen plus wachsendes, margenstarkes Service-Geschäft. Projektgeschäft weltweit. Wettbewerber: Vestas, Siemens Energy, GE und zunehmend chinesische Anbieter.',
+    charakter:'<span class="chip o">Auftragsgetrieben</span><span class="chip n">Zyklisch</span> Einzelne Auftrags-Meldungen und die Margen-Guidance bewegen den Kurs kurzfristig deutlich.',
+    treiber:[
+      'Auftragseingänge – Nordex meldet laufend einzelne Großaufträge per Pressemitteilung',
+      'EBITDA-Marge und Jahres-Guidance (der zentrale Turnaround-Beweis)',
+      'Stahl-, Rohstoff- und Logistikkosten',
+      'Zinsniveau (verteuert/verbilligt Windpark-Finanzierungen der Kunden)',
+      'Ausschreibungsvolumen und Ausbauziele in EU/Deutschland'
+    ],
+    risiken:[
+      'Strukturell dünne Margen im Turbinenbau',
+      'Projektverschiebungen und Preisdruck durch chinesische Konkurrenz',
+      'In der Vergangenheit Kapitalerhöhungen (Verwässerung) – bei Schwäche wieder denkbar'
+    ],
+    termine:'Kalender-Geschäftsjahr. Zahlen typischerweise Feb/März (Jahr), Apr/Mai, Jul/Aug, Okt/Nov. Genaue Daten: IR-Seite → Finanzkalender.'
+  },
+  {
+    id:'eventim', name:'CTS Eventim', symbol:'XETR:EVD', isin:'DE0005470306',
+    links:{
+      tv:'https://de.tradingview.com/symbols/XETR-EVD/',
+      fn:'https://www.finanzen.net/aktien/cts_eventim-aktie',
+      fnInsider:'https://www.finanzen.net/insidertrades/cts_eventim',
+      ir:'https://corporate.eventim.de/'
+    },
+    profil:'Europas führender Ticketing-Konzern (eventim.de und viele Landes-Plattformen) plus Live Entertainment: Festivals, Venues, Konzertveranstalter. MDAX-Wert, geführt vom Großaktionär Klaus-Peter Schulenberg.',
+    charakter:'<span class="chip g">Qualitätswert</span><span class="chip n">Strukturelles Wachstum</span> Deutlich ruhiger als Verbio/Nordex. Reagiert auf Konsumklima und die Konzertsaison.',
+    treiber:[
+      'Konzert- und Festivalsaison (Q2/Q3 sind die starken Quartale)',
+      'Vorverkaufsstarts großer Tourneen',
+      'Ticketing-Marge (das hochprofitable Kerngeschäft)',
+      'Übernahmen & Expansion (z. B. Ticketing-Zukäufe im Ausland)',
+      'Konsumklima in Europa'
+    ],
+    risiken:[
+      'Konsumschwäche trifft Freizeitausgaben',
+      'Regulierung: Zweitmarkt, Gebühren-Transparenz',
+      'Vergleichsweise hohe Bewertung – Enttäuschungen werden bestraft'
+    ],
+    termine:'Kalender-Geschäftsjahr. Zahlen typischerweise Ende März (Jahr), Mai, Aug, Nov. Genaue Daten: IR-Seite → Finanzkalender.'
+  }
+];
+
+const LS_CUSTOM = 'cockpit.customStocks';
+const LS_TAB = 'cockpit.activeTab';
+
+function getCustom(){
+  try{ return JSON.parse(localStorage.getItem(LS_CUSTOM)) || []; }
+  catch(e){ return []; }
+}
+function setCustom(list){ localStorage.setItem(LS_CUSTOM, JSON.stringify(list)); }
+function allStocks(){
+  return BASE_STOCKS.concat(getCustom().map(c => ({
+    id:c.id, name:c.name, symbol:c.symbol, custom:true,
+    links:{ tv:'https://de.tradingview.com/symbols/' + c.symbol.replace(':','-') + '/' }
+  })));
+}
+
+/* ================= TradingView-Widget-Helfer ================= */
+function tvWidget(parent, kind, config, height){
+  const wrap = document.createElement('div');
+  wrap.className = 'tradingview-widget-container';
+  if(height) wrap.style.height = height + 'px';
+  const inner = document.createElement('div');
+  inner.className = 'tradingview-widget-container__widget';
+  if(height) inner.style.height = '100%';
+  wrap.appendChild(inner);
+  const copy = document.createElement('div');
+  copy.className = 'tradingview-widget-copyright tv-copy';
+  copy.innerHTML = '<a href="https://de.tradingview.com/" rel="noopener nofollow" target="_blank">TradingView</a>';
+  wrap.appendChild(copy);
+  const s = document.createElement('script');
+  s.type = 'text/javascript'; s.async = true;
+  s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-' + kind + '.js';
+  s.text = JSON.stringify(config);
+  wrap.appendChild(s);
+  parent.appendChild(wrap);
+}
+const DARK = { colorTheme:'dark', isTransparent:true, locale:'de_DE' };
+
+/* ================= Views ================= */
+const main = document.getElementById('main');
+const inited = {};
+
+function el(html){
+  const t = document.createElement('template');
+  t.innerHTML = html.trim();
+  return t.content.firstElementChild;
+}
+
+/* ---- Übersicht ---- */
+function buildOverview(){
+  const v = el('<section class="view" id="view-uebersicht"></section>');
+  const grid = el('<div class="grid3" id="ovGrid"></div>');
+  v.appendChild(grid);
+  allStocks().forEach(st => {
+    const c = el(
+      '<div class="card">' +
+        '<div class="stockhead"><div><div class="nm">' + st.name + '</div>' +
+        '<div class="sym">' + st.symbol + (st.isin ? ' · ' + st.isin : '') + '</div></div>' +
+        '<button class="openbtn" data-open="' + st.id + '">Öffnen →</button></div>' +
+        '<div class="slot"></div>' +
+      '</div>');
+    grid.appendChild(c);
+  });
+  v.appendChild(el(
+    '<div class="grid2">' +
+      '<div class="card"><h3><span class="dot">▮</span> So nutzt du das Cockpit</h3>' +
+      '<div class="kv"><b>Aktien-Tabs</b><span>Chart, Technik-Rating, Kennzahlen, News, Insider &amp; Spickzettel je Aktie.</span></div>' +
+      '<div class="kv"><b>Markt</b><span>DAX &amp; Co., Wirtschaftskalender und ein Screener für neue Ideen.</span></div>' +
+      '<div class="kv"><b>Simulator</b><span>Übungsdepot mit Spielgeld – Trades risikofrei testen, bevor echtes Geld fließt.</span></div>' +
+      '<div class="kv"><b>Tools</b><span>Knock-Out-Rechner, Positionsgrößen-Rechner, Steuer-Infos für Österreich.</span></div>' +
+      '<div class="kv"><b>＋</b><span>Neue Aktie selbst hinzufügen – oder Claude sagen, dann kommt sie fix rein.</span></div>' +
+      '</div>' +
+      '<div class="card"><h3><span class="dot">▮</span> Handelszeiten</h3>' +
+      '<div class="kv"><b>Xetra</b><span>Mo–Fr 09:00–17:30 · Referenzbörse für die Kurse hier</span></div>' +
+      '<div class="kv"><b>Trade Republic</b><span>Handel über Lang &amp; Schwarz: Mo–Fr 07:30–23:00</span></div>' +
+      '<div class="kv"><b>Hinweis</b><span>Außerhalb der Xetra-Zeiten sind Spreads bei L&amp;S oft deutlich breiter – Vorsicht mit Market-Orders am Abend.</span></div>' +
+      '<div class="kv"><b>Verzögerung</b><span>Xetra-Kurse in der Gratis-Ansicht ca. 15 Min. verzögert.</span></div>' +
+      '</div>' +
+    '</div>'));
+  main.appendChild(v);
+}
+function initOverview(){
+  document.querySelectorAll('#ovGrid .card').forEach((c, i) => {
+    const st = allStocks()[i];
+    tvWidget(c.querySelector('.slot'), 'mini-symbol-overview',
+      Object.assign({ symbol:st.symbol, width:'100%', height:200, dateRange:'3M',
+        autosize:false, largeChartUrl:'' }, DARK));
+  });
+}
+
+/* ---- Aktien-Detail ---- */
+function stockViewHTML(st){
+  const usTicker = (st.symbol.match(/^(?:NASDAQ|NYSE|AMEX|BATS|OTC):([A-Z0-9.]+)$/) || [])[1];
+  const insiderIntro = usTicker
+    ? 'US-Aktie: Insider müssen Käufe/Verkäufe binnen 2 Werktagen an die SEC melden (Form 4). Finviz &amp; OpenInsider zeigen das gratis und tagesaktuell. Insider-<b>Käufe</b> gelten oft als Vertrauenssignal – Verkäufe sind mehrdeutig.'
+    : 'Vorstand &amp; Aufsichtsrat müssen eigene Käufe/Verkäufe ab 20.000&nbsp;€ pro Jahr binnen 3 Werktagen an die BaFin melden (Art. 19 MAR). Insider-<b>Käufe</b> gelten oft als Vertrauenssignal – Verkäufe sind mehrdeutig (können private Gründe haben).';
+  const insiderLinks = usTicker
+    ? '<li><a href="https://finviz.com/quote.ashx?t=' + usTicker + '" target="_blank" rel="noopener">Finviz: ' + st.name + '</a><span>Insider-Tabelle unten auf der Seite – plus Kennzahlen &amp; News</span></li>' +
+      '<li><a href="https://openinsider.com/search?q=' + usTicker + '" target="_blank" rel="noopener">OpenInsider: alle Meldungen zu ' + st.name + '</a><span>Nüchterne Rohliste, sortier- und filterbar</span></li>'
+    : st.custom
+    ? '<li><a href="' + BAFIN + '" target="_blank" rel="noopener">BaFin-Datenbank öffnen</a><span>Dort "' + st.name + '" als Emittent suchen</span></li>'
+    : '<li><a href="' + BAFIN + '" target="_blank" rel="noopener">BaFin-Datenbank (offiziell)</a><span>Dort "' + st.name + '" als Emittent suchen – die verlässlichste Quelle</span></li>' +
+      '<li><a href="' + st.links.fnInsider + '" target="_blank" rel="noopener">finanzen.net: Insidertrades ' + st.name + '</a><span>Aufbereitete Liste (falls der Link mal nicht geht: finanzen.net → Aktie → Insidertrades)</span></li>' +
+      '<li><a href="' + st.links.ir + '" target="_blank" rel="noopener">Investor Relations / Pressemeldungen</a><span>Original-Meldungen "Eigengeschäfte von Führungskräften"</span></li>';
+
+  const spick = st.custom
+    ? '<div class="card"><h3><span class="dot">▮</span> Spickzettel</h3>' +
+      '<p class="sub">Für selbst hinzugefügte Aktien gibt es noch keinen Spickzettel. Sag Claude Bescheid – dann wird ' + st.name + ' fix eingebaut, mit Kurstreibern, Risiken und Terminen.</p></div>'
+    : '<div class="card"><h3><span class="dot">▮</span> Spickzettel: Was den Kurs bewegt</h3>' +
+      '<span class="stamp">Stand Juli 2026 · Hintergrundwissen – aktuelle Zahlen liefern die Live-Boxen</span>' +
+      '<p style="font-size:13.5px;margin-bottom:10px">' + st.profil + '</p>' +
+      '<p style="font-size:13px;margin-bottom:10px">' + st.charakter + '</p>' +
+      '<h3 style="margin-top:8px">Kurstreiber</h3><ul class="clean">' +
+      st.treiber.map(t => '<li>' + t + '</li>').join('') + '</ul>' +
+      '<h3 style="margin-top:14px">Risiken</h3><ul class="clean">' +
+      st.risiken.map(t => '<li class="risk">' + t + '</li>').join('') + '</ul>' +
+      '<h3 style="margin-top:14px">Zahlen-Termine</h3><p style="font-size:13px">' + st.termine + '</p></div>';
+
+  const links = '<div class="card"><h3><span class="dot">▮</span> Links &amp; Hebelprodukte</h3><ul class="links">' +
+    '<li><a href="' + st.links.tv + '" target="_blank" rel="noopener">TradingView-Seite ' + st.name + '</a><span>Vollbild-Chart, alle Kennzahlen, Community</span></li>' +
+    (st.links.fn ? '<li><a href="' + st.links.fn + '" target="_blank" rel="noopener">finanzen.net-Profil</a><span>Nachrichten, Analysten, Termine auf Deutsch</span></li>' : '') +
+    (st.links.ir ? '<li><a href="' + st.links.ir + '" target="_blank" rel="noopener">Unternehmens-/IR-Seite</a><span>Finanzkalender, Berichte, Ad-hoc-Meldungen</span></li>' : '') +
+    '</ul>' +
+    '<p class="hint">Knock-Outs &amp; Optionsscheine: In der Trade-Republic-App die Aktie suchen → Tab „Derivate". Vorher unter <b>Tools</b> den KO-Abstand und die Positionsgröße durchrechnen.</p></div>';
+
+  return '' +
+    '<div class="card pad0" data-slot="info"></div>' +
+    '<div class="card pad0"><div class="chartbox" data-slot="chart"></div>' +
+    '<div class="hint">Xetra-Kurse ggf. 15 Min. verzögert · Intervall oben im Chart umstellbar (Tag für mittelfristig, 1h/15m für kurzfristig)</div></div>' +
+    '<div class="grid2">' +
+      '<div class="card"><h3><span class="dot">▮</span> Technisches Rating</h3>' +
+      '<p class="sub">Automatische Auswertung von TradingView (gleitende Durchschnitte + Indikatoren). Intervalle: 15m/1h = kurzfristig, 1D = mittelfristig, 1W = langfristig. Kein Ersatz für eigenes Denken!</p>' +
+      '<div data-slot="ta"></div></div>' +
+      '<div class="card"><h3><span class="dot">▮</span> Kennzahlen &amp; Quartalszahlen</h3>' +
+      '<p class="sub">Umsatz, Gewinn, Margen, Bilanz – umschaltbar auf Quartalssicht.</p>' +
+      '<div data-slot="fin"></div></div>' +
+    '</div>' +
+    '<div class="grid2">' +
+      spick +
+      '<div class="card"><h3><span class="dot">▮</span> News zu ' + st.name + '</h3>' +
+      '<p class="sub">Auch Ad-hoc- und Insider-Meldungen (EQS) tauchen hier auf.</p>' +
+      '<div data-slot="news"></div></div>' +
+    '</div>' +
+    '<div class="grid2">' +
+      '<div class="card"><h3><span class="dot">▮</span> Insiderkäufe (Directors&#39; Dealings)</h3>' +
+      '<p class="sub">' + insiderIntro + '</p>' +
+      '<ul class="links">' + insiderLinks + '</ul></div>' +
+      links +
+    '</div>';
+}
+function buildStockViews(){
+  allStocks().forEach(st => {
+    const v = el('<section class="view" id="view-s-' + st.id + '"></section>');
+    v.innerHTML = stockViewHTML(st);
+    main.appendChild(v);
+  });
+}
+function initStock(st){
+  const v = document.getElementById('view-s-' + st.id);
+  tvWidget(v.querySelector('[data-slot="info"]'), 'symbol-info',
+    Object.assign({ symbol:st.symbol, width:'100%' }, DARK));
+  tvWidget(v.querySelector('[data-slot="chart"]'), 'advanced-chart', {
+    autosize:true, symbol:st.symbol, interval:'D', timezone:'Europe/Vienna',
+    theme:'dark', style:'1', locale:'de_DE', withdateranges:true,
+    hide_side_toolbar:false, allow_symbol_change:false, save_image:false,
+    support_host:'https://www.tradingview.com'
+  });
+  tvWidget(v.querySelector('[data-slot="ta"]'), 'technical-analysis',
+    Object.assign({ symbol:st.symbol, interval:'1D', width:'100%', height:440,
+      showIntervalTabs:true, displayMode:'single' }, DARK), 440);
+  tvWidget(v.querySelector('[data-slot="fin"]'), 'financials',
+    Object.assign({ symbol:st.symbol, width:'100%', height:490,
+      displayMode:'regular', largeChartUrl:'' }, DARK), 490);
+  tvWidget(v.querySelector('[data-slot="news"]'), 'timeline',
+    Object.assign({ feedMode:'symbol', symbol:st.symbol, width:'100%',
+      height:520, displayMode:'regular' }, DARK), 520);
+}
+
+/* ---- Markt ---- */
+function buildMarkt(){
+  const v = el('<section class="view" id="view-markt"></section>');
+  v.innerHTML = '' +
+    '<div class="grid3">' +
+      '<div class="card"><h3><span class="dot">▮</span> DAX</h3><div data-slot="dax"></div></div>' +
+      '<div class="card"><h3><span class="dot">▮</span> TecDAX</h3><div data-slot="tecdax"></div></div>' +
+      '<div class="card"><h3><span class="dot">▮</span> EUR/USD</h3><div data-slot="eurusd"></div></div>' +
+    '</div>' +
+    '<div class="card"><h3><span class="dot">▮</span> Wirtschaftskalender</h3>' +
+    '<p class="sub">EZB-/Fed-Entscheide, Inflationsdaten &amp; Co. – die Termine, die den Gesamtmarkt (und damit auch deine Aktien) bewegen.</p>' +
+    '<div data-slot="events"></div></div>' +
+    '<div class="card"><h3><span class="dot">▮</span> Screener: Deutsche Aktien</h3>' +
+    '<p class="sub">Zum Stöbern nach neuen Ideen – sortier- und filterbar.</p>' +
+    '<div data-slot="screener"></div></div>' +
+    '<div class="card"><h3><span class="dot">▮</span> Insider-Radar USA</h3>' +
+    '<p class="sub">Für US-Aktien gibt es Insider-Meldungen (SEC Form 4) gratis und tagesaktuell. Deutsche Aktien laufen über das BaFin-System – die Links dazu stehen im jeweiligen Aktien-Tab. Fügst du eine US-Aktie hinzu (z.&nbsp;B. NASDAQ:TSLA), bekommt sie ihre Finviz-Links automatisch.</p>' +
+    '<ul class="links">' +
+      '<li><a href="https://finviz.com/insidertrading.ashx" target="_blank" rel="noopener">Finviz: aktuelle Insider-Trades (alle US-Aktien)</a><span>Die große Live-Liste aller Meldungen</span></li>' +
+      '<li><a href="https://openinsider.com/latest-cluster-buys" target="_blank" rel="noopener">OpenInsider: Cluster-Käufe</a><span>Mehrere Insider derselben Firma kaufen gleichzeitig – das stärkste Insider-Signal</span></li>' +
+    '</ul></div>';
+  main.appendChild(v);
+}
+function initMarkt(){
+  const v = document.getElementById('view-markt');
+  const mini = sym => Object.assign({ symbol:sym, width:'100%', height:200,
+    dateRange:'3M', autosize:false, largeChartUrl:'' }, DARK);
+  tvWidget(v.querySelector('[data-slot="dax"]'), 'mini-symbol-overview', mini('XETR:DAX'));
+  tvWidget(v.querySelector('[data-slot="tecdax"]'), 'mini-symbol-overview', mini('XETR:TDXP'));
+  tvWidget(v.querySelector('[data-slot="eurusd"]'), 'mini-symbol-overview', mini('FX:EURUSD'));
+  tvWidget(v.querySelector('[data-slot="events"]'), 'events',
+    Object.assign({ width:'100%', height:500, importanceFilter:'0,1',
+      countryFilter:'de,eu,us' }, DARK), 500);
+  tvWidget(v.querySelector('[data-slot="screener"]'), 'screener',
+    Object.assign({ width:'100%', height:560, defaultColumn:'overview',
+      defaultScreen:'most_capitalized', market:'germany', showToolbar:true }, DARK), 560);
+}
+
+/* ---- Tools ---- */
+function buildTools(){
+  const v = el('<section class="view" id="view-tools"></section>');
+  v.innerHTML = '' +
+  '<div class="grid2">' +
+    '<div class="card"><h3><span class="dot">▮</span> Knock-Out-Rechner</h3>' +
+    '<p class="sub">Rechnet Hebel und Abstand zur KO-Schwelle. Bezugsverhältnis steht im Produkt (bei Aktien meist 0,1 oder 1).</p>' +
+    '<div class="seg"><button id="koLong" class="long on">Long (steigend)</button><button id="koShort" class="short">Short (fallend)</button></div>' +
+    '<div class="frow">' +
+      '<label class="f">Aktienkurs €<input id="koKurs" inputmode="decimal" placeholder="z. B. 12,50"></label>' +
+      '<label class="f">Basispreis / KO-Schwelle €<input id="koBasis" inputmode="decimal" placeholder="z. B. 10,00"></label>' +
+    '</div>' +
+    '<div class="frow">' +
+      '<label class="f">Bezugsverhältnis<select id="koBV"><option value="1">1</option><option value="0.1" selected>0,1</option><option value="0.01">0,01</option><option value="0.001">0,001</option></select></label>' +
+      '<label class="f">Kaufpreis Zertifikat € (optional)<input id="koKauf" inputmode="decimal" placeholder="Briefkurs, z. B. 0,27"></label>' +
+    '</div>' +
+    '<div class="results">' +
+      '<div class="res"><span class="lbl">Innerer Wert</span><span class="val" id="koIW">–</span></div>' +
+      '<div class="res"><span class="lbl">Hebel</span><span class="val" id="koHebel">–</span></div>' +
+      '<div class="res"><span class="lbl">Abstand zur KO-Schwelle</span><span class="val" id="koAbst">–</span></div>' +
+      '<div class="res"><span class="lbl">Aufgeld</span><span class="val" id="koAufgeld">–</span></div>' +
+    '</div>' +
+    '<p class="hint">Faustregel: Unter ~5 % KO-Abstand reicht schon ein normaler Tagesrutsch oder ein Übernacht-Gap für den Totalverlust.</p></div>' +
+
+    '<div class="card"><h3><span class="dot">▮</span> Positionsgrößen-Rechner</h3>' +
+    '<p class="sub">Wie viele Stück darfst du kaufen, wenn du pro Trade nur einen festen Teil des Depots riskieren willst?</p>' +
+    '<div class="frow">' +
+      '<label class="f">Depotwert €<input id="pgDepot" inputmode="decimal" placeholder="z. B. 10.000"></label>' +
+      '<label class="f">Risiko pro Trade %<input id="pgRisk" inputmode="decimal" value="1"></label>' +
+    '</div>' +
+    '<div class="frow">' +
+      '<label class="f">Einstiegskurs €<input id="pgEin" inputmode="decimal" placeholder="z. B. 12,50"></label>' +
+      '<label class="f">Stop-Loss €<input id="pgStop" inputmode="decimal" placeholder="z. B. 11,80"></label>' +
+    '</div>' +
+    '<div class="results">' +
+      '<div class="res"><span class="lbl">Riskierter Betrag</span><span class="val" id="pgRiskEur">–</span></div>' +
+      '<div class="res"><span class="lbl">Max. Stückzahl</span><span class="val" id="pgStk">–</span></div>' +
+      '<div class="res"><span class="lbl">Positionsgröße</span><span class="val" id="pgPos">–</span></div>' +
+      '<div class="res"><span class="lbl">Verlust am Stop</span><span class="val r" id="pgVerlust">–</span></div>' +
+    '</div>' +
+    '<p class="hint">Profis riskieren meist 0,5–2 % pro Trade. So überlebt man auch eine Pechsträhne.</p></div>' +
+  '</div>' +
+
+  '<div class="grid2">' +
+    '<div class="card"><h3><span class="dot">▮</span> Steuern in Österreich</h3>' +
+    '<span class="stamp">Kurzüberblick · keine Steuerberatung</span>' +
+    '<ul class="clean">' +
+      '<li><b>27,5 % KESt</b> auf realisierte Kursgewinne und Dividenden – gilt auch für Gewinne aus Knock-Outs und Optionsscheinen.</li>' +
+      '<li>Trade Republic führt die österreichische KESt für AT-Kunden automatisch ab („steuereinfach"). Prüf den Status trotzdem in der App unter Profil → Steuern.</li>' +
+      '<li>Verluste kannst du <b>nur im selben Kalenderjahr</b> mit Gewinnen/Dividenden verrechnen – <b>kein Verlustvortrag</b> ins nächste Jahr (anders als in Deutschland!). Im Dezember lohnt ein Blick auf offene Verluste.</li>' +
+      '<li>Deutsche Dividenden (z. B. Eventim): Deutschland behält Quellensteuer ein, 15 % davon werden auf die KESt angerechnet – den Rest kann man sich aus DE zurückholen (Formalakt, lohnt erst bei größeren Beträgen).</li>' +
+    '</ul></div>' +
+
+    '<div class="card"><h3><span class="dot">▮</span> Risiko-Basics für Hebelprodukte</h3>' +
+    '<ul class="clean">' +
+      '<li class="risk"><b>Knock-Out:</b> Beim Berühren der Schwelle ist das Zertifikat (fast) wertlos – auch wenn sich die Aktie danach erholt.</li>' +
+      '<li class="risk"><b>Übernacht-Gaps:</b> Quartalszahlen kommen meist vor Börsenstart – der Kurs kann über deine KO-Schwelle springen, ohne dass du reagieren kannst.</li>' +
+      '<li class="risk"><b>Optionsscheine:</b> verlieren täglich Zeitwert und hängen an der Volatilität – können auch bei seitwärts laufender Aktie fallen.</li>' +
+      '<li><b>Spread:</b> Der Unterschied Kauf-/Verkaufskurs ist deine erste "Gebühr" – bei kleinen KO-Abständen relativ am größten.</li>' +
+      '<li><b>Emittentenrisiko:</b> Zertifikate sind Schuldverschreibungen der Bank.</li>' +
+      '<li><b>Vor Zahlen-Terminen:</b> Hebel runter oder Abstand rauf – nutz den Spickzettel (Termine) je Aktie.</li>' +
+    '</ul></div>' +
+  '</div>' +
+
+  '<div class="card"><h3><span class="dot">▮</span> Disclaimer</h3>' +
+  '<p style="font-size:13px;color:var(--muted)">Dieses Cockpit ist ein privates Informations-Tool und stellt keine Anlage-, Rechts- oder Steuerberatung dar. Alle Ratings und Signale stammen von Drittanbietern (TradingView) und sind rein informativ. Kurse können verzögert sein. Investitionen in Aktien und Hebelprodukte können zum Totalverlust führen. Entscheidungen triffst du selbst und auf eigenes Risiko.</p></div>';
+  main.appendChild(v);
+}
+
+/* ---- Rechner-Logik ---- */
+function parseDE(v){
+  if(!v) return NaN;
+  v = String(v).trim().replace(/\s/g,'').replace(/€/g,'');
+  if(v.includes(',')) v = v.replace(/\./g,'').replace(',', '.');
+  else if(/^\d{1,3}(\.\d{3})+$/.test(v)) v = v.replace(/\./g,'');
+  return parseFloat(v);
+}
+const fmtEUR = new Intl.NumberFormat('de-AT', { style:'currency', currency:'EUR', minimumFractionDigits:2, maximumFractionDigits:2 });
+const fmtEUR3 = new Intl.NumberFormat('de-AT', { style:'currency', currency:'EUR', maximumFractionDigits:3 });
+const fmtPct = x => x.toLocaleString('de-AT', { maximumFractionDigits:1 }) + ' %';
+
+let koMode = 'long';
+function calcKO(){
+  const kurs = parseDE(document.getElementById('koKurs').value);
+  const basis = parseDE(document.getElementById('koBasis').value);
+  const bv = parseFloat(document.getElementById('koBV').value);
+  const kauf = parseDE(document.getElementById('koKauf').value);
+  const iw = document.getElementById('koIW'), hb = document.getElementById('koHebel'),
+        ab = document.getElementById('koAbst'), ag = document.getElementById('koAufgeld');
+  [iw,hb,ab,ag].forEach(x => { x.textContent = '–'; x.className = 'val'; });
+  if(isNaN(kurs) || isNaN(basis) || kurs <= 0 || basis <= 0) return;
+  const inner = (koMode === 'long' ? kurs - basis : basis - kurs) * bv;
+  if(inner <= 0){
+    iw.textContent = 'AUSGEKNOCKT'; iw.className = 'val r';
+    ab.textContent = 'Schwelle erreicht'; ab.className = 'val r';
+    return;
+  }
+  iw.textContent = fmtEUR3.format(inner);
+  const preis = (!isNaN(kauf) && kauf > 0) ? kauf : inner;
+  hb.textContent = (kurs * bv / preis).toLocaleString('de-AT', { maximumFractionDigits:1 }) + '×';
+  const dist = (koMode === 'long' ? (kurs - basis) / kurs : (basis - kurs) / kurs) * 100;
+  ab.textContent = fmtPct(dist) + (dist >= 15 ? ' · komfortabel' : dist >= 5 ? ' · sportlich' : ' · sehr heiß!');
+  ab.className = 'val ' + (dist >= 15 ? 'g' : dist >= 5 ? 'o' : 'r');
+  if(!isNaN(kauf) && kauf > 0){
+    const auf = kauf - inner;
+    ag.textContent = fmtEUR3.format(auf) + ' (' + fmtPct(auf / inner * 100) + ')';
+    ag.className = 'val ' + (auf / inner > 0.1 ? 'o' : '');
+  }
+}
+function calcPG(){
+  const depot = parseDE(document.getElementById('pgDepot').value);
+  const risk = parseDE(document.getElementById('pgRisk').value);
+  const ein = parseDE(document.getElementById('pgEin').value);
+  const stop = parseDE(document.getElementById('pgStop').value);
+  const rE = document.getElementById('pgRiskEur'), stk = document.getElementById('pgStk'),
+        pos = document.getElementById('pgPos'), vl = document.getElementById('pgVerlust');
+  [rE,stk,pos].forEach(x => x.textContent = '–'); vl.textContent = '–';
+  if(isNaN(depot) || isNaN(risk) || depot <= 0 || risk <= 0) return;
+  const riskEur = depot * risk / 100;
+  rE.textContent = fmtEUR.format(riskEur);
+  if(isNaN(ein) || isNaN(stop) || ein <= 0 || Math.abs(ein - stop) < 1e-9) return;
+  const perShare = Math.abs(ein - stop);
+  const n = Math.floor(riskEur / perShare);
+  stk.textContent = n.toLocaleString('de-AT') + ' Stück';
+  const posEur = n * ein;
+  pos.textContent = fmtEUR.format(posEur) + (posEur > depot ? ' (größer als Depot!)' : '');
+  vl.textContent = '−' + fmtEUR.format(n * perShare);
+}
+function bindTools(){
+  ['koKurs','koBasis','koKauf'].forEach(id =>
+    document.getElementById(id).addEventListener('input', calcKO));
+  document.getElementById('koBV').addEventListener('change', calcKO);
+  document.getElementById('koLong').addEventListener('click', () => {
+    koMode = 'long';
+    document.getElementById('koLong').classList.add('on');
+    document.getElementById('koShort').classList.remove('on');
+    calcKO();
+  });
+  document.getElementById('koShort').addEventListener('click', () => {
+    koMode = 'short';
+    document.getElementById('koShort').classList.add('on');
+    document.getElementById('koLong').classList.remove('on');
+    calcKO();
+  });
+  ['pgDepot','pgRisk','pgEin','pgStop'].forEach(id =>
+    document.getElementById(id).addEventListener('input', calcPG));
+}
+
+/* ================= Trade-Simulator (Übungsdepot) ================= */
+const LS_SIM = 'cockpit.sim';
+function getSim(){
+  try{
+    const s = JSON.parse(localStorage.getItem(LS_SIM));
+    if(s && typeof s.cash === 'number' && Array.isArray(s.pos)) return s;
+  }catch(e){}
+  return { start:10000, cash:10000, pos:[], hist:[] };
+}
+function saveSim(s){ localStorage.setItem(LS_SIM, JSON.stringify(s)); }
+const fmtK = x => x.toLocaleString('de-AT', { maximumFractionDigits:3 });
+const fmtN = x => x.toLocaleString('de-AT', { maximumFractionDigits:1 });
+
+function toYahoo(sym){
+  const parts = sym.split(':');
+  const ex = parts[0], t = parts[1] || sym;
+  if(['NASDAQ','NYSE','AMEX','BATS','OTC'].includes(ex)) return t;
+  return t + '.DE';
+}
+function fetchT(url, ms){
+  const c = new AbortController();
+  const t = setTimeout(() => c.abort(), ms);
+  return fetch(url, { signal:c.signal }).finally(() => clearTimeout(t));
+}
+async function fetchQuote(tvSym){
+  const target = 'https://query1.finance.yahoo.com/v8/finance/chart/'
+    + encodeURIComponent(toYahoo(tvSym)) + '?interval=1d&range=1d';
+  const proxies = [
+    u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+    u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
+    u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u)
+  ];
+  for(const p of proxies){
+    try{
+      const res = await fetchT(p(target), 7000);
+      if(!res.ok) continue;
+      const j = await res.json();
+      const meta = j && j.chart && j.chart.result && j.chart.result[0] && j.chart.result[0].meta;
+      if(meta && meta.regularMarketPrice > 0){
+        return { price: meta.regularMarketPrice, currency: meta.currency || '' };
+      }
+    }catch(e){ /* nächsten Proxy probieren */ }
+  }
+  throw new Error('kein Kurs');
+}
+
+function koLevel(entry, hebel, dir){
+  return dir === 'long' ? entry * (1 - 1 / hebel) : entry * (1 + 1 / hebel);
+}
+function isKnocked(p, price){
+  return p.typ === 'ko' && ((p.dir === 'long' && price <= p.ko) || (p.dir === 'short' && price >= p.ko));
+}
+function posValue(p, price){
+  if(isKnocked(p, price)) return 0;
+  const sign = p.dir === 'long' ? 1 : -1;
+  const delta = (price - p.entry) / p.entry;
+  return Math.max(0, p.einsatz * (1 + sign * delta * p.hebel));
+}
+function plTxt(val, d, einsatz){
+  const sgn = d >= 0 ? '+' : '−';
+  return fmtEUR.format(val) + ' · ' + sgn + fmtEUR.format(Math.abs(d))
+    + ' (' + sgn + fmtPct(Math.abs(d) / einsatz * 100) + ')';
+}
+
+let ntDir = 'long';
+function buildSim(){
+  const v = el('<section class="view" id="view-sim"></section>');
+  v.innerHTML = '' +
+  '<div class="card"><h3><span class="dot">▮</span> Übungsdepot</h3>' +
+  '<p class="sub">Spielgeld statt Echtgeld: Trades üben, ohne dass es wehtut. Alles wird nur auf diesem Gerät gespeichert.</p>' +
+  '<div class="statgrid">' +
+    '<div class="stat"><div class="l">Bargeld</div><div class="v" id="simCash">–</div></div>' +
+    '<div class="stat"><div class="l">Positionen (Wert)</div><div class="v" id="simInv">–</div></div>' +
+    '<div class="stat"><div class="l">Depotwert</div><div class="v" id="simTotal">–</div></div>' +
+    '<div class="stat"><div class="l">Performance</div><div class="v" id="simPerf">–</div></div>' +
+  '</div>' +
+  '<div class="dlgrow"><label class="f" style="flex:1">Startkapital €<input id="simStart" inputmode="decimal"></label>' +
+  '<button class="btn" id="simReset" style="align-self:flex-end">Depot zurücksetzen</button></div></div>' +
+
+  '<div class="grid2">' +
+  '<div class="card"><h3><span class="dot">▮</span> Neuer Übungs-Trade</h3>' +
+  '<div class="seg"><button id="ntLong" class="long on">Long (steigend)</button><button id="ntShort" class="short">Short (fallend)</button></div>' +
+  '<div class="frow">' +
+    '<label class="f">Aktie<select id="ntSym"></select></label>' +
+    '<label class="f">Instrument<select id="ntTyp"><option value="aktie">Aktie (Hebel 1)</option><option value="ko">Knock-Out (mit Hebel)</option></select></label>' +
+  '</div>' +
+  '<div class="frow">' +
+    '<label class="f" id="ntHebelWrap" style="display:none">Hebel<input id="ntHebel" inputmode="decimal" value="5"></label>' +
+    '<label class="f">Einsatz €<input id="ntEinsatz" inputmode="decimal" placeholder="z. B. 500"></label>' +
+    '<label class="f">Einstiegskurs €<input id="ntEntry" inputmode="decimal" placeholder="per Knopf holen →"></label>' +
+  '</div>' +
+  '<div class="dlgrow"><button class="btn" id="ntFetch">Kurs holen</button><button class="btn primary" id="ntGo">Trade eröffnen</button></div>' +
+  '<p class="hint" id="ntKoInfo"></p>' +
+  '<p class="simstatus" id="ntStatus"></p></div>' +
+
+  '<div class="card"><h3><span class="dot">▮</span> So funktioniert die Simulation</h3><ul class="clean">' +
+    '<li>Pro Kauf und Verkauf gehen 1&nbsp;€ Gebühr ab (wie bei Trade Republic).</li>' +
+    '<li>Knock-Outs vereinfacht: Gewinn/Verlust = Kursbewegung × Hebel; die KO-Schwelle ergibt sich automatisch aus dem Hebel.</li>' +
+    '<li class="risk">Erreicht der Kurs die KO-Schwelle, ist der Einsatz komplett weg – wie im echten Leben.</li>' +
+    '<li>Nicht enthalten: Spread, Aufgeld, Finanzierungskosten – real wärst du also etwas schlechter.</li>' +
+    '<li>Kurse kommen per Knopfdruck (ggf. 15 Min. verzögert). Zwischenzeitliches Berühren der KO-Schwelle sieht die Simulation nicht.</li>' +
+    '<li>US-Aktien werden vereinfacht 1:1 in € gerechnet.</li>' +
+  '</ul></div></div>' +
+
+  '<div class="card"><h3><span class="dot">▮</span> Offene Positionen</h3>' +
+  '<div class="dlgrow" style="margin-top:0"><button class="btn" id="simRefresh">Alle Kurse aktualisieren</button></div>' +
+  '<p class="simstatus" id="simStatus"></p>' +
+  '<div id="simPos"></div></div>' +
+
+  '<div class="card"><h3><span class="dot">▮</span> Abgeschlossene Trades</h3>' +
+  '<div class="statgrid" style="margin-bottom:4px">' +
+    '<div class="stat"><div class="l">Trades</div><div class="v" id="stTrades">0</div></div>' +
+    '<div class="stat"><div class="l">Trefferquote</div><div class="v" id="stWin">–</div></div>' +
+    '<div class="stat"><div class="l">Gesamt G/V</div><div class="v" id="stPnl">–</div></div>' +
+    '<div class="stat"><div class="l">Bester / Schlechtester</div><div class="v" id="stBest" style="font-size:12.5px">–</div></div>' +
+  '</div>' +
+  '<div id="simHist"></div></div>';
+  main.appendChild(v);
+
+  const $ = id => document.getElementById(id);
+  allStocks().forEach(s => {
+    const o = document.createElement('option');
+    o.value = s.symbol; o.textContent = s.name + ' (' + s.symbol + ')';
+    $('ntSym').appendChild(o);
+  });
+  $('ntLong').addEventListener('click', () => {
+    ntDir = 'long';
+    $('ntLong').classList.add('on'); $('ntShort').classList.remove('on');
+    updateKoInfo();
+  });
+  $('ntShort').addEventListener('click', () => {
+    ntDir = 'short';
+    $('ntShort').classList.add('on'); $('ntLong').classList.remove('on');
+    updateKoInfo();
+  });
+  $('ntTyp').addEventListener('change', () => {
+    $('ntHebelWrap').style.display = $('ntTyp').value === 'ko' ? '' : 'none';
+    updateKoInfo();
+  });
+  ['ntHebel','ntEntry'].forEach(id => $(id).addEventListener('input', updateKoInfo));
+  $('ntFetch').addEventListener('click', async () => {
+    setNtStatus('Hole Kurs …');
+    try{
+      const q = await fetchQuote($('ntSym').value);
+      $('ntEntry').value = fmtK(q.price);
+      setNtStatus('Kurs geholt: ' + fmtK(q.price) + ' ' + q.currency + ' (ggf. 15 Min. verzögert)');
+      updateKoInfo();
+    }catch(e){
+      setNtStatus('Kurs holen hat nicht geklappt – trag ihn einfach von Hand ein (steht oben im Ticker).');
+    }
+  });
+  $('ntGo').addEventListener('click', openTrade);
+  $('simRefresh').addEventListener('click', refreshAll);
+  $('simReset').addEventListener('click', resetSim);
+  $('simPos').addEventListener('input', e => {
+    const id = e.target.dataset.cur; if(!id) return;
+    const s = getSim();
+    const p = s.pos.find(x => String(x.id) === id); if(!p) return;
+    const val = parseDE(e.target.value);
+    if(!isNaN(val) && val > 0){
+      p.last = val; saveSim(s);
+      const row = e.target.closest('.pos');
+      if(row && isKnocked(p, p.last) !== row.textContent.includes('Ausgeknockt')){
+        renderSim();   // KO-Status hat sich geändert → Zeile neu aufbauen
+        return;
+      }
+      const d = posValue(p, p.last) - p.einsatz;
+      const span = document.querySelector('[data-pl="' + p.id + '"]');
+      if(span){
+        span.textContent = plTxt(posValue(p, p.last), d, p.einsatz);
+        span.className = 'pl ' + (d >= 0 ? 'g' : 'r');
+      }
+      renderStats(s);
+    }
+  });
+  $('simPos').addEventListener('click', e => {
+    const btn = e.target.closest('[data-close]');
+    if(btn) closeTrade(btn.dataset.close);
+  });
+}
+function setNtStatus(t){ document.getElementById('ntStatus').textContent = t; }
+function setSimStatus(t){ document.getElementById('simStatus').textContent = t; }
+function updateKoInfo(){
+  const box = document.getElementById('ntKoInfo');
+  if(document.getElementById('ntTyp').value !== 'ko'){ box.textContent = ''; return; }
+  const h = parseDE(document.getElementById('ntHebel').value);
+  const e = parseDE(document.getElementById('ntEntry').value);
+  if(isNaN(h) || h < 1.5){ box.textContent = 'Hebel bitte ab 1,5 wählen (üblich: 3–10).'; return; }
+  if(isNaN(e) || e <= 0){
+    box.textContent = 'Bei Hebel ' + fmtN(h) + ' liegt die KO-Schwelle rund ' + fmtPct(100 / h) + ' vom Einstieg entfernt.';
+    return;
+  }
+  box.textContent = 'KO-Schwelle: ' + fmtK(koLevel(e, h, ntDir)) + ' € (' + fmtPct(100 / h)
+    + ' Abstand). Kommt der Kurs dort an, ist der Einsatz weg.';
+}
+function openTrade(){
+  const $ = id => document.getElementById(id);
+  const typ = $('ntTyp').value;
+  const hebel = typ === 'ko' ? parseDE($('ntHebel').value) : 1;
+  const einsatz = parseDE($('ntEinsatz').value);
+  const entry = parseDE($('ntEntry').value);
+  if(isNaN(einsatz) || einsatz <= 0) return setNtStatus('Bitte einen Einsatz eintragen.');
+  if(isNaN(entry) || entry <= 0) return setNtStatus('Bitte zuerst den Einstiegskurs holen oder eintragen.');
+  if(typ === 'ko' && (isNaN(hebel) || hebel < 1.5 || hebel > 50)) return setNtStatus('Hebel bitte zwischen 1,5 und 50 wählen.');
+  const s = getSim();
+  if(einsatz + 1 > s.cash) return setNtStatus('Nicht genug Bargeld im Übungsdepot (' + fmtEUR.format(s.cash) + ' verfügbar).');
+  const sel = $('ntSym');
+  s.pos.push({
+    id: Date.now(), symbol: sel.value,
+    name: sel.options[sel.selectedIndex].textContent.split(' (')[0],
+    dir: ntDir, typ: typ, hebel: hebel, einsatz: einsatz, entry: entry,
+    ko: typ === 'ko' ? koLevel(entry, hebel, ntDir) : null,
+    last: entry, feePaid: 1
+  });
+  s.cash -= einsatz + 1;
+  saveSim(s); renderSim();
+  setNtStatus('Trade eröffnet ✓ (1 € Gebühr abgezogen)');
+  $('ntEinsatz').value = '';
+}
+function closeTrade(id){
+  const s = getSim();
+  const i = s.pos.findIndex(p => String(p.id) === String(id));
+  if(i < 0) return;
+  const p = s.pos[i];
+  if(!p.last || isNaN(p.last)) return setSimStatus('Bitte zuerst einen aktuellen Kurs holen oder eintragen.');
+  const val = posValue(p, p.last);
+  const inflow = Math.max(0, val - 1);
+  if(!confirm(p.name + ' wirklich schließen? Gutschrift: ' + fmtEUR.format(inflow) + ' (inkl. 1 € Gebühr)')) return;
+  s.cash += inflow;
+  s.hist.push({
+    name: p.name, symbol: p.symbol, dir: p.dir, typ: p.typ, hebel: p.hebel,
+    einsatz: p.einsatz, entry: p.entry, exit: p.last,
+    pnl: inflow - (p.einsatz + 1),
+    knocked: isKnocked(p, p.last), closedAt: Date.now()
+  });
+  s.pos.splice(i, 1);
+  saveSim(s); renderSim();
+  setSimStatus('Position geschlossen.');
+}
+async function refreshAll(){
+  const s = getSim();
+  if(!s.pos.length) return setSimStatus('Keine offenen Positionen.');
+  const btn = document.getElementById('simRefresh');
+  btn.disabled = true;
+  setSimStatus('Aktualisiere Kurse …');
+  let fail = 0;
+  for(const p of s.pos){
+    try{ p.last = (await fetchQuote(p.symbol)).price; }
+    catch(e){ fail++; }
+  }
+  saveSim(s); renderSim();
+  const t = new Intl.DateTimeFormat('de-AT', { hour:'2-digit', minute:'2-digit' }).format(new Date());
+  setSimStatus('Stand ' + t + ' Uhr' + (fail ? ' · ' + fail + ' Kurs(e) nicht erreichbar – bitte von Hand eintragen' : ''));
+  btn.disabled = false;
+}
+function resetSim(){
+  const v = parseDE(document.getElementById('simStart').value);
+  const start = (!isNaN(v) && v > 0) ? v : 10000;
+  if(!confirm('Übungsdepot wirklich zurücksetzen? Offene Positionen und Historie werden gelöscht. Neues Startkapital: ' + fmtEUR.format(start))) return;
+  saveSim({ start: start, cash: start, pos: [], hist: [] });
+  renderSim();
+  setSimStatus('Depot zurückgesetzt.');
+}
+function renderStats(s){
+  const cur = s.pos.reduce((a, p) => a + posValue(p, p.last), 0);
+  const total = s.cash + cur;
+  document.getElementById('simCash').textContent = fmtEUR.format(s.cash);
+  document.getElementById('simInv').textContent = s.pos.length ? fmtEUR.format(cur) : '–';
+  document.getElementById('simTotal').textContent = fmtEUR.format(total);
+  const perf = (total - s.start) / s.start * 100;
+  const pEl = document.getElementById('simPerf');
+  pEl.textContent = (perf >= 0 ? '+' : '−') + fmtPct(Math.abs(perf));
+  pEl.className = 'v ' + (perf > 0.005 ? 'g' : perf < -0.005 ? 'r' : '');
+}
+function renderSim(){
+  if(!document.getElementById('simCash')) return;
+  const s = getSim();
+  renderStats(s);
+  document.getElementById('simStart').value = s.start.toLocaleString('de-AT');
+  const box = document.getElementById('simPos');
+  if(!s.pos.length){
+    box.innerHTML = '<p class="sub" style="margin:0">Noch keine offene Position – leg oben deinen ersten Übungs-Trade an.</p>';
+  } else {
+    box.innerHTML = s.pos.map(p => {
+      const knocked = isKnocked(p, p.last);
+      const val = posValue(p, p.last);
+      const d = val - p.einsatz;
+      return '<div class="pos">' +
+        '<div class="top"><span class="nm">' + p.name + '</span>' +
+        '<span class="chip ' + (p.dir === 'long' ? 'g' : 'r') + '">' + (p.dir === 'long' ? 'Long' : 'Short') + '</span>' +
+        '<span class="chip n">' + (p.typ === 'ko' ? 'KO · Hebel ' + fmtN(p.hebel) : 'Aktie · 1×') + '</span>' +
+        (knocked ? '<span class="chip r">Ausgeknockt</span>' : '') + '</div>' +
+        '<div class="meta">Einstieg ' + fmtK(p.entry) + ' € · Einsatz ' + fmtEUR.format(p.einsatz) +
+        (p.ko ? ' · KO-Schwelle ' + fmtK(p.ko) + ' €' : '') + '</div>' +
+        '<div class="plrow"><label class="f" style="margin:0">Akt. Kurs €' +
+        '<input class="cur" data-cur="' + p.id + '" inputmode="decimal" value="' + fmtK(p.last) + '"></label>' +
+        '<span class="pl ' + (d >= 0 ? 'g' : 'r') + '" data-pl="' + p.id + '">' + plTxt(val, d, p.einsatz) + '</span>' +
+        '<span style="flex:1"></span>' +
+        '<button class="btn mini" data-close="' + p.id + '">' + (knocked ? 'Ausbuchen (0 €)' : 'Schließen') + '</button>' +
+        '</div></div>';
+    }).join('');
+  }
+  const hbox = document.getElementById('simHist');
+  document.getElementById('stTrades').textContent = s.hist.length;
+  if(!s.hist.length){
+    hbox.innerHTML = '<p class="sub" style="margin:0">Noch keine abgeschlossenen Trades.</p>';
+    document.getElementById('stWin').textContent = '–';
+    document.getElementById('stPnl').textContent = '–';
+    document.getElementById('stPnl').className = 'v';
+    document.getElementById('stBest').textContent = '–';
+  } else {
+    const wins = s.hist.filter(h => h.pnl > 0).length;
+    document.getElementById('stWin').textContent = fmtPct(wins / s.hist.length * 100);
+    const totalPnl = s.hist.reduce((a, h) => a + h.pnl, 0);
+    const pnlEl = document.getElementById('stPnl');
+    pnlEl.textContent = (totalPnl >= 0 ? '+' : '−') + fmtEUR.format(Math.abs(totalPnl));
+    pnlEl.className = 'v ' + (totalPnl >= 0 ? 'g' : 'r');
+    const best = Math.max.apply(null, s.hist.map(h => h.pnl));
+    const worst = Math.min.apply(null, s.hist.map(h => h.pnl));
+    document.getElementById('stBest').textContent =
+      '+' + fmtEUR.format(Math.max(0, best)) + ' / −' + fmtEUR.format(Math.abs(Math.min(0, worst)));
+    hbox.innerHTML = s.hist.slice().reverse().map(h => {
+      const sgn = h.pnl >= 0 ? '+' : '−';
+      return '<div class="pos">' +
+        '<div class="top"><span class="nm">' + h.name + '</span>' +
+        '<span class="chip ' + (h.dir === 'long' ? 'g' : 'r') + '">' + (h.dir === 'long' ? 'Long' : 'Short') + '</span>' +
+        '<span class="chip n">' + (h.typ === 'ko' ? 'KO · Hebel ' + fmtN(h.hebel) : 'Aktie') + '</span>' +
+        (h.knocked ? '<span class="chip r">Ausgeknockt</span>' : '') +
+        '<span style="flex:1"></span><span class="meta">' + new Date(h.closedAt).toLocaleDateString('de-AT') + '</span></div>' +
+        '<div class="meta">' + fmtK(h.entry) + ' € → ' + fmtK(h.exit) + ' € · Einsatz ' + fmtEUR.format(h.einsatz) + '</div>' +
+        '<div class="plrow"><span class="pl ' + (h.pnl >= 0 ? 'g' : 'r') + '">' + sgn + fmtEUR.format(Math.abs(h.pnl)) + '</span></div>' +
+        '</div>';
+    }).join('');
+  }
+}
+
+/* ================= Navigation ================= */
+function buildTabs(){
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = '';
+  const mk = (label, view) => {
+    const b = document.createElement('button');
+    b.className = 'tab'; b.textContent = label; b.dataset.view = view;
+    b.addEventListener('click', () => show(view));
+    tabs.appendChild(b);
+    return b;
+  };
+  mk('Übersicht', 'uebersicht');
+  allStocks().forEach(st => mk(st.name, 's-' + st.id));
+  mk('Markt', 'markt');
+  mk('Simulator', 'sim');
+  mk('Tools', 'tools');
+  const add = document.createElement('button');
+  add.className = 'tab add'; add.textContent = '＋'; add.title = 'Aktie hinzufügen';
+  add.addEventListener('click', openDialog);
+  tabs.appendChild(add);
+}
+function show(view){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const target = document.getElementById('view-' + view);
+  if(!target) return show('uebersicht');
+  target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t =>
+    t.classList.toggle('active', t.dataset.view === view));
+  localStorage.setItem(LS_TAB, view);
+  if(!inited[view]){
+    inited[view] = true;
+    if(view === 'uebersicht') initOverview();
+    else if(view === 'markt') initMarkt();
+    else if(view.startsWith('s-')){
+      const st = allStocks().find(s => 's-' + s.id === view);
+      if(st) initStock(st);
+    }
+  }
+  if(view === 'sim') renderSim();
+  window.scrollTo({ top:0 });
+}
+
+/* ================= Aktie hinzufügen ================= */
+const dlg = document.getElementById('dlg');
+function openDialog(){
+  renderCustomList();
+  dlg.showModal();
+}
+function renderCustomList(){
+  const box = document.getElementById('customList');
+  const list = getCustom();
+  box.innerHTML = list.length
+    ? '<p class="sub" style="margin-bottom:4px">Selbst hinzugefügt:</p>'
+    : '<p class="sub" style="margin-bottom:0">Noch keine eigenen Aktien hinzugefügt.</p>';
+  list.forEach((c, i) => {
+    const row = el('<div class="row"><span>' + c.name + '</span><span class="sym">' + c.symbol +
+      '</span><span style="flex:1"></span><button class="btn danger">Entfernen</button></div>');
+    row.querySelector('button').addEventListener('click', () => {
+      const l = getCustom(); l.splice(i, 1); setCustom(l); location.reload();
+    });
+    box.appendChild(row);
+  });
+}
+document.getElementById('addClose').addEventListener('click', () => dlg.close());
+document.getElementById('addSave').addEventListener('click', () => {
+  const name = document.getElementById('addName').value.trim();
+  const sym = document.getElementById('addSym').value.trim().toUpperCase();
+  if(!name){ alert('Bitte einen Namen eintragen.'); return; }
+  if(!/^[A-Z0-9_]+:[A-Z0-9_.&]+$/.test(sym)){
+    alert('Das Symbol muss so aussehen: BÖRSE:KÜRZEL – z. B. XETR:BAYN');
+    return;
+  }
+  const id = 'c' + Date.now();
+  const list = getCustom();
+  list.push({ id, name, symbol:sym });
+  setCustom(list);
+  localStorage.setItem(LS_TAB, 's-' + id);
+  location.reload();
+});
+
+/* ================= Status & Uhr ================= */
+function viennaNow(){
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone:'Europe/Vienna', hour:'2-digit', minute:'2-digit',
+    weekday:'short', hour12:false
+  }).formatToParts(new Date());
+  const get = t => parts.find(p => p.type === t).value;
+  return { wd:get('weekday'), h:+get('hour'), m:+get('minute') };
+}
+function updateStatus(){
+  const { wd, h, m } = viennaNow();
+  const mins = h * 60 + m;
+  const isWd = !['Sat','Sun'].includes(wd);
+  const xetra = isWd && mins >= 540 && mins < 1050;
+  const ls = isWd && mins >= 450 && mins < 1380;
+  const px = document.getElementById('pill-xetra');
+  px.textContent = xetra ? '● Xetra offen' : '○ Xetra zu';
+  px.className = 'pill ' + (xetra ? 'open' : 'closed');
+  const pl = document.getElementById('pill-ls');
+  pl.textContent = ls ? '● L&S offen' : '○ L&S zu';
+  pl.className = 'pill ' + (ls ? 'open' : 'closed');
+  document.getElementById('clock').textContent =
+    String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ' Wien';
+}
+
+/* ================= Start ================= */
+tvWidget(document.getElementById('tape'), 'ticker-tape', Object.assign({
+  symbols: allStocks().map(s => ({ proName:s.symbol, title:s.name }))
+    .concat([
+      { proName:'XETR:DAX', title:'DAX' },
+      { proName:'XETR:TDXP', title:'TecDAX' },
+      { proName:'FX:EURUSD', title:'EUR/USD' }
+    ]),
+  showSymbolLogo:true, displayMode:'adaptive'
+}, DARK));
+
+buildOverview();
+buildStockViews();
+buildMarkt();
+buildSim();
+buildTools();
+buildTabs();
+bindTools();
+renderSim();
+main.addEventListener('click', e => {
+  const b = e.target.closest('[data-open]');
+  if(b) show('s-' + b.dataset.open);
+});
+updateStatus();
+setInterval(updateStatus, 20000);
+show(localStorage.getItem(LS_TAB) || 'uebersicht');
+</script>
+</body>
+</html>
