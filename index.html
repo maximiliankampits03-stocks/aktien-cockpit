@@ -318,6 +318,107 @@ const BASE_STOCKS = [
   }
 ];
 
+/* Themen-Watchlist „Magnete & Seltene Erden“ – eigene Detailseiten, aber
+   kein eigener Tab: Einstieg läuft über den Magnete-Tab. */
+const THEME_STOCKS = [
+  {
+    id:'mp', name:'MP Materials', symbol:'NYSE:MP', theme:'magnete',
+    stand:'5. August 2026',
+    links:{
+      tv:'https://de.tradingview.com/symbols/NYSE-MP/',
+      ir:'https://investors.mpmaterials.com/'
+    },
+    profil:'Betreiber von Mountain Pass in Kalifornien – der einzigen Seltene-Erden-Mine mit relevanter Größe in Nordamerika – plus der Magnetfabrik „Independence" in Fort Worth, Texas. Seit Juli 2025 Partnerschaft mit dem US-Verteidigungsministerium: 400 Mio. $ Eigenkapital (DoD ist damit größter Aktionär), 10-Jahres-Preisuntergrenze von 110 $/kg für NdPr und langfristige Abnahmeverträge. Dazu ein Liefervertrag mit Apple über rund 500 Mio. $. Magnetics-Segment Q1/2026: 21,1 Mio. $ Umsatz (+15,9 Mio. ggü. Vorjahr), Segment-EBITDA 9,6 Mio. $.',
+    charakter:'<span class="chip o">Geopolitik-Titel</span><span class="chip r">Sehr hohe Volatilität</span><span class="chip r">Story-Bewertung</span> Rund 8,5 Mrd. $ Marktkapitalisierung bei erwarteten 0,02 $ Quartalsgewinn – der Kurs lebt fast vollständig von der Zukunft, nicht von heutigen Zahlen. Analysten-Kursziele (Ø ~76–79 $) und Value-Modelle (~34 $) liegen um Faktor 2 auseinander.',
+    treiber:[
+      'NdPr-Preis – die Preisuntergrenze von 110 $/kg (DoD) begrenzt das Abwärtsrisiko der Marge',
+      'Hochlauf der Magnetfertigung in Texas: jedes Quartal mit deutlichem Magnetics-Umsatzsprung ist der eigentliche Beweis der These',
+      'Weitere Staatsaufträge und -beteiligungen (DoD/DoW), Verteidigungsnachfrage',
+      'Nachfrage aus Robotik und E-Autos (Optimus, Aktuatoren) – wirkt aber erst ab 2027 in den Zahlen',
+      'Jede Eskalation der chinesischen Exportkontrollen treibt den Kurs sofort'
+    ],
+    risiken:[
+      'China hat MP am 22.6.2026 auf die eigene Exportkontroll-Blacklist gesetzt – Zugang zu chinesischen Vorprodukten/Komponenten eingeschränkt',
+      'Massive Insiderverkäufe: rund 60,7 Mio. $ verkauft gegenüber 1,5 Mio. $ gekauft in drei Monaten (inkl. CEO und CFO)',
+      'Bewertung von grob 20× Umsatz – Enttäuschungen werden hart bestraft',
+      'Entspannung im US-China-Handelsstreit würde die Preise für Seltene Erden drücken und die These aushebeln',
+      'Ausführungsrisiko: Magnetfertigung im industriellen Maßstab ist neu für das Unternehmen'
+    ],
+    termine:'Q2/2026 am <b>6. August 2026</b> nach US-Börsenschluss (Konsens: ~99 Mio. $ Umsatz, 0,02 $ EPS). Danach Quartalszahlen typischerweise Nov / Feb / Mai. Genaue Daten: IR-Seite → Events.'
+  },
+  {
+    id:'neo', name:'Neo Performance', symbol:'TSX:NEO', theme:'magnete',
+    stand:'5. August 2026', socQuery:'Neo Performance Materials',
+    links:{
+      tv:'https://de.tradingview.com/symbols/TSX-NEO/',
+      ir:'https://www.neomaterials.com/investors/'
+    },
+    profil:'Kanadischer Spezialist für Seltene-Erden-Werkstoffe. Die Magnetsparte Magnequench stellt vor allem gebundene NdFeB-Magnete her, mit Werken unter anderem in China, Thailand und Estland. Die neue Separationslinie für schwere Seltene Erden in Estland (Narva) ist fertig, die europäische Magnetkapazität wird im Tausend-Tonnen-Maßstab ausgebaut. Konzernumsatz 2025 rund 479 Mio. $.',
+    charakter:'<span class="chip o">Small Cap (~1,6 Mrd. C$)</span><span class="chip g">Guidance-Momentum</span><span class="chip r">In DE illiquide</span> Die EBITDA-Guidance 2026 wurde dreimal angehoben: 75–80 → 100–110 → zuletzt <b>140–150 Mio. $</b> (2025 waren es 76 Mio.). Genau diese Serie ist die Story – und sie ist im Kurs bereits weitgehend enthalten.',
+    treiber:[
+      'Weitere Guidance-Anhebungen bzw. Bestätigung der 140–150 Mio. $ beim Q2-Bericht',
+      'Preise für Seltene Erden – Neo verdient an der Spanne zwischen Rohstoff und Werkstoff',
+      'Europäischer Magnetausbau (Estland) als „ex-China"-Prämie',
+      'Europäische Auto- und Industriekunden, die ihre Lieferkette aus China herausziehen wollen',
+      'Mögliche EU-Förderung im Rahmen des Critical Raw Materials Act'
+    ],
+    risiken:[
+      'Ein erheblicher Teil der Magnetproduktion steht selbst in China – die Erzählung „kanadische Alternative zu China" stimmt nur teilweise. Im Q2-Bericht die Standortstruktur prüfen',
+      'Kurs bereits rund +130 % in zwölf Monaten (52-Wochen-Spanne C$15,31 – C$44,96); das BMO-Kursziel von C$38 liegt nur knapp über dem aktuellen Kurs',
+      'Dünner Handel an deutschen Börsenplätzen und über die OTC-Linie NOPMF – ohne Limit-Order nicht kaufen',
+      'CAD-Währungsrisiko gegenüber dem Euro',
+      'Kleine Bilanz bei großem Ausbauprogramm – eine Kapitalerhöhung ist denkbar'
+    ],
+    termine:'Q2/2026 am <b>11. August 2026</b>, Conference Call 10:00 Uhr ET (16:00 Wien). Kalender-Geschäftsjahr, weitere Quartale ~Nov / März / Mai.'
+  },
+  {
+    id:'lynas', name:'Lynas', symbol:'ASX:LYC', theme:'magnete',
+    stand:'5. August 2026', socQuery:'Lynas Rare Earths',
+    links:{
+      tv:'https://de.tradingview.com/symbols/ASX-LYC/',
+      ir:'https://lynasrareearths.com/investors/'
+    },
+    profil:'Der größte Seltene-Erden-Produzent außerhalb Chinas: Mine Mount Weld in Westaustralien, Verarbeitung in Malaysia und Kalgoorlie, Separation schwerer Seltener Erden (Dysprosium, Terbium) in Malaysia, dazu ein geplantes Werk in Texas. Wichtig zur Einordnung: Lynas verkauft separierte Oxide – es ist <b>kein</b> Magnethersteller.',
+    charakter:'<span class="chip g">Produzent mit echtem Umsatz</span><span class="chip n">Zyklisch</span><span class="chip n">AUD</span> Der etablierteste Wert der Gruppe. Er ist in allen großen Seltene-Erden-ETFs enthalten und wird deshalb bei jedem Themen-Zufluss mitgekauft.',
+    treiber:[
+      'NdPr-, Dysprosium- und Terbium-Preise (direkter Hebel auf den Gewinn)',
+      'Hochlauf Kalgoorlie und des US-Projekts in Texas',
+      'Langfristverträge mit japanischen, koreanischen und US-Abnehmern',
+      'Betriebslizenzen in Malaysia (politisch immer wieder Thema)'
+    ],
+    risiken:[
+      'Reiner Preisnehmer ohne staatliche Preisuntergrenze – anders als MP',
+      'Hohe Investitionen bei schwankenden Rohstoffpreisen',
+      'Politisches und regulatorisches Risiko am Standort Malaysia',
+      'Profitiert vom Magnetboom nur indirekt, da keine eigene Magnetfertigung',
+      'In Europa nur eingeschränkt handelbar (ASX-Hauptnotiz, Zweitlinien mit dünnem Handel)'
+    ],
+    termine:'Geschäftsjahr endet am 30. Juni. Quartals-Aktivitätenberichte Ende Januar / April / Juli / Oktober, Jahreszahlen im August. Genaue Daten: IR-Seite.'
+  },
+  {
+    id:'rexc', name:'Sprott REXC (ETF)', symbol:'NASDAQ:REXC', theme:'magnete',
+    stand:'5. August 2026', socQuery:'rare earths ETF',
+    links:{
+      tv:'https://de.tradingview.com/symbols/NASDAQ-REXC/',
+      ir:'https://sprottetfs.com/rexc-rare-earths-ex-china-etf/'
+    },
+    profil:'Im April 2026 aufgelegter ETF von Sprott – der erste, der gezielt Seltene-Erden-Unternehmen <b>außerhalb</b> Chinas abbildet (Nasdaq Sprott Rare Earths Ex-China Index). Enthalten sind unter anderem Lynas, MP Materials, USA Rare Earth und Arafura. Zum Vergleich: der ältere und deutlich größere REMX (VanEck, ~3 Mrd. $, 0,58 % TER) hält auch chinesische Verarbeiter – und wettet damit teilweise gegen die eigene These.',
+    charakter:'<span class="chip g">Streuung statt Einzelwette</span><span class="chip r">Sehr jung und klein</span><span class="chip r">Für AT/DE meist nicht kaufbar</span> Inhaltlich der sauberste Weg, das Thema zu spielen – praktisch für dich aber die größte Hürde (siehe Risiken).',
+    treiber:[
+      'Dieselben Makrotreiber wie bei den Einzelwerten, aber ohne Einzelwert-Unfallrisiko',
+      'Zuflüsse ins Thema treiben die enthaltenen Small Caps zusätzlich',
+      'Indexanpassungen: neue ex-China-Produzenten werden aufgenommen'
+    ],
+    risiken:[
+      'US-domizilierter ETF ohne PRIIPs-Basisinformationsblatt – für Privatanleger in Österreich/Deutschland in aller Regel <b>nicht handelbar</b>. Gilt genauso für REMX. Alternative: ein europäischer UCITS-ETF auf kritische Rohstoffe',
+      'Geringes Fondsvolumen → breite Spreads und reales Schließungsrisiko',
+      'Hohe Konzentration auf wenige Titel: ein ETF-Mantel, aber kaum echte Diversifikation',
+      'USD-Währungsrisiko'
+    ],
+    termine:'Keine Quartalszahlen. Relevant sind Fondsvolumen, Spread und Indexanpassungen – nachzusehen auf der Sprott-Fondsseite.'
+  }
+];
+
 const LS_CUSTOM = 'cockpit.customStocks';
 const LS_TAB = 'cockpit.activeTab';
 
@@ -326,12 +427,21 @@ function getCustom(){
   catch(e){ return []; }
 }
 function setCustom(list){ localStorage.setItem(LS_CUSTOM, JSON.stringify(list)); }
+/* Werte mit eigenem Tab (Übersicht, Tabs, Ticker) */
 function allStocks(){
   return BASE_STOCKS.concat(getCustom().map(c => ({
     id:c.id, name:c.name, symbol:c.symbol, custom:true,
     links:{ tv:'https://de.tradingview.com/symbols/' + c.symbol.replace(':','-') + '/' }
   })));
 }
+/* Alle Werte mit einer Detailseite – inkl. Themen-Watchlist */
+function viewStocks(){
+  return BASE_STOCKS.concat(THEME_STOCKS, getCustom().map(c => ({
+    id:c.id, name:c.name, symbol:c.symbol, custom:true,
+    links:{ tv:'https://de.tradingview.com/symbols/' + c.symbol.replace(':','-') + '/' }
+  })));
+}
+function themeStocks(){ return THEME_STOCKS.filter(s => s.theme === 'magnete'); }
 
 /* ================= TradingView-Widget-Helfer ================= */
 function tvWidget(parent, kind, config, height){
@@ -384,6 +494,7 @@ function buildOverview(){
     '<div class="grid2">' +
       '<div class="card"><h3><span class="dot">▮</span> So nutzt du das Cockpit</h3>' +
       '<div class="kv"><b>Aktien-Tabs</b><span>Chart, Technik-Rating, Kennzahlen, News, Social Media, Insider &amp; Spickzettel je Aktie.</span></div>' +
+      '<div class="kv"><b>Magnete</b><span>Themen-Watchlist Seltene Erden: MP Materials, Neo Performance, Lynas, REXC – mit Terminen, Rohstoffpreisen und Risiko-Checkliste.</span></div>' +
       '<div class="kv"><b>Markt</b><span>DAX &amp; Co., Wirtschaftskalender und ein Screener für neue Ideen.</span></div>' +
       '<div class="kv"><b>Simulator</b><span>Übungsdepot mit Spielgeld – Trades risikofrei testen, bevor echtes Geld fließt.</span></div>' +
       '<div class="kv"><b>Tools</b><span>Knock-Out-Rechner, Positionsgrößen-Rechner, Steuer-Infos für Österreich.</span></div>' +
@@ -427,7 +538,7 @@ function stockViewHTML(st){
     ? '<div class="card"><h3><span class="dot">▮</span> Spickzettel</h3>' +
       '<p class="sub">Für selbst hinzugefügte Aktien gibt es noch keinen Spickzettel. Sag Claude Bescheid – dann wird ' + st.name + ' fix eingebaut, mit Kurstreibern, Risiken und Terminen.</p></div>'
     : '<div class="card"><h3><span class="dot">▮</span> Spickzettel: Was den Kurs bewegt</h3>' +
-      '<span class="stamp">Stand Juli 2026 · Hintergrundwissen – aktuelle Zahlen liefern die Live-Boxen</span>' +
+      '<span class="stamp">Stand ' + (st.stand || 'Juli 2026') + ' · Hintergrundwissen – aktuelle Zahlen liefern die Live-Boxen</span>' +
       '<p style="font-size:13.5px;margin-bottom:10px">' + st.profil + '</p>' +
       '<p style="font-size:13px;margin-bottom:10px">' + st.charakter + '</p>' +
       '<h3 style="margin-top:8px">Kurstreiber</h3><ul class="clean">' +
@@ -443,7 +554,11 @@ function stockViewHTML(st){
     '</ul>' +
     '<p class="hint">Knock-Outs &amp; Optionsscheine: In der Trade-Republic-App die Aktie suchen → Tab „Derivate". Vorher unter <b>Tools</b> den KO-Abstand und die Positionsgröße durchrechnen.</p></div>';
 
-  return '' +
+  const back = st.theme === 'magnete'
+    ? '<div class="card" style="margin-top:14px;padding:10px 12px"><button class="openbtn" style="margin:0" data-view="magnete">← Watchlist Magnete &amp; Seltene Erden</button></div>'
+    : '';
+
+  return '' + back +
     '<div class="card pad0" data-slot="info"></div>' +
     '<div class="card pad0"><div class="chartbox" data-slot="chart"></div>' +
     '<div class="hint">Xetra-Kurse ggf. 15 Min. verzögert · Intervall oben im Chart umstellbar (Tag für mittelfristig, 1h/15m für kurzfristig)</div></div>' +
@@ -479,7 +594,7 @@ function stockViewHTML(st){
     '</div>';
 }
 function buildStockViews(){
-  allStocks().forEach(st => {
+  viewStocks().forEach(st => {
     const v = el('<section class="view" id="view-s-' + st.id + '"></section>');
     v.innerHTML = stockViewHTML(st);
     main.appendChild(v);
@@ -504,6 +619,124 @@ function initStock(st){
   tvWidget(v.querySelector('[data-slot="news"]'), 'timeline',
     Object.assign({ feedMode:'symbol', symbol:st.symbol, width:'100%',
       height:520, displayMode:'regular' }, DARK), 520);
+}
+
+/* ---- Themen-Watchlist: Magnete & Seltene Erden ---- */
+const MAG_NOTE = {
+  mp:'DoD größter Aktionär · Preisboden 110 $/kg · Zahlen 6.8.',
+  neo:'EBITDA-Guidance 3× erhöht auf 140–150 Mio. $ · Zahlen 11.8.',
+  lynas:'Größter Produzent außerhalb Chinas · kein Magnethersteller',
+  rexc:'Ex-China-ETF · für AT/DE meist nicht handelbar'
+};
+function buildMagnete(){
+  const v = el('<section class="view" id="view-magnete"></section>');
+
+  v.appendChild(el(
+    '<div class="card"><h3><span class="dot">▮</span> Die These in fünf Sätzen</h3>' +
+    '<span class="stamp">Recherche-Stand 5. August 2026 · kein Kaufsignal</span>' +
+    '<p style="font-size:13.5px;margin-bottom:10px">China fördert rund 60&nbsp;% der Seltenen Erden und stellt über 90&nbsp;% der Hochleistungsmagnete her. ' +
+    'Seit den Exportkontrollen sind die Preise für schwere Seltene Erden explodiert, und der Westen baut mit Staatsgeld eine eigene Lieferkette auf. ' +
+    'Jeder Elektromotor, jedes Stromnetz und jeder Roboter-Aktuator braucht NdFeB-Magnete – der Engpass ist dabei <b>nicht der Bergbau</b>, sondern Separation und Magnetfertigung. ' +
+    'Genau dort sitzen MP Materials und Neo Performance. ' +
+    'Der Haken: In diesen Kursen steckt eine Geopolitik-Prämie – du wettest hier zuerst auf anhaltende Handelskonfrontation und erst danach auf Roboter.</p>' +
+    '<p style="font-size:13px;color:var(--muted)">Herkunft: TikTok-Clip („zwei Magnete"), am 5.8.2026 gegen aktuelle Zahlen geprüft. ' +
+    'Die Kernfakten des Videos stimmen – verschwiegen wurden die China-Blacklist gegen MP, die hohen Insiderverkäufe und dass beide Werte bereits massiv gelaufen sind.</p></div>'));
+
+  const grid = el('<div class="grid2" id="magGrid"></div>');
+  themeStocks().forEach(st => {
+    grid.appendChild(el(
+      '<div class="card">' +
+        '<div class="stockhead"><div><div class="nm">' + st.name + '</div>' +
+        '<div class="sym">' + st.symbol + '</div></div>' +
+        '<button class="openbtn" data-open="' + st.id + '">Öffnen →</button></div>' +
+        '<div class="sub" style="margin-bottom:8px">' + (MAG_NOTE[st.id] || '') + '</div>' +
+        '<div class="slot"></div>' +
+      '</div>'));
+  });
+  v.appendChild(grid);
+
+  v.appendChild(el(
+    '<div class="grid2">' +
+      '<div class="card"><h3><span class="dot">▮</span> Nächste Termine</h3>' +
+      '<p class="sub">Vor Zahlen nicht kaufen – zwei Handelstage warten kostet nichts, spart im Zweifel 15&nbsp;%.</p>' +
+      '<div class="kv"><b>Do 6.8.2026</b><span>MP Materials Q2 nach US-Schluss · Konsens ~99 Mio. $ Umsatz, 0,02 $ EPS. Achte auf den Magnetics-Umsatz (Q1: 21,1 Mio.) – das ist die eigentliche Zahl.</span></div>' +
+      '<div class="kv"><b>Di 11.8.2026</b><span>Neo Performance Q2 · Call 16:00 Wien. Wird die 140–150-Mio.-Guidance bestätigt? Und wie viel Magnetproduktion steht wirklich außerhalb Chinas?</span></div>' +
+      '<div class="kv"><b>August 2026</b><span>Lynas Jahreszahlen (Geschäftsjahr endet 30.6.)</span></div>' +
+      '<div class="kv"><b>Laufend</b><span>US-China-Verhandlungen nach der Section-232-Proklamation vom 14.1.2026 – der wichtigste Einzeltermin für das ganze Thema</span></div>' +
+      '</div>' +
+
+      '<div class="card"><h3><span class="dot">▮</span> Marktlage: die Zahlen dahinter</h3>' +
+      '<span class="stamp">Stand Anfang August 2026</span>' +
+      '<div class="kv"><b>NdPr</b><span>NdPr-Legierung ~133 $/kg (1.7.2026, +21&nbsp;% ggü. Juni) · NdPr-Oxid im Februar ~125 $/kg nach einer Verdopplung in sieben Monaten</span></div>' +
+      '<div class="kv"><b>Dysprosium</b><span>~1.450 $/kg · <b>Terbium</b> ~4.500 $/kg · <b>Yttrium</b> ~1.100 $/kg (vor den Kontrollen einstellig)</span></div>' +
+      '<div class="kv"><b>Preisboden</b><span>110 $/kg NdPr, garantiert vom US-Verteidigungsministerium für MP – begrenzt dessen Abwärtsrisiko, gilt für Neo und Lynas <b>nicht</b></span></div>' +
+      '<div class="kv"><b>China</b><span>Lieferungen von Gallium, Dysprosium, Terbium und Yttrium nach Japan seit Monaten bei null</span></div>' +
+      '<div class="kv"><b>Section 232</b><span>Proklamation vom 14.1.2026 – vorerst <b>ohne</b> Zölle, stattdessen Verhandlungsauftrag. Zölle bleiben als Drohung im Raum</span></div>' +
+      '<div class="kv"><b>US-Lücke</b><span>Branchenanalysen sehen die US-Magnetlücke frühestens 2027 geschlossen</span></div>' +
+      '</div>' +
+    '</div>'));
+
+  v.appendChild(el(
+    '<div class="grid2">' +
+      '<div class="card"><h3><span class="dot">▮</span> Was die These killt</h3>' +
+      '<p class="sub">Vorher lesen, nicht hinterher. Wenn einer dieser Punkte eintritt, ist der Trade beschädigt – dann nicht „aussitzen".</p>' +
+      '<ul class="clean">' +
+        '<li class="risk"><b>US-China-Rohstoffdeal:</b> Lockerung der Exportkontrollen → Preise für Seltene Erden fallen → diese Aktien −40 bis −50&nbsp;%. Das ist das mit Abstand größte Risiko.</li>' +
+        '<li class="risk"><b>Robotik kommt später:</b> Die Optimus-Produktion in Fremont war Ende Juli noch nicht angelaufen; Musk selbst nennt den Hochlauf „quite slow" und die Rate unvorhersehbar. Tesla bestellt Aktuatoren zudem für 685 Mio. $ bei Sanhua in China.</li>' +
+        '<li class="risk"><b>Insider verkaufen:</b> Bei MP standen zuletzt 60,7 Mio. $ Verkäufe nur 1,5 Mio. $ Käufen gegenüber.</li>' +
+        '<li class="risk"><b>Gegenschlag aus Peking:</b> MP steht seit dem 22.6.2026 auf Chinas Exportkontroll-Blacklist – weitere Werte können folgen.</li>' +
+        '<li class="risk"><b>Bewertung:</b> ~20× Umsatz bei MP. Bei Story-Bewertungen genügt ein verfehltes Quartal für −20&nbsp;% an einem Tag.</li>' +
+      '</ul></div>' +
+
+      '<div class="card"><h3><span class="dot">▮</span> Checkliste vor dem Kauf</h3>' +
+      '<ul class="clean">' +
+        '<li><b>Nicht vor den Zahlen</b> kaufen – 6.8. (MP) und 11.8. (Neo) abwarten.</li>' +
+        '<li><b>Positionsgröße wie Risikokapital:</b> je Wert maximal 1–3&nbsp;% des Depots, zusammen nicht über 5&nbsp;%. Rechne es im Tab <b>Tools</b> durch.</li>' +
+        '<li><b>In drei Tranchen</b> über zwei bis drei Monate einsteigen – bei dieser Volatilität kommt der Rücksetzer verlässlich.</li>' +
+        '<li><b>Immer Limit-Order.</b> Neo ist außerhalb der TSX-Zeiten (15:30–22:00 Wien) sehr dünn, die OTC-Linie NOPMF noch dünner.</li>' +
+        '<li><b>Währung mitdenken:</b> MP in USD, Neo in CAD, Lynas in AUD – der Wechselkurs verändert deine Rendite in Euro.</li>' +
+        '<li><b>Steuer AT:</b> 27,5&nbsp;% KESt, kein Verlustvortrag ins nächste Jahr – Details im Tab Tools.</li>' +
+        '<li class="risk"><b>Exit vorher festlegen:</b> Bei einem Handelsdeal zwischen Washington und Peking raus, nicht nachkaufen.</li>' +
+      '</ul>' +
+      '<p class="hint">Im Simulator kannst du alle vier Werte als Übungs-Trade anlegen. Achtung: Fremdwährungskurse werden dort als reine Zahl übernommen und in € formatiert – zum Üben der Mechanik reicht das, ein Währungsumrechner ist es nicht.</p></div>' +
+    '</div>'));
+
+  v.appendChild(el(
+    '<div class="grid2">' +
+      '<div class="card"><h3><span class="dot">▮</span> Rohstoffpreise beobachten</h3>' +
+      '<p class="sub">Der NdPr-Preis ist der Taktgeber für die ganze Gruppe – wichtiger als jede einzelne Unternehmensmeldung.</p>' +
+      '<ul class="links">' +
+        '<li><a href="https://www.metal.com/Rare-Earth" target="_blank" rel="noopener">SMM: Preise Seltene Erden</a><span>Chinesische Spotpreise für NdPr, Dysprosium, Terbium – die Referenz der Branche</span></li>' +
+        '<li><a href="https://tradingeconomics.com/commodity/neodymium" target="_blank" rel="noopener">Trading Economics: Neodym</a><span>Langfrist-Chart zum schnellen Einordnen</span></li>' +
+        '<li><a href="https://www.usgs.gov/centers/national-minerals-information-center/rare-earths-statistics-and-information" target="_blank" rel="noopener">USGS: Rare Earths Statistics</a><span>Offizielle Zahlen zu Förderung, Verarbeitung und Importabhängigkeit der USA</span></li>' +
+      '</ul></div>' +
+
+      '<div class="card"><h3><span class="dot">▮</span> Direkt zu den Quellen</h3>' +
+      '<ul class="links">' +
+        '<li><a href="https://investors.mpmaterials.com/" target="_blank" rel="noopener">MP Materials – Investor Relations</a><span>Quartalsberichte, Termine, DoD-Vereinbarung im Original</span></li>' +
+        '<li><a href="https://www.neomaterials.com/investors/" target="_blank" rel="noopener">Neo Performance – Investor Relations</a><span>Guidance-Meldungen und der MD&amp;A mit der Standortstruktur</span></li>' +
+        '<li><a href="https://lynasrareearths.com/investors/" target="_blank" rel="noopener">Lynas – Investor Relations</a><span>Quartals-Aktivitätenberichte</span></li>' +
+        '<li><a href="https://sprottetfs.com/rexc-rare-earths-ex-china-etf/" target="_blank" rel="noopener">Sprott REXC – Fondsseite</a><span>Positionen, Fondsvolumen, Spread</span></li>' +
+        '<li><a href="https://www.justetf.com/de/find-etf.html?search=Seltene+Erden" target="_blank" rel="noopener">justETF: europäische Alternativen</a><span>UCITS-ETFs auf Seltene Erden / kritische Rohstoffe – die in AT tatsächlich kaufbare Variante</span></li>' +
+        '<li><a href="https://openinsider.com/search?q=MP" target="_blank" rel="noopener">OpenInsider: MP Materials</a><span>Insiderkäufe und -verkäufe tagesaktuell</span></li>' +
+      '</ul></div>' +
+    '</div>'));
+
+  v.appendChild(el(
+    '<div class="card"><h3><span class="dot">▮</span> Einordnung</h3>' +
+    '<p style="font-size:13.5px;color:var(--muted)">Die strukturelle These ist echt und staatlich unterlegt – aber ein TikTok, das mit zwei Gewinnern (Intel, Dell) ein Muster beweisen will, blendet alle Verlierer derselben Erzählung aus. ' +
+    'Neo steht rund 130&nbsp;% über dem Stand von vor zwölf Monaten, MP wird mit etwa dem Zwanzigfachen des Umsatzes bezahlt. ' +
+    'Wenn überhaupt, dann klein, gestaffelt und nach den Zahlen – mit dem Bewusstsein, worauf du hier wirklich wettest.</p></div>'));
+
+  main.appendChild(v);
+}
+function initMagnete(){
+  document.querySelectorAll('#magGrid .card').forEach((c, i) => {
+    const st = themeStocks()[i];
+    tvWidget(c.querySelector('.slot'), 'mini-symbol-overview',
+      Object.assign({ symbol:st.symbol, width:'100%', height:220, dateRange:'12M',
+        autosize:false, largeChartUrl:'' }, DARK));
+  });
 }
 
 /* ---- Markt ---- */
@@ -705,10 +938,12 @@ function saveSim(s){ localStorage.setItem(LS_SIM, JSON.stringify(s)); }
 const fmtK = x => x.toLocaleString('de-AT', { maximumFractionDigits:3 });
 const fmtN = x => x.toLocaleString('de-AT', { maximumFractionDigits:1 });
 
+const YAHOO_SUFFIX = { TSX:'.TO', TSXV:'.V', ASX:'.AX', LSE:'.L', SIX:'.SW', OMXSTO:'.ST' };
 function toYahoo(sym){
   const parts = sym.split(':');
   const ex = parts[0], t = parts[1] || sym;
   if(['NASDAQ','NYSE','AMEX','BATS','OTC'].includes(ex)) return t;
+  if(YAHOO_SUFFIX[ex]) return t + YAHOO_SUFFIX[ex];
   return t + '.DE';
 }
 function fetchT(url, ms){
@@ -812,7 +1047,7 @@ function buildSim(){
   main.appendChild(v);
 
   const $ = id => document.getElementById(id);
-  allStocks().forEach(s => {
+  viewStocks().forEach(s => {
     const o = document.createElement('option');
     o.value = s.symbol; o.textContent = s.name + ' (' + s.symbol + ')';
     $('ntSym').appendChild(o);
@@ -1041,6 +1276,7 @@ function buildTabs(){
   };
   mk('Übersicht', 'uebersicht');
   allStocks().forEach(st => mk(st.name, 's-' + st.id));
+  mk('Magnete', 'magnete');
   mk('Markt', 'markt');
   mk('Simulator', 'sim');
   mk('Tools', 'tools');
@@ -1054,15 +1290,18 @@ function show(view){
   const target = document.getElementById('view-' + view);
   if(!target) return show('uebersicht');
   target.classList.add('active');
+  /* Detailseiten der Themen-Watchlist haben keinen eigenen Tab – dann bleibt „Magnete" markiert */
+  const themeView = themeStocks().some(s => 's-' + s.id === view) ? 'magnete' : view;
   document.querySelectorAll('.tab').forEach(t =>
-    t.classList.toggle('active', t.dataset.view === view));
+    t.classList.toggle('active', t.dataset.view === themeView));
   localStorage.setItem(LS_TAB, view);
   if(!inited[view]){
     inited[view] = true;
     if(view === 'uebersicht') initOverview();
+    else if(view === 'magnete') initMagnete();
     else if(view === 'markt') initMarkt();
     else if(view.startsWith('s-')){
-      const st = allStocks().find(s => 's-' + s.id === view);
+      const st = viewStocks().find(s => 's-' + s.id === view);
       if(st) initStock(st);
     }
   }
@@ -1137,6 +1376,8 @@ function updateStatus(){
 tvWidget(document.getElementById('tape'), 'ticker-tape', Object.assign({
   symbols: allStocks().map(s => ({ proName:s.symbol, title:s.name }))
     .concat([
+      { proName:'NYSE:MP', title:'MP Materials' },
+      { proName:'TSX:NEO', title:'Neo Perf.' },
       { proName:'XETR:DAX', title:'DAX' },
       { proName:'XETR:TDXP', title:'TecDAX' },
       { proName:'FX:EURUSD', title:'EUR/USD' }
@@ -1146,6 +1387,7 @@ tvWidget(document.getElementById('tape'), 'ticker-tape', Object.assign({
 
 buildOverview();
 buildStockViews();
+buildMagnete();
 buildMarkt();
 buildSim();
 buildTools();
@@ -1154,7 +1396,9 @@ bindTools();
 renderSim();
 main.addEventListener('click', e => {
   const b = e.target.closest('[data-open]');
-  if(b) show('s-' + b.dataset.open);
+  if(b){ show('s-' + b.dataset.open); return; }
+  const v = e.target.closest('[data-view]');
+  if(v) show(v.dataset.view);
 });
 updateStatus();
 setInterval(updateStatus, 20000);
