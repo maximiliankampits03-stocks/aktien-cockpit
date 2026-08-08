@@ -12,7 +12,8 @@ Alle Unterlagen zum Projekt an einem Ort. Neue Dateien kommen künftig ebenfalls
 | `02_Kalkulation.xlsx` | Vollständige Projektkalkulation | Angebote eintragen, Ergebnis ablesen |
 | `03_Blindverkostung_Bogen.pdf` | Anleitung + Verkostungsbogen | Seite 2 je Teilnehmer ausdrucken |
 | `04_Namensrecherche_Checkliste.md` | Markendatenbanken + Prüfprotokoll | Je Namenskandidat durchgehen |
-| `05_Bezugsquellen_Referenzmuster.md` | Wo es Fresca in Europa gibt | Anrufliste + Telefonskript |
+| `05_Bezugsquellen_Referenzmuster.md` | Wo es Fresca in Europa gibt | Bezugsquellen, sortiert nach Chance |
+| `06_Mails_an_Haendler.md` | 8 fertige Anfragen (DE + ES) | Kopieren und abschicken |
 
 ## Der Stand in drei Sätzen
 
