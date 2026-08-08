@@ -496,6 +496,7 @@ function buildOverview(){
       '<div class="card"><h3><span class="dot">▮</span> So nutzt du das Cockpit</h3>' +
       '<div class="kv"><b>Aktien-Tabs</b><span>Chart, Technik-Rating, Kennzahlen, News, Social Media, Insider &amp; Spickzettel je Aktie.</span></div>' +
       '<div class="kv"><b>Magnete</b><span>Themen-Watchlist Seltene Erden: MP Materials, Neo Performance, Lynas, REXC – mit Terminen, Rohstoffpreisen und Risiko-Checkliste.</span></div>' +
+      '<div class="kv"><b>Politik</b><span>Politik-Radar: Behördenquellen, in denen echte Aufträge und Beteiligungen stehen – plus Filter, Exit-Regeln und Trade-Journal.</span></div>' +
       '<div class="kv"><b>Markt</b><span>DAX &amp; Co., Wirtschaftskalender und ein Screener für neue Ideen.</span></div>' +
       '<div class="kv"><b>Simulator</b><span>Übungsdepot mit Spielgeld – Trades risikofrei testen, bevor echtes Geld fließt.</span></div>' +
       '<div class="kv"><b>Tools</b><span>Knock-Out-Rechner, Positionsgrößen-Rechner, Steuer-Infos für Österreich.</span></div>' +
@@ -742,6 +743,211 @@ function initMagnete(){
       Object.assign({ symbol:st.symbol, width:'100%', height:220, dateRange:'12M',
         autosize:false, largeChartUrl:'' }, DARK));
   });
+}
+
+/* ---- Politik-Radar ---- */
+const LS_JOURNAL = 'cockpit.journal';
+function getJournal(){
+  try{ const j = JSON.parse(localStorage.getItem(LS_JOURNAL)); return Array.isArray(j) ? j : []; }
+  catch(e){ return []; }
+}
+function saveJournal(list){ localStorage.setItem(LS_JOURNAL, JSON.stringify(list)); }
+
+function buildPolitik(){
+  const v = el('<section class="view" id="view-politik"></section>');
+  v.innerHTML = '' +
+  '<div class="card"><h3><span class="dot">▮</span> Worum es hier geht</h3>' +
+  '<span class="stamp">Stand 8. August 2026</span>' +
+  '<p style="font-size:13.5px;margin-bottom:10px">Nicht auf Posts reagieren, sondern auf <b>Geld, das fließt</b>. ' +
+  'Was Intel und MP Materials bewegt hat, waren keine Tweets, sondern Verträge: bei Intel die Wandlung von 8,9 Mrd. $ CHIPS-Mitteln in Eigenkapital, bei MP ein Vertrag des Verteidigungsministeriums über 400 Mio. $ Eigenkapital plus Preisuntergrenze und Abnahmegarantie. ' +
+  'Solche Meldungen stehen öffentlich auf Behördenseiten – und die Kursbewegung läuft über Tage bis Wochen, nicht über Millisekunden. Genau das ist der Teil, den du als Mensch mitspielen kannst.</p>' +
+  '<p style="font-size:13px;color:var(--muted)">Was du <b>nicht</b> mitspielen kannst: das Rennen um die Posts selbst. Trump Media verkauft seit dem 1.8.2026 einen Datenanschluss für 100.000 $ im Monat, der Finanzfirmen die Beiträge Millisekunden früher liefert – fünf Wall-Street-Häuser haben gezeichnet. ' +
+  'Dazu kommt: Morgan Stanley sieht seit Juli 2026 nur noch Intraday-Wirkung ohne nachhaltige Bewegung, und der Trump-Trade-Index von Ned Davis liegt seit Mai rund 16&nbsp;% im Minus. Erwartung also bitte niedrig halten.</p></div>' +
+
+  '<div class="grid2">' +
+    '<div class="card"><h3><span class="dot">▮</span> Quellen: wo das Geld angekündigt wird</h3>' +
+    '<p class="sub">Alle gratis, alle mit RSS-Feed. In einen Reader mit Push aufs Handy legen – dann kommt die Meldung zu dir statt umgekehrt.</p>' +
+    '<ul class="links">' +
+      '<li><a href="https://www.whitehouse.gov/presidential-actions/" target="_blank" rel="noopener">Weißes Haus: Presidential Actions</a><span>Dekrete und Proklamationen im Volltext – hier stand die Section-232-Proklamation</span></li>' +
+      '<li><a href="https://www.whitehouse.gov/fact-sheets/" target="_blank" rel="noopener">Weißes Haus: Fact Sheets</a><span>Die Zusammenfassungen mit Zahlen – hier stand am 7.8. die Liste der Mining-Deals inklusive Empfänger</span></li>' +
+      '<li><a href="https://www.defense.gov/News/Contracts/" target="_blank" rel="noopener">Verteidigungsministerium: Contracts</a><span>Jeden Werktag ~17:00 ET / 23:00 Wien. Auftragsvergaben mit Firmenname und Summe – oft bevor die Presse es aufgreift</span></li>' +
+      '<li><a href="https://www.exim.gov/news/press-releases" target="_blank" rel="noopener">EXIM Bank: Pressemeldungen</a><span>Exportfinanzierungen – dort kamen die 58 Mio. $ für Seltene-Erden-Projekte</span></li>' +
+      '<li><a href="https://www.sec.gov/edgar/search/" target="_blank" rel="noopener">SEC EDGAR: Volltextsuche</a><span>8-K-Meldungen der Firmen. Was eine Firma der Börsenaufsicht meldet, ist verbindlich – anders als eine Ankündigung</span></li>' +
+      '<li><a href="https://www.federalregister.gov/presidential-documents" target="_blank" rel="noopener">Federal Register: Presidential Documents</a><span>Der amtliche Volltext, wenn du wissen willst, was wirklich beschlossen wurde</span></li>' +
+      '<li><a href="https://truthsocial.com/@realDonaldTrump" target="_blank" rel="noopener">Truth Social (gratis)</a><span>Als Information brauchbar, als Handelssignal nicht – du bist dort per Konstruktion der Letzte in der Kette</span></li>' +
+    '</ul>' +
+    '<p class="hint">Reader-Empfehlung: <a href="https://www.inoreader.com/" target="_blank" rel="noopener">Inoreader</a> oder <a href="https://feedly.com/" target="_blank" rel="noopener">Feedly</a>, beide in der Basisversion kostenlos. Push nur für diese Feeds aktivieren, sonst geht das Signal im Rauschen unter.</p></div>' +
+
+    '<div class="card"><h3><span class="dot">▮</span> Filter: kaufen oder ignorieren?</h3>' +
+    '<p class="sub">Vier Fragen. Bleibt eine davon offen, wird nicht gekauft.</p>' +
+    '<ul class="clean">' +
+      '<li><b>1. Fließt echtes Geld?</b> Vertrag, Beteiligung, Kredit, Zoll, Auftrag → handelbar. Meinung, Absichtserklärung, „wir prüfen" → ignorieren.</li>' +
+      '<li><b>2. Ist die Firma klein genug?</b> 400 Mio. $ bewegen eine 8-Mrd.-Firma wie MP deutlich. Bei Rio Tinto oder Apple verpuffen sie. Summe durch Marktkapitalisierung teilen – unter 2&nbsp;% lohnt selten.</li>' +
+      '<li><b>3. Bin ich zu spät?</b> Steht der Kurs schon 15&nbsp;% höher als vor der Meldung, ist der Zug weg. Nicht hinterherlaufen.</li>' +
+      '<li><b>4. Ist die Börse offen?</b> Nur 15:30–22:00 Wien handeln. Nachts über Lang &amp; Schwarz sind die Spreads so breit, dass sie den Vorteil auffressen.</li>' +
+      '<li class="risk"><b>Immer Limit-Order, nie Market.</b> Bei Nachrichten springt der Kurs – eine Market-Order füllt dich zum schlechtesten Preis des Tages.</li>' +
+      '<li class="risk"><b>Größe:</b> 1–3&nbsp;% des Depots pro Idee. Rechne es im Tab <b>Tools</b> durch.</li>' +
+    '</ul></div>' +
+  '</div>' +
+
+  '<div class="grid2">' +
+    '<div class="card"><h3><span class="dot">▮</span> Exit-Regeln – vor dem Kauf festlegen</h3>' +
+    '<p class="sub">„Nicht gierig sein" ist ein Vorsatz, kein Plan. Das hier ist ein Plan.</p>' +
+    '<ul class="clean">' +
+      '<li><b>Erste Hälfte raus bei +15 bis 20&nbsp;%.</b> Damit ist der Einsatz gesichert und der Rest läuft entspannt.</li>' +
+      '<li><b>Zweite Hälfte mit nachgezogenem Stop:</b> 10&nbsp;% unter dem höchsten Kurs seit deinem Einstieg. Nur nach oben nachziehen, nie nach unten.</li>' +
+      '<li class="risk"><b>Harter Stop bei −10&nbsp;%.</b> Ohne Diskussion. Die These war dann falsch oder zu spät.</li>' +
+      '<li><b>Zeitstopp nach 10 Handelstagen:</b> Passiert nichts, raus. Totes Kapital ist teurer als ein kleiner Verlust.</li>' +
+      '<li><b>Vor dem Kauf aufschreiben</b> – unten ins Journal. Was nicht notiert ist, wird im Eifer des Gefechts wegdiskutiert.</li>' +
+    '</ul></div>' +
+
+    '<div class="card"><h3><span class="dot">▮</span> Der stille Renditefresser: Steuer</h3>' +
+    '<ul class="clean">' +
+      '<li><b>27,5&nbsp;% KESt</b> auf jeden realisierten Gewinn. Aus +20&nbsp;% werden nach Steuer +14,5&nbsp;%.</li>' +
+      '<li class="risk"><b>Kein Verlustvortrag in Österreich.</b> Verluste zählen nur im selben Kalenderjahr gegen Gewinne. Viele schnelle Trades heißt: Gewinne werden sofort besteuert, Verluste verfallen womöglich.</li>' +
+      '<li>Rechne bei jedem Signal-Trade mit rund einem Viertel weniger Ertrag als auf dem Bildschirm steht. Das entscheidet, ob sich der Aufwand überhaupt lohnt.</li>' +
+      '<li>Details und die Handelszeiten stehen im Tab <b>Tools</b>.</li>' +
+    '</ul></div>' +
+  '</div>' +
+
+  '<div class="card"><h3><span class="dot">▮</span> Trade-Journal</h3>' +
+  '<p class="sub">Das Wichtigste am ganzen Radar. Nach zehn Trades siehst du schwarz auf weiß, ob die Strategie für dich funktioniert – statt dich nur an Intel und Dell zu erinnern und die Fehlschläge zu vergessen. Alles bleibt auf diesem Gerät.</p>' +
+  '<div class="statgrid">' +
+    '<div class="stat"><div class="l">Abgeschlossen</div><div class="v" id="jTrades">–</div></div>' +
+    '<div class="stat"><div class="l">Trefferquote</div><div class="v" id="jWin">–</div></div>' +
+    '<div class="stat"><div class="l">Summe G/V</div><div class="v" id="jPnl">–</div></div>' +
+    '<div class="stat"><div class="l">Ø je Trade</div><div class="v" id="jAvg">–</div></div>' +
+  '</div></div>' +
+
+  '<div class="grid2">' +
+    '<div class="card"><h3><span class="dot">▮</span> Neuen Signal-Trade eintragen</h3>' +
+    '<div class="frow">' +
+      '<label class="f">Auslöser (Quelle + Meldung)<input id="jAusl" type="text" placeholder="z. B. Fact Sheet 7.8.: 150 Mio. $ Niron"></label>' +
+      '<label class="f">Wert<input id="jWert" type="text" placeholder="z. B. MP Materials"></label>' +
+    '</div>' +
+    '<div class="frow">' +
+      '<label class="f">Richtung<select id="jDir"><option value="long">Long (steigend)</option><option value="short">Short (fallend)</option></select></label>' +
+      '<label class="f">Einsatz €<input id="jEinsatz" inputmode="decimal" placeholder="z. B. 300"></label>' +
+      '<label class="f">Einstiegskurs<input id="jEntry" inputmode="decimal" placeholder="z. B. 51,11"></label>' +
+    '</div>' +
+    '<label class="f">Exit-Plan (Pflichtfeld – vorher festlegen!)' +
+      '<input id="jPlan" type="text" placeholder="z. B. Hälfte +18 %, Stop −10 %, Zeitstopp 10 Tage">' +
+    '</label>' +
+    '<div class="dlgrow"><button class="btn primary" id="jAdd">Eintragen</button></div>' +
+    '<p class="simstatus" id="jStatus"></p></div>' +
+
+    '<div class="card"><h3><span class="dot">▮</span> Offene Signal-Trades</h3>' +
+    '<div id="jOpen"></div></div>' +
+  '</div>' +
+
+  '<div class="card"><h3><span class="dot">▮</span> Abgeschlossen</h3><div id="jDone"></div></div>' +
+
+  '<div class="card"><h3><span class="dot">▮</span> Ehrliche Einordnung</h3>' +
+  '<p style="font-size:13px;color:var(--muted)">Dieser Radar macht aus dir keinen schnelleren Händler – er macht dich zu einem, der die richtigen Meldungen überhaupt mitbekommt und danach diszipliniert aussteigt. ' +
+  'Das ist normale Anlagearbeit, kein Trick, und ein paar Prozentpunkte sind ein realistisches Ziel, keine Verdreifachung. ' +
+  'Wenn dein Journal nach zehn Trades im Minus steht, ist das keine Pechsträhne, sondern die Antwort. Dann lass es – und das wirst du nur wissen, wenn du es mitschreibst.</p></div>';
+  main.appendChild(v);
+
+  const $ = id => document.getElementById(id);
+  $('jAdd').addEventListener('click', () => {
+    const ausl = $('jAusl').value.trim();
+    const wert = $('jWert').value.trim();
+    const einsatz = parseDE($('jEinsatz').value);
+    const entry = parseDE($('jEntry').value);
+    const plan = $('jPlan').value.trim();
+    if(!ausl || !wert){ $('jStatus').textContent = 'Auslöser und Wert bitte ausfüllen.'; return; }
+    if(isNaN(einsatz) || einsatz <= 0 || isNaN(entry) || entry <= 0){
+      $('jStatus').textContent = 'Einsatz und Einstiegskurs bitte als Zahl eintragen.'; return;
+    }
+    if(!plan){ $('jStatus').textContent = 'Ohne Exit-Plan kein Eintrag – genau darum geht es hier.'; return; }
+    const list = getJournal();
+    list.push({ id:'j' + Date.now(), ts:Date.now(), ausl, wert, dir:$('jDir').value,
+      einsatz, entry, plan, status:'offen' });
+    saveJournal(list);
+    ['jAusl','jWert','jEinsatz','jEntry','jPlan'].forEach(id => $(id).value = '');
+    $('jStatus').textContent = 'Eingetragen. Beim Schließen den Ausstiegskurs eingeben.';
+    renderJournal();
+  });
+  $('jOpen').addEventListener('click', e => {
+    const b = e.target.closest('[data-jclose]');
+    if(!b) return;
+    const list = getJournal();
+    const t = list.find(x => x.id === b.dataset.jclose);
+    if(!t) return;
+    const raw = document.querySelector('[data-jexit="' + t.id + '"]');
+    const exit = parseDE(raw && raw.value);
+    if(isNaN(exit) || exit <= 0){ $('jStatus').textContent = 'Bitte erst den Ausstiegskurs eintragen.'; return; }
+    t.exit = exit;
+    t.pnlPct = (exit - t.entry) / t.entry * 100 * (t.dir === 'long' ? 1 : -1);
+    t.pnl = t.einsatz * t.pnlPct / 100;
+    t.status = 'zu';
+    t.closedAt = Date.now();
+    saveJournal(list);
+    renderJournal();
+  });
+  const rm = e => {
+    const b = e.target.closest('[data-jdel]');
+    if(!b) return;
+    saveJournal(getJournal().filter(x => x.id !== b.dataset.jdel));
+    renderJournal();
+  };
+  $('jOpen').addEventListener('click', rm);
+  $('jDone').addEventListener('click', rm);
+}
+
+function renderJournal(){
+  if(!document.getElementById('jOpen')) return;
+  const list = getJournal();
+  const open = list.filter(t => t.status === 'offen');
+  const done = list.filter(t => t.status === 'zu');
+  const d = (ts) => new Date(ts).toLocaleDateString('de-AT');
+
+  document.getElementById('jOpen').innerHTML = open.length ? open.map(t =>
+    '<div class="pos">' +
+      '<div class="top"><span class="nm">' + t.wert + '</span>' +
+      '<span class="chip ' + (t.dir === 'long' ? 'g' : 'r') + '">' + (t.dir === 'long' ? 'Long' : 'Short') + '</span>' +
+      '<span style="flex:1"></span><span class="meta">' + d(t.ts) + '</span></div>' +
+      '<div class="meta">Auslöser: ' + t.ausl + '</div>' +
+      '<div class="meta">Einstieg ' + fmtK(t.entry) + ' · Einsatz ' + fmtEUR.format(t.einsatz) + '</div>' +
+      '<div class="meta" style="color:var(--orange)">Plan: ' + t.plan + '</div>' +
+      '<div class="plrow"><label class="f" style="margin:0">Ausstiegskurs' +
+      '<input class="cur" data-jexit="' + t.id + '" inputmode="decimal" placeholder="Kurs"></label>' +
+      '<span style="flex:1"></span>' +
+      '<button class="btn mini" data-jclose="' + t.id + '">Schließen</button>' +
+      '<button class="btn danger" data-jdel="' + t.id + '">Löschen</button>' +
+    '</div></div>').join('')
+    : '<p class="sub" style="margin:0">Kein offener Signal-Trade. Trag den nächsten ein, <b>bevor</b> du kaufst – samt Exit-Plan.</p>';
+
+  document.getElementById('jDone').innerHTML = done.length ? done.slice().reverse().map(t => {
+    const sgn = t.pnl >= 0 ? '+' : '−';
+    return '<div class="pos">' +
+      '<div class="top"><span class="nm">' + t.wert + '</span>' +
+      '<span class="chip ' + (t.dir === 'long' ? 'g' : 'r') + '">' + (t.dir === 'long' ? 'Long' : 'Short') + '</span>' +
+      '<span style="flex:1"></span><span class="meta">' + d(t.ts) + ' → ' + d(t.closedAt) + '</span></div>' +
+      '<div class="meta">Auslöser: ' + t.ausl + '</div>' +
+      '<div class="meta">' + fmtK(t.entry) + ' → ' + fmtK(t.exit) + ' · Einsatz ' + fmtEUR.format(t.einsatz) + '</div>' +
+      '<div class="meta">Plan war: ' + t.plan + '</div>' +
+      '<div class="plrow"><span class="pl ' + (t.pnl >= 0 ? 'g' : 'r') + '">' +
+      sgn + fmtEUR.format(Math.abs(t.pnl)) + ' (' + sgn + fmtPct(Math.abs(t.pnlPct)) + ')</span>' +
+      '<span style="flex:1"></span><button class="btn danger" data-jdel="' + t.id + '">Löschen</button></div>' +
+    '</div>';
+  }).join('')
+    : '<p class="sub" style="margin:0">Noch nichts abgeschlossen. Ab zehn Einträgen wird die Trefferquote aussagekräftig.</p>';
+
+  document.getElementById('jTrades').textContent = done.length || '–';
+  const wEl = document.getElementById('jWin'), pEl = document.getElementById('jPnl'), aEl = document.getElementById('jAvg');
+  if(!done.length){
+    wEl.textContent = '–'; pEl.textContent = '–'; pEl.className = 'v'; aEl.textContent = '–'; aEl.className = 'v';
+    return;
+  }
+  const wins = done.filter(t => t.pnl > 0).length;
+  wEl.textContent = fmtPct(wins / done.length * 100) + ' (' + wins + '/' + done.length + ')';
+  const sum = done.reduce((a, t) => a + t.pnl, 0);
+  pEl.textContent = (sum >= 0 ? '+' : '−') + fmtEUR.format(Math.abs(sum));
+  pEl.className = 'v ' + (sum >= 0 ? 'g' : 'r');
+  const avg = done.reduce((a, t) => a + t.pnlPct, 0) / done.length;
+  aEl.textContent = (avg >= 0 ? '+' : '−') + fmtPct(Math.abs(avg));
+  aEl.className = 'v ' + (avg >= 0 ? 'g' : 'r');
 }
 
 /* ---- Markt ---- */
@@ -1282,6 +1488,7 @@ function buildTabs(){
   mk('Übersicht', 'uebersicht');
   allStocks().forEach(st => mk(st.name, 's-' + st.id));
   mk('Magnete', 'magnete');
+  mk('Politik', 'politik');
   mk('Markt', 'markt');
   mk('Simulator', 'sim');
   mk('Tools', 'tools');
@@ -1311,6 +1518,7 @@ function show(view){
     }
   }
   if(view === 'sim') renderSim();
+  if(view === 'politik') renderJournal();
   window.scrollTo({ top:0 });
 }
 
@@ -1393,12 +1601,14 @@ tvWidget(document.getElementById('tape'), 'ticker-tape', Object.assign({
 buildOverview();
 buildStockViews();
 buildMagnete();
+buildPolitik();
 buildMarkt();
 buildSim();
 buildTools();
 buildTabs();
 bindTools();
 renderSim();
+renderJournal();
 main.addEventListener('click', e => {
   const b = e.target.closest('[data-open]');
   if(b){ show('s-' + b.dataset.open); return; }
