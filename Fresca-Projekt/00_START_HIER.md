@@ -11,6 +11,7 @@ Alle Unterlagen zum Projekt an einem Ort. Neue Dateien kommen künftig ebenfalls
 | `01b_Lastenheft_Anhang.pdf` | Einseitiges Lastenheft | An beide Mails anhängen |
 | `02_Kalkulation.xlsx` | Vollständige Projektkalkulation | Angebote eintragen, Ergebnis ablesen |
 | `03_Blindverkostung_Bogen.pdf` | Anleitung + Verkostungsbogen | Seite 2 je Teilnehmer ausdrucken |
+| `04_Namensrecherche_Checkliste.md` | Markendatenbanken + Prüfprotokoll | Je Namenskandidat durchgehen |
 
 ## Der Stand in drei Sätzen
 
@@ -32,6 +33,7 @@ ca. 6 g/100 ml statt der marktüblichen 10 g.
 | 6 | EWP Recycling Pfand Österreich: Tarife erfragen | 15 Minuten | 0 € |
 | 7 | Angebote in `02_Kalkulation.xlsx` eintragen | 1 Stunde | 0 € |
 | 8 | Blindverkostung mit 30–50 Personen | 1 Nachmittag | ~100 € |
+| 9 | Namenskandidaten sammeln und prüfen (`04_...`) | 2 Stunden | 0 € |
 
 Schritt 1 und 2 zuerst — Aromahäuser und Abfüller brauchen Wochen für eine Antwort.
 Alles andere läuft parallel dazu.
