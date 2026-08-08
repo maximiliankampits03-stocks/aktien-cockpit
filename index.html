@@ -373,6 +373,30 @@ const THEME_STOCKS = [
     termine:'Q2/2026 am <b>11. August 2026</b>, Conference Call 10:00 Uhr ET (16:00 Wien). Kalender-Geschäftsjahr, weitere Quartale ~Nov / März / Mai.'
   },
   {
+    id:'usar', name:'USA Rare Earth', symbol:'NASDAQ:USAR', theme:'magnete',
+    stand:'8. August 2026', socQuery:'USA Rare Earth',
+    links:{
+      tv:'https://de.tradingview.com/symbols/NASDAQ-USAR/',
+      ir:'https://usare.com/investors/'
+    },
+    profil:'Baut eine durchgehende US-Kette von der Mine bis zum fertigen Magneten auf: Magnetwerk in Stillwater (Oklahoma), dazu die Lagerstätte Round Top in Texas mit Schwerpunkt auf schweren Seltenen Erden. Seit dem 14.3.2025 über eine SPAC-Fusion an der Nasdaq. Anfang 2026 kam eine Partnerschaft mit Zugang zu 1,6 Mrd. $ Finanzierung; dem Kriegsministerium wurden 16,1 Mio. Aktien überschrieben, der Staatsanteil kann auf 12 bis 25&nbsp;% steigen. War am 7.8. bei der Rohstoff-Runde im Weißen Haus dabei.',
+    charakter:'<span class="chip r">Frühphase</span><span class="chip r">Sehr spekulativ</span><span class="chip o">Staatlich gestützt</span> Der spekulativste Wert dieser Liste: Die Magnetproduktion steht erst am Anfang, bewertet wird fast ausschließlich die Zukunft. Wenn MP eine Story-Bewertung hat, ist USAR eine Wette auf 2028.',
+    treiber:[
+      'Hochlauf des Magnetwerks in Stillwater – Stückzahlen und erste echte Umsätze',
+      'Weitere Staatsmittel; der Anteil des Kriegsministeriums kann auf 12–25 % wachsen',
+      'Der Zusammenschluss mit der Serra Verde Group, Abschluss war für Ende August 2026 erwartet',
+      'Round Top: Fortschritt bei schweren Seltenen Erden (Dysprosium, Terbium), wo China am stärksten dominiert'
+    ],
+    risiken:[
+      'Kaum nennenswerter Umsatz – hier wird eine Absicht bewertet, kein Geschäft',
+      'Verwässerung: Aktien an den Staat, SPAC-Historie, weiterer Kapitalbedarf ist absehbar',
+      'Führungswechsel: Barbara Humpton geht zum 1.10.2026, Thras Moraitis übernimmt',
+      'Ausführungsrisiko in Reinform – zwischen Absichtserklärung und laufender Magnetfabrik liegen Jahre',
+      'Bei schlechter Marktstimmung fallen solche Werte am schnellsten und am tiefsten'
+    ],
+    termine:'Kalender-Geschäftsjahr, Quartalszahlen typischerweise Mai / August / November. Zusätzlich im Blick behalten: Abschluss der Serra-Verde-Transaktion. Genaue Daten: IR-Seite.'
+  },
+  {
     id:'lynas', name:'Lynas', symbol:'ASX:LYC', theme:'magnete',
     stand:'8. August 2026', socQuery:'Lynas Rare Earths',
     links:{
@@ -627,6 +651,7 @@ function initStock(st){
 const MAG_NOTE = {
   mp:'Q2: Umsatz +89 % auf 108,5 Mio. $, bereinigt −0,01 $/Aktie · 51,11 $ (7.8.)',
   neo:'Guidance 140–150 Mio. $ · Zahlen am 11.8. · C$40,80, nahe 52-Wochen-Hoch',
+  usar:'Magnetwerk Stillwater · Staat hält Anteil · kaum Umsatz, reine Zukunftswette',
   lynas:'Größter Produzent außerhalb Chinas · kein Magnethersteller',
   rexc:'Ex-China-ETF · für AT/DE meist nicht handelbar'
 };
@@ -729,6 +754,16 @@ function buildMagnete(){
     '</div>'));
 
   v.appendChild(el(
+    '<div class="card"><h3><span class="dot">▮</span> Magnetfirmen, die du nicht kaufen kannst</h3>' +
+    '<p class="sub">Die drei Namen, die im August die größten Staatszusagen bekommen haben, sind nicht börsennotiert. Such nicht nach einem Kürzel – es gibt keines.</p>' +
+    '<ul class="clean">' +
+      '<li class="risk"><b>Niron Magnetics</b> – privat. Ausgründung der University of Minnesota, baut in Sartell (MN) ein Werk für 1.500 Tonnen Magnete pro Jahr ab Anfang 2027. Bekam am 7.8. eine Kreditzusage über 150 Mio. $. Die Besonderheit: Niron macht Magnete aus Eisennitrid, <b>ganz ohne Seltene Erden</b> – also der potenzielle Gegenspieler von MP und Neo, nicht deren Ergänzung.</li>' +
+      '<li class="risk"><b>Vulcan Elements</b> – privat. Magnethersteller in North Carolina, zusammen mit ReElement Empfänger eines Pakets über 620 Mio. $ Kredit plus 50 Mio. $ Zuschuss.</li>' +
+      '<li class="risk"><b>ReElement Technologies</b> – nicht mehr über die Börse abgedeckt. War Tochter von American Resources (NASDAQ:AREC), wurde aber als eigenständige Gesellschaft abgespalten und ist nicht mehr in deren Zahlen enthalten. AREC zu kaufen ist also <b>kein</b> Ersatz für ReElement – wer das tut, kauft etwas anderes, als er glaubt.</li>' +
+      '<li>Der einzige saubere Weg, an diesem Teil des Themas teilzuhaben, wäre ein Börsengang – oder ein breiter ETF, falls die Firmen später aufgenommen werden. Bis dahin: beobachten, nicht kaufen.</li>' +
+    '</ul></div>'));
+
+  v.appendChild(el(
     '<div class="card"><h3><span class="dot">▮</span> Einordnung</h3>' +
     '<p style="font-size:13.5px;color:var(--muted)">Die strukturelle These ist echt und staatlich unterlegt – aber ein TikTok, das mit zwei Gewinnern (Intel, Dell) ein Muster beweisen will, blendet alle Verlierer derselben Erzählung aus. ' +
     'Das Q2 von MP hat die operative Seite bestätigt: Der Umsatz wächst schnell, der Magnet-Hochlauf läuft. Verdient wird trotzdem noch nichts, und die Kurse sind seit dem 5.8. deutlich teurer geworden – die Bewertungslücke ist also größer, nicht kleiner. ' +
@@ -752,6 +787,16 @@ function getJournal(){
   catch(e){ return []; }
 }
 function saveJournal(list){ localStorage.setItem(LS_JOURNAL, JSON.stringify(list)); }
+/* Datumsfelder: leer = Fallback. Mittags gerechnet, damit die Zeitzone das Datum nicht verschiebt. */
+function dateVal(str, fallback){
+  if(!str) return fallback;
+  const t = new Date(str + 'T12:00:00').getTime();
+  return isNaN(t) ? fallback : t;
+}
+function heute(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
 
 function buildPolitik(){
   const v = el('<section class="view" id="view-politik"></section>');
@@ -812,6 +857,7 @@ function buildPolitik(){
 
   '<div class="card"><h3><span class="dot">▮</span> Trade-Journal</h3>' +
   '<p class="sub">Das Wichtigste am ganzen Radar. Nach zehn Trades siehst du schwarz auf weiß, ob die Strategie für dich funktioniert – statt dich nur an Intel und Dell zu erinnern und die Fehlschläge zu vergessen. Alles bleibt auf diesem Gerät.</p>' +
+  '<p class="sub" style="margin-bottom:0"><b>Für Backtests:</b> Trag beim Datum ein vergangenes Signal ein, dazu den Kurs von damals als Einstieg und den späteren Kurs als Ausstieg. So rechnest du durch, was die Strategie in den letzten Monaten gebracht hätte – ohne einen Cent zu riskieren. Kurse von damals findest du im Chart des jeweiligen Werts.</p>' +
   '<div class="statgrid">' +
     '<div class="stat"><div class="l">Abgeschlossen</div><div class="v" id="jTrades">–</div></div>' +
     '<div class="stat"><div class="l">Trefferquote</div><div class="v" id="jWin">–</div></div>' +
@@ -829,6 +875,10 @@ function buildPolitik(){
       '<label class="f">Richtung<select id="jDir"><option value="long">Long (steigend)</option><option value="short">Short (fallend)</option></select></label>' +
       '<label class="f">Einsatz €<input id="jEinsatz" inputmode="decimal" placeholder="z. B. 300"></label>' +
       '<label class="f">Einstiegskurs<input id="jEntry" inputmode="decimal" placeholder="z. B. 51,11"></label>' +
+    '</div>' +
+    '<div class="frow">' +
+      '<label class="f">Datum des Signals<input id="jDatum" type="date"></label>' +
+      '<label class="f">Ausstiegsdatum (optional)<input id="jExitDatum" type="date"></label>' +
     '</div>' +
     '<label class="f">Exit-Plan (Pflichtfeld – vorher festlegen!)' +
       '<input id="jPlan" type="text" placeholder="z. B. Hälfte +18 %, Stop −10 %, Zeitstopp 10 Tage">' +
@@ -849,6 +899,7 @@ function buildPolitik(){
   main.appendChild(v);
 
   const $ = id => document.getElementById(id);
+  $('jDatum').value = heute();
   $('jAdd').addEventListener('click', () => {
     const ausl = $('jAusl').value.trim();
     const wert = $('jWert').value.trim();
@@ -860,11 +911,15 @@ function buildPolitik(){
       $('jStatus').textContent = 'Einsatz und Einstiegskurs bitte als Zahl eintragen.'; return;
     }
     if(!plan){ $('jStatus').textContent = 'Ohne Exit-Plan kein Eintrag – genau darum geht es hier.'; return; }
+    const dTs = dateVal($('jDatum').value, Date.now());
+    const xTs = dateVal($('jExitDatum').value, null);
+    if(xTs !== null && xTs < dTs){ $('jStatus').textContent = 'Das Ausstiegsdatum liegt vor dem Signal – bitte prüfen.'; return; }
     const list = getJournal();
-    list.push({ id:'j' + Date.now(), ts:Date.now(), ausl, wert, dir:$('jDir').value,
+    list.push({ id:'j' + Date.now(), ts:dTs, exitTs:xTs, ausl, wert, dir:$('jDir').value,
       einsatz, entry, plan, status:'offen' });
     saveJournal(list);
-    ['jAusl','jWert','jEinsatz','jEntry','jPlan'].forEach(id => $(id).value = '');
+    ['jAusl','jWert','jEinsatz','jEntry','jPlan','jExitDatum'].forEach(id => $(id).value = '');
+    $('jDatum').value = heute();
     $('jStatus').textContent = 'Eingetragen. Beim Schließen den Ausstiegskurs eingeben.';
     renderJournal();
   });
@@ -881,7 +936,7 @@ function buildPolitik(){
     t.pnlPct = (exit - t.entry) / t.entry * 100 * (t.dir === 'long' ? 1 : -1);
     t.pnl = t.einsatz * t.pnlPct / 100;
     t.status = 'zu';
-    t.closedAt = Date.now();
+    t.closedAt = t.exitTs || Date.now();
     saveJournal(list);
     renderJournal();
   });
@@ -1203,6 +1258,9 @@ function plTxt(val, d, einsatz){
 }
 
 let ntDir = 'long';
+/* Voreingestellter Trade im Formular des Übungsdepots. Nur eine Vorbelegung –
+   es wird nichts automatisch eröffnet, der Einsatz bleibt leer. */
+const SIM_PREFILL = { sym:'TSX:NEO', name:'Neo Performance', dir:'short', hebel:'3', entry:'40,80' };
 function buildSim(){
   const v = el('<section class="view" id="view-sim"></section>');
   v.innerHTML = '' +
@@ -1229,6 +1287,9 @@ function buildSim(){
     '<label class="f">Einsatz €<input id="ntEinsatz" inputmode="decimal" placeholder="z. B. 500"></label>' +
     '<label class="f">Einstiegskurs €<input id="ntEntry" inputmode="decimal" placeholder="per Knopf holen →"></label>' +
   '</div>' +
+  '<p class="hint" style="padding:0 0 8px 0">Voreingestellt: <b>Short auf Neo Performance</b>, Hebel 3, Einstieg C$40,80. ' +
+  'Nur Einsatz eintragen und eröffnen – oder alles überschreiben. Hebel 3 heißt KO-Schwelle bei C$54,40, also rund 33&nbsp;% Luft; ' +
+  'mit Hebel 5 wären es nur 20&nbsp;%, und Neo ist zuletzt an drei Tagen 14&nbsp;% gestiegen.</p>' +
   '<div class="dlgrow"><button class="btn" id="ntFetch">Kurs holen</button><button class="btn primary" id="ntGo">Trade eröffnen</button></div>' +
   '<p class="hint" id="ntKoInfo"></p>' +
   '<p class="simstatus" id="ntStatus"></p></div>' +
@@ -1317,6 +1378,17 @@ function buildSim(){
     const btn = e.target.closest('[data-close]');
     if(btn) closeTrade(btn.dataset.close);
   });
+
+  /* Voreinstellung: Short auf Neo Performance. Nur das Formular ist gesetzt –
+     eröffnet wird der Trade erst mit dem Knopf. Einsatz bleibt bewusst leer. */
+  ntDir = 'short';
+  $('ntShort').classList.add('on'); $('ntLong').classList.remove('on');
+  $('ntSym').value = SIM_PREFILL.sym;
+  $('ntTyp').value = 'ko';
+  $('ntHebelWrap').style.display = '';
+  $('ntHebel').value = SIM_PREFILL.hebel;
+  $('ntEntry').value = SIM_PREFILL.entry;
+  updateKoInfo();
 }
 function setNtStatus(t){ document.getElementById('ntStatus').textContent = t; }
 function setSimStatus(t){ document.getElementById('simStatus').textContent = t; }
