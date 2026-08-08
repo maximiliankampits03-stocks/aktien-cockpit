@@ -12,6 +12,7 @@ Alle Unterlagen zum Projekt an einem Ort. Neue Dateien kommen künftig ebenfalls
 | `02_Kalkulation.xlsx` | Vollständige Projektkalkulation | Angebote eintragen, Ergebnis ablesen |
 | `03_Blindverkostung_Bogen.pdf` | Anleitung + Verkostungsbogen | Seite 2 je Teilnehmer ausdrucken |
 | `04_Namensrecherche_Checkliste.md` | Markendatenbanken + Prüfprotokoll | Je Namenskandidat durchgehen |
+| `05_Bezugsquellen_Referenzmuster.md` | Wo es Fresca in Europa gibt | Anrufliste + Telefonskript |
 
 ## Der Stand in drei Sätzen
 
@@ -27,7 +28,7 @@ ca. 6 g/100 ml statt der marktüblichen 10 g.
 |---|---|---|---|
 | 1 | Mails an 8 Lohnabfüller (Text + PDF-Anhang) | 1 Stunde | 0 € |
 | 2 | Mails an 5 Aromahäuser | 30 Minuten | 0 € |
-| 3 | Fresca-Muster bestellen (americanmarket.es, Spanien) | 10 Minuten | ~60 € |
+| 3 | Fresca-Muster besorgen (siehe `05_...`) | 30 Minuten | ~60 € |
 | 4 | 10 Gastro-Gespräche führen | 2 Abende | 0 € |
 | 5 | Termin Gründerservice WKO (kostenlos) | 1 Stunde | 0 € |
 | 6 | EWP Recycling Pfand Österreich: Tarife erfragen | 15 Minuten | 0 € |
