@@ -448,7 +448,12 @@ const LS_CUSTOM = 'cockpit.customStocks';
 const LS_TAB = 'cockpit.activeTab';
 
 function getCustom(){
-  try{ return JSON.parse(localStorage.getItem(LS_CUSTOM)) || []; }
+  try{
+    const l = JSON.parse(localStorage.getItem(LS_CUSTOM));
+    if(!Array.isArray(l)) return [];
+    /* Unbrauchbare Einträge aussortieren – ein kaputter Speicherwert darf die App nicht lahmlegen. */
+    return l.filter(c => c && typeof c.name === 'string' && typeof c.symbol === 'string');
+  }
   catch(e){ return []; }
 }
 function setCustom(list){ localStorage.setItem(LS_CUSTOM, JSON.stringify(list)); }
@@ -499,6 +504,13 @@ function el(html){
   t.innerHTML = html.trim();
   return t.content.firstElementChild;
 }
+/* Freitext aus Formularen (Journal, eigene Aktien) landet per innerHTML im Dokument –
+   vorher entschärfen, sonst wird eingetippter HTML-Code ausgeführt. */
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
 
 /* ---- Übersicht ---- */
 function buildOverview(){
@@ -508,8 +520,8 @@ function buildOverview(){
   allStocks().forEach(st => {
     const c = el(
       '<div class="card">' +
-        '<div class="stockhead"><div><div class="nm">' + st.name + '</div>' +
-        '<div class="sym">' + st.symbol + (st.isin ? ' · ' + st.isin : '') + '</div></div>' +
+        '<div class="stockhead"><div><div class="nm">' + esc(st.name) + '</div>' +
+        '<div class="sym">' + esc(st.symbol) + (st.isin ? ' · ' + st.isin : '') + '</div></div>' +
         '<button class="openbtn" data-open="' + st.id + '">Öffnen →</button></div>' +
         '<div class="slot"></div>' +
       '</div>');
@@ -552,17 +564,17 @@ function stockViewHTML(st){
     ? 'US-Aktie: Insider müssen Käufe/Verkäufe binnen 2 Werktagen an die SEC melden (Form 4). Finviz &amp; OpenInsider zeigen das gratis und tagesaktuell. Insider-<b>Käufe</b> gelten oft als Vertrauenssignal – Verkäufe sind mehrdeutig.'
     : 'Vorstand &amp; Aufsichtsrat müssen eigene Käufe/Verkäufe ab 20.000&nbsp;€ pro Jahr binnen 3 Werktagen an die BaFin melden (Art. 19 MAR). Insider-<b>Käufe</b> gelten oft als Vertrauenssignal – Verkäufe sind mehrdeutig (können private Gründe haben).';
   const insiderLinks = usTicker
-    ? '<li><a href="https://finviz.com/quote.ashx?t=' + usTicker + '" target="_blank" rel="noopener">Finviz: ' + st.name + '</a><span>Insider-Tabelle unten auf der Seite – plus Kennzahlen &amp; News</span></li>' +
-      '<li><a href="https://openinsider.com/search?q=' + usTicker + '" target="_blank" rel="noopener">OpenInsider: alle Meldungen zu ' + st.name + '</a><span>Nüchterne Rohliste, sortier- und filterbar</span></li>'
+    ? '<li><a href="https://finviz.com/quote.ashx?t=' + usTicker + '" target="_blank" rel="noopener">Finviz: ' + esc(st.name) + '</a><span>Insider-Tabelle unten auf der Seite – plus Kennzahlen &amp; News</span></li>' +
+      '<li><a href="https://openinsider.com/search?q=' + usTicker + '" target="_blank" rel="noopener">OpenInsider: alle Meldungen zu ' + esc(st.name) + '</a><span>Nüchterne Rohliste, sortier- und filterbar</span></li>'
     : st.custom
-    ? '<li><a href="' + BAFIN + '" target="_blank" rel="noopener">BaFin-Datenbank öffnen</a><span>Dort "' + st.name + '" als Emittent suchen</span></li>'
-    : '<li><a href="' + BAFIN + '" target="_blank" rel="noopener">BaFin-Datenbank (offiziell)</a><span>Dort "' + st.name + '" als Emittent suchen – die verlässlichste Quelle</span></li>' +
-      '<li><a href="' + st.links.fnInsider + '" target="_blank" rel="noopener">finanzen.net: Insidertrades ' + st.name + '</a><span>Aufbereitete Liste (falls der Link mal nicht geht: finanzen.net → Aktie → Insidertrades)</span></li>' +
+    ? '<li><a href="' + BAFIN + '" target="_blank" rel="noopener">BaFin-Datenbank öffnen</a><span>Dort "' + esc(st.name) + '" als Emittent suchen</span></li>'
+    : '<li><a href="' + BAFIN + '" target="_blank" rel="noopener">BaFin-Datenbank (offiziell)</a><span>Dort "' + esc(st.name) + '" als Emittent suchen – die verlässlichste Quelle</span></li>' +
+      '<li><a href="' + st.links.fnInsider + '" target="_blank" rel="noopener">finanzen.net: Insidertrades ' + esc(st.name) + '</a><span>Aufbereitete Liste (falls der Link mal nicht geht: finanzen.net → Aktie → Insidertrades)</span></li>' +
       '<li><a href="' + st.links.ir + '" target="_blank" rel="noopener">Investor Relations / Pressemeldungen</a><span>Original-Meldungen "Eigengeschäfte von Führungskräften"</span></li>';
 
   const spick = st.custom
     ? '<div class="card"><h3><span class="dot">▮</span> Spickzettel</h3>' +
-      '<p class="sub">Für selbst hinzugefügte Aktien gibt es noch keinen Spickzettel. Sag Claude Bescheid – dann wird ' + st.name + ' fix eingebaut, mit Kurstreibern, Risiken und Terminen.</p></div>'
+      '<p class="sub">Für selbst hinzugefügte Aktien gibt es noch keinen Spickzettel. Sag Claude Bescheid – dann wird ' + esc(st.name) + ' fix eingebaut, mit Kurstreibern, Risiken und Terminen.</p></div>'
     : '<div class="card"><h3><span class="dot">▮</span> Spickzettel: Was den Kurs bewegt</h3>' +
       '<span class="stamp">Stand ' + (st.stand || 'Juli 2026') + ' · Hintergrundwissen – aktuelle Zahlen liefern die Live-Boxen</span>' +
       '<p style="font-size:13.5px;margin-bottom:10px">' + st.profil + '</p>' +
@@ -574,7 +586,7 @@ function stockViewHTML(st){
       '<h3 style="margin-top:14px">Zahlen-Termine</h3><p style="font-size:13px">' + st.termine + '</p></div>';
 
   const links = '<div class="card"><h3><span class="dot">▮</span> Links &amp; Hebelprodukte</h3><ul class="links">' +
-    '<li><a href="' + st.links.tv + '" target="_blank" rel="noopener">TradingView-Seite ' + st.name + '</a><span>Vollbild-Chart, alle Kennzahlen, Community</span></li>' +
+    '<li><a href="' + st.links.tv + '" target="_blank" rel="noopener">TradingView-Seite ' + esc(st.name) + '</a><span>Vollbild-Chart, alle Kennzahlen, Community</span></li>' +
     (st.links.fn ? '<li><a href="' + st.links.fn + '" target="_blank" rel="noopener">finanzen.net-Profil</a><span>Nachrichten, Analysten, Termine auf Deutsch</span></li>' : '') +
     (st.links.ir ? '<li><a href="' + st.links.ir + '" target="_blank" rel="noopener">Unternehmens-/IR-Seite</a><span>Finanzkalender, Berichte, Ad-hoc-Meldungen</span></li>' : '') +
     '</ul>' +
@@ -598,12 +610,12 @@ function stockViewHTML(st){
     '</div>' +
     '<div class="grid2">' +
       spick +
-      '<div class="card"><h3><span class="dot">▮</span> News zu ' + st.name + '</h3>' +
+      '<div class="card"><h3><span class="dot">▮</span> News zu ' + esc(st.name) + '</h3>' +
       '<p class="sub">Auch Ad-hoc- und Insider-Meldungen (EQS) tauchen hier auf.</p>' +
       '<div data-slot="news"></div></div>' +
     '</div>' +
-    '<div class="card"><h3><span class="dot">▮</span> Social Media: ' + st.name + '</h3>' +
-    '<p class="sub">Ein Tipp öffnet die fertige Live-Suche zu ' + st.name + ' direkt in der jeweiligen App – dort bist du eingeloggt und siehst alles aktuell. (Reddit, X &amp; Bluesky erlauben leider kein kostenloses Einbetten fremder Inhalte mehr – dieser Weg ist dafür immer aktuell, ohne Agent, ohne Verbrauch.)</p>' +
+    '<div class="card"><h3><span class="dot">▮</span> Social Media: ' + esc(st.name) + '</h3>' +
+    '<p class="sub">Ein Tipp öffnet die fertige Live-Suche zu ' + esc(st.name) + ' direkt in der jeweiligen App – dort bist du eingeloggt und siehst alles aktuell. (Reddit, X &amp; Bluesky erlauben leider kein kostenloses Einbetten fremder Inhalte mehr – dieser Weg ist dafür immer aktuell, ohne Agent, ohne Verbrauch.)</p>' +
     '<div class="socialbar">' +
       '<a class="btn mini" href="https://www.reddit.com/search/?q=' + encodeURIComponent(socQ) + '&sort=new" target="_blank" rel="noopener">Reddit ↗</a>' +
       '<a class="btn mini" href="https://www.reddit.com/r/mauerstrassenwetten/search/?q=' + encodeURIComponent(socQ) + '&restrict_sr=1&sort=new" target="_blank" rel="noopener">r/Mauerstraßenwetten ↗</a>' +
@@ -783,7 +795,13 @@ function initMagnete(){
 /* ---- Politik-Radar ---- */
 const LS_JOURNAL = 'cockpit.journal';
 function getJournal(){
-  try{ const j = JSON.parse(localStorage.getItem(LS_JOURNAL)); return Array.isArray(j) ? j : []; }
+  try{
+    const j = JSON.parse(localStorage.getItem(LS_JOURNAL));
+    if(!Array.isArray(j)) return [];
+    /* Unvollständige Einträge aussortieren – ein kaputter Speicherwert darf die App nicht lahmlegen. */
+    return j.filter(t => t && typeof t.einsatz === 'number' && typeof t.entry === 'number' &&
+      (t.status !== 'zu' || (typeof t.exit === 'number' && typeof t.pnl === 'number' && typeof t.pnlPct === 'number')));
+  }
   catch(e){ return []; }
 }
 function saveJournal(list){ localStorage.setItem(LS_JOURNAL, JSON.stringify(list)); }
@@ -959,12 +977,12 @@ function renderJournal(){
 
   document.getElementById('jOpen').innerHTML = open.length ? open.map(t =>
     '<div class="pos">' +
-      '<div class="top"><span class="nm">' + t.wert + '</span>' +
+      '<div class="top"><span class="nm">' + esc(t.wert) + '</span>' +
       '<span class="chip ' + (t.dir === 'long' ? 'g' : 'r') + '">' + (t.dir === 'long' ? 'Long' : 'Short') + '</span>' +
       '<span style="flex:1"></span><span class="meta">' + d(t.ts) + '</span></div>' +
-      '<div class="meta">Auslöser: ' + t.ausl + '</div>' +
+      '<div class="meta">Auslöser: ' + esc(t.ausl) + '</div>' +
       '<div class="meta">Einstieg ' + fmtK(t.entry) + ' · Einsatz ' + fmtEUR.format(t.einsatz) + '</div>' +
-      '<div class="meta" style="color:var(--orange)">Plan: ' + t.plan + '</div>' +
+      '<div class="meta" style="color:var(--orange)">Plan: ' + esc(t.plan) + '</div>' +
       '<div class="plrow"><label class="f" style="margin:0">Ausstiegskurs' +
       '<input class="cur" data-jexit="' + t.id + '" inputmode="decimal" placeholder="Kurs"></label>' +
       '<span style="flex:1"></span>' +
@@ -976,12 +994,12 @@ function renderJournal(){
   document.getElementById('jDone').innerHTML = done.length ? done.slice().reverse().map(t => {
     const sgn = t.pnl >= 0 ? '+' : '−';
     return '<div class="pos">' +
-      '<div class="top"><span class="nm">' + t.wert + '</span>' +
+      '<div class="top"><span class="nm">' + esc(t.wert) + '</span>' +
       '<span class="chip ' + (t.dir === 'long' ? 'g' : 'r') + '">' + (t.dir === 'long' ? 'Long' : 'Short') + '</span>' +
       '<span style="flex:1"></span><span class="meta">' + d(t.ts) + ' → ' + d(t.closedAt) + '</span></div>' +
-      '<div class="meta">Auslöser: ' + t.ausl + '</div>' +
+      '<div class="meta">Auslöser: ' + esc(t.ausl) + '</div>' +
       '<div class="meta">' + fmtK(t.entry) + ' → ' + fmtK(t.exit) + ' · Einsatz ' + fmtEUR.format(t.einsatz) + '</div>' +
-      '<div class="meta">Plan war: ' + t.plan + '</div>' +
+      '<div class="meta">Plan war: ' + esc(t.plan) + '</div>' +
       '<div class="plrow"><span class="pl ' + (t.pnl >= 0 ? 'g' : 'r') + '">' +
       sgn + fmtEUR.format(Math.abs(t.pnl)) + ' (' + sgn + fmtPct(Math.abs(t.pnlPct)) + ')</span>' +
       '<span style="flex:1"></span><button class="btn danger" data-jdel="' + t.id + '">Löschen</button></div>' +
@@ -1196,7 +1214,15 @@ const LS_SIM = 'cockpit.sim';
 function getSim(){
   try{
     const s = JSON.parse(localStorage.getItem(LS_SIM));
-    if(s && typeof s.cash === 'number' && Array.isArray(s.pos)) return s;
+    if(s && typeof s.cash === 'number' && Array.isArray(s.pos)){
+      /* Unvollständige Positionen/Historie aussortieren – ein kaputter Speicherwert darf die App nicht lahmlegen. */
+      s.pos = s.pos.filter(p => p && typeof p.entry === 'number' && typeof p.einsatz === 'number' && typeof p.last === 'number');
+      s.hist = Array.isArray(s.hist)
+        ? s.hist.filter(h => h && typeof h.entry === 'number' && typeof h.exit === 'number' && typeof h.pnl === 'number')
+        : [];
+      if(typeof s.start !== 'number' || !(s.start > 0)) s.start = 10000;
+      return s;
+    }
   }catch(e){}
   return { start:10000, cash:10000, pos:[], hist:[] };
 }
@@ -1260,7 +1286,7 @@ function plTxt(val, d, einsatz){
 let ntDir = 'long';
 /* Voreingestellter Trade im Formular des Übungsdepots. Nur eine Vorbelegung –
    es wird nichts automatisch eröffnet, der Einsatz bleibt leer. */
-const SIM_PREFILL = { sym:'TSX:NEO', name:'Neo Performance', dir:'short', hebel:'3', entry:'40,80' };
+const SIM_PREFILL = { sym:'NYSE:MP', name:'MP Materials', dir:'short', hebel:'3', entry:'51,11' };
 function buildSim(){
   const v = el('<section class="view" id="view-sim"></section>');
   v.innerHTML = '' +
@@ -1287,9 +1313,9 @@ function buildSim(){
     '<label class="f">Einsatz €<input id="ntEinsatz" inputmode="decimal" placeholder="z. B. 500"></label>' +
     '<label class="f">Einstiegskurs €<input id="ntEntry" inputmode="decimal" placeholder="per Knopf holen →"></label>' +
   '</div>' +
-  '<p class="hint" style="padding:0 0 8px 0">Voreingestellt: <b>Short auf Neo Performance</b>, Hebel 3, Einstieg C$40,80. ' +
-  'Nur Einsatz eintragen und eröffnen – oder alles überschreiben. Hebel 3 heißt KO-Schwelle bei C$54,40, also rund 33&nbsp;% Luft; ' +
-  'mit Hebel 5 wären es nur 20&nbsp;%, und Neo ist zuletzt an drei Tagen 14&nbsp;% gestiegen.</p>' +
+  '<p class="hint" style="padding:0 0 8px 0">Voreingestellt: <b>Short auf MP Materials</b>, Hebel 3, Einstieg 51,11 $ (Schlusskurs 7.8.). ' +
+  'Nur Einsatz eintragen und eröffnen – oder alles überschreiben. Hebel 3 heißt KO-Schwelle bei rund 68,15 $, also 33&nbsp;% Luft; mit Hebel 5 wären es nur 20&nbsp;%. ' +
+  'Beachte bei MP: Rund 16–17&nbsp;% des Streubesitzes sind bereits leerverkauft (etwa fünf Tagesumsätze). Dreht der Kurs nach oben, kaufen diese Shorts selbst und beschleunigen die Bewegung – gegen dich.</p>' +
   '<div class="dlgrow"><button class="btn" id="ntFetch">Kurs holen</button><button class="btn primary" id="ntGo">Trade eröffnen</button></div>' +
   '<p class="hint" id="ntKoInfo"></p>' +
   '<p class="simstatus" id="ntStatus"></p></div>' +
@@ -1498,7 +1524,7 @@ function renderSim(){
       const val = posValue(p, p.last);
       const d = val - p.einsatz;
       return '<div class="pos">' +
-        '<div class="top"><span class="nm">' + p.name + '</span>' +
+        '<div class="top"><span class="nm">' + esc(p.name) + '</span>' +
         '<span class="chip ' + (p.dir === 'long' ? 'g' : 'r') + '">' + (p.dir === 'long' ? 'Long' : 'Short') + '</span>' +
         '<span class="chip n">' + (p.typ === 'ko' ? 'KO · Hebel ' + fmtN(p.hebel) : 'Aktie · 1×') + '</span>' +
         (knocked ? '<span class="chip r">Ausgeknockt</span>' : '') + '</div>' +
@@ -1534,7 +1560,7 @@ function renderSim(){
     hbox.innerHTML = s.hist.slice().reverse().map(h => {
       const sgn = h.pnl >= 0 ? '+' : '−';
       return '<div class="pos">' +
-        '<div class="top"><span class="nm">' + h.name + '</span>' +
+        '<div class="top"><span class="nm">' + esc(h.name) + '</span>' +
         '<span class="chip ' + (h.dir === 'long' ? 'g' : 'r') + '">' + (h.dir === 'long' ? 'Long' : 'Short') + '</span>' +
         '<span class="chip n">' + (h.typ === 'ko' ? 'KO · Hebel ' + fmtN(h.hebel) : 'Aktie') + '</span>' +
         (h.knocked ? '<span class="chip r">Ausgeknockt</span>' : '') +
@@ -1607,7 +1633,7 @@ function renderCustomList(){
     ? '<p class="sub" style="margin-bottom:4px">Selbst hinzugefügt:</p>'
     : '<p class="sub" style="margin-bottom:0">Noch keine eigenen Aktien hinzugefügt.</p>';
   list.forEach((c, i) => {
-    const row = el('<div class="row"><span>' + c.name + '</span><span class="sym">' + c.symbol +
+    const row = el('<div class="row"><span>' + esc(c.name) + '</span><span class="sym">' + esc(c.symbol) +
       '</span><span style="flex:1"></span><button class="btn danger">Entfernen</button></div>');
     row.querySelector('button').addEventListener('click', () => {
       const l = getCustom(); l.splice(i, 1); setCustom(l); location.reload();
