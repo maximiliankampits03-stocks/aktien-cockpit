@@ -776,6 +776,35 @@ function buildMagnete(){
     '</ul></div>'));
 
   v.appendChild(el(
+    '<div class="card"><h3><span class="dot">▮</span> Woher die Zahlen stammen</h3>' +
+    '<p class="sub">Jede harte Zahl in diesem Tab mit Stand und Quelle. Prüf das nach, bevor du danach handelst – und behandle alles, was älter als ein Quartal ist, als überholt.</p>' +
+    '<ul class="links">' +
+      '<li><a href="https://www.stocktitan.net/news/MP/mp-materials-reports-second-quarter-2026-zcf328rdr260.html" target="_blank" rel="noopener">MP Materials, Q2-Bericht vom 6.8.2026</a>' +
+      '<span>Umsatz 108,5 Mio. $ (+89&nbsp;%), bereinigtes EBITDA 28,5 Mio. $, bereinigt −0,01 $ je Aktie, Gadolinium-Vertrag</span></li>' +
+      '<li><a href="https://investors.mpmaterials.com/" target="_blank" rel="noopener">MP Materials, Q1-Bericht vom Mai 2026</a>' +
+      '<span>Magnetics-Umsatz 21,1 Mio. $, Segment-EBITDA 9,6 Mio. $ · dazu die DoD-Vereinbarung von Juli 2025: 400 Mio. $ Eigenkapital, Preisboden 110 $/kg</span></li>' +
+      '<li><a href="https://www.gurufocus.com/news/8943273/mp-materials-mp-sees-highest-short-interest-among-materials-stocks" target="_blank" rel="noopener">Short-Quote MP, Stand 2.7.2026</a>' +
+      '<span>16,21&nbsp;% des Streubesitzes leerverkauft, höchste Quote im Materialsektor über 2 Mrd. $. Weitere Auswertungen nennen 16,68&nbsp;% bei 4,97 Tagesumsätzen und 17,5&nbsp;% – daher die Spanne „16–17&nbsp;%" im Simulator-Hinweis</span></li>' +
+      '<li><a href="https://www.investing.com/equities/neo-performance" target="_blank" rel="noopener">Neo Performance, Kursdaten vom 6.8.2026</a>' +
+      '<span>C$40,80 · 52-Wochen-Spanne C$15,31–44,96 · Analystenziel im Schnitt ~C$50,7, BMO C$38</span></li>' +
+      '<li><a href="https://finance.yahoo.com/markets/stocks/articles/neo-performance-materials-raises-full-230000620.html" target="_blank" rel="noopener">Neo, Guidance-Anhebung Juli 2026</a>' +
+      '<span>EBITDA-Prognose 2026 auf 140–150 Mio. $ angehoben (zuvor 100–110, davor 75–80; 2025: 76 Mio.)</span></li>' +
+      '<li><a href="https://investingnews.com/neo-performance-materials-announces-completion-of-c-115-million-bought-deal-treasury-offering-of-common-shares/" target="_blank" rel="noopener">Neo, Kapitalerhöhung vom 28.5.2026</a>' +
+      '<span>C$115,06 Mio. über 4,002 Mio. neue Aktien zu C$28,75</span></li>' +
+      '<li><a href="https://www.whitehouse.gov/fact-sheets/2026/08/fact-sheet-president-donald-j-trump-announces-billions-in-new-deals-and-investments-to-power-american-mining/" target="_blank" rel="noopener">Weißes Haus, Faktenblatt vom 7.8.2026</a>' +
+      '<span>Deals über mehr als 2 Mrd. $ und 180 Mio. $ Fördermittel · <a href="https://www.exim.gov/news/trump-administration-announces-58m-major-new-critical-mineral-deals-white-house-roundtable" target="_blank" rel="noopener">EXIM: 58 Mio. $</a> · die 150 Mio. $ für Niron kamen vom Office of Strategic Capital</span></li>' +
+      '<li><a href="https://theoregongroup.com/commodities/rare-earths/rare-earth-prices-surge-as-china-keeps-export-restrictions/" target="_blank" rel="noopener">Rohstoffpreise, Stand Juli 2026</a>' +
+      '<span>NdPr-Legierung ~133 $/kg (1.7.2026) · Dysprosium ~1.450 $/kg, Terbium ~4.500 $/kg, Yttrium ~1.100 $/kg (Mai 2026) – diese Werte veralten am schnellsten, tagesaktuell über die SMM-Liste oben</span></li>' +
+      '<li><a href="https://www.spglobal.com/energy/en/news-research/latest-news/metals/012726-rare-earth-supply-bottlenecks-set-to-persist-in-2026" target="_blank" rel="noopener">S&amp;P Global, Januar 2026</a>' +
+      '<span>Angebotsengpässe halten 2026 an · US-Magnetlücke laut Branchenanalysen frühestens 2027 geschlossen</span></li>' +
+      '<li><a href="https://www.cov.com/en/news-and-insights/insights/2026/01/trump-administration-announces-results-of-critical-minerals-investigation-under-section-232-and-directs-us-officials-to-initiate-negotiations" target="_blank" rel="noopener">Section 232, Proklamation vom 14.1.2026</a>' +
+      '<span>Vorerst ohne Zölle, stattdessen Verhandlungsauftrag</span></li>' +
+      '<li><a href="https://electrek.co/2026/04/22/tesla-optimus-production-fremont-model-sx-line/" target="_blank" rel="noopener">Tesla Optimus, Stand Ende Juli 2026</a>' +
+      '<span>Produktion in Fremont noch nicht angelaufen, Hochlauf laut Musk „quite slow" · Aktuator-Auftrag über 685 Mio. $ an Sanhua (China)</span></li>' +
+    '</ul>' +
+    '<p class="hint">Kursangaben sind Schlusskurse und veralten sofort – die Live-Boxen auf den Detailseiten sind maßgeblich, nicht die Texte hier.</p></div>'));
+
+  v.appendChild(el(
     '<div class="card"><h3><span class="dot">▮</span> Einordnung</h3>' +
     '<p style="font-size:13.5px;color:var(--muted)">Die strukturelle These ist echt und staatlich unterlegt – aber ein TikTok, das mit zwei Gewinnern (Intel, Dell) ein Muster beweisen will, blendet alle Verlierer derselben Erzählung aus. ' +
     'Das Q2 von MP hat die operative Seite bestätigt: Der Umsatz wächst schnell, der Magnet-Hochlauf läuft. Verdient wird trotzdem noch nichts, und die Kurse sind seit dem 5.8. deutlich teurer geworden – die Bewertungslücke ist also größer, nicht kleiner. ' +
@@ -909,6 +938,19 @@ function buildPolitik(){
   '</div>' +
 
   '<div class="card"><h3><span class="dot">▮</span> Abgeschlossen</h3><div id="jDone"></div></div>' +
+
+  '<div class="card"><h3><span class="dot">▮</span> Woher die Zahlen stammen</h3>' +
+  '<p class="sub">Die Behauptungen oben sind nicht meine Meinung, sondern Belege. Hier kannst du sie nachlesen – und in ein paar Monaten prüfen, ob sie noch gelten.</p>' +
+  '<ul class="links">' +
+    '<li><a href="https://www.cnbc.com/2026/08/01/trump-medias-new-data-service-gives-faster-access-to-trumps-posts.html" target="_blank" rel="noopener">Bezahlter Vorsprung, seit 1.8.2026</a>' +
+    '<span>Trump Media verkauft einen Datenanschluss für 100.000 $ im Monat, der Beiträge Millisekunden früher liefert; fünf Wall-Street-Firmen haben gezeichnet. <a href="https://www.npr.org/2026/08/01/nx-s1-5912219/trump-truth-social-access-insider-trading" target="_blank" rel="noopener">Einordnung bei NPR</a></span></li>' +
+    '<li><a href="https://cryptobriefing.com/morgan-stanley-trump-posts-no-longer-move-markets/" target="_blank" rel="noopener">Morgan Stanley, 17.7.2026</a>' +
+    '<span>Posts wirken nur noch innerhalb des Handelstages, ohne nachhaltige Marktbewegung – der Wendepunkt lag nach April 2025</span></li>' +
+    '<li><a href="https://fortune.com/2026/07/25/trump-trade-stock-market-returns-iran-war-inflation-supply-shock-tariffs/" target="_blank" rel="noopener">Ned Davis Research, Juli 2026</a>' +
+    '<span>Der Trump-Trade-Index liegt seit Mai rund 16&nbsp;% im Minus, während der S&amp;P 500 vorne liegt</span></li>' +
+    '<li><a href="https://www.whitehouse.gov/fact-sheets/2026/08/fact-sheet-president-donald-j-trump-announces-billions-in-new-deals-and-investments-to-power-american-mining/" target="_blank" rel="noopener">Beispiel für eine handelbare Meldung, 7.8.2026</a>' +
+    '<span>So sieht die Substanz aus, auf die dieser Radar zielt: Empfänger und Summen im Klartext</span></li>' +
+  '</ul></div>' +
 
   '<div class="card"><h3><span class="dot">▮</span> Ehrliche Einordnung</h3>' +
   '<p style="font-size:13px;color:var(--muted)">Dieser Radar macht aus dir keinen schnelleren Händler – er macht dich zu einem, der die richtigen Meldungen überhaupt mitbekommt und danach diszipliniert aussteigt. ' +
@@ -1315,7 +1357,8 @@ function buildSim(){
   '</div>' +
   '<p class="hint" style="padding:0 0 8px 0">Voreingestellt: <b>Short auf MP Materials</b>, Hebel 3, Einstieg 51,11 $ (Schlusskurs 7.8.). ' +
   'Nur Einsatz eintragen und eröffnen – oder alles überschreiben. Hebel 3 heißt KO-Schwelle bei rund 68,15 $, also 33&nbsp;% Luft; mit Hebel 5 wären es nur 20&nbsp;%. ' +
-  'Beachte bei MP: Rund 16–17&nbsp;% des Streubesitzes sind bereits leerverkauft (etwa fünf Tagesumsätze). Dreht der Kurs nach oben, kaufen diese Shorts selbst und beschleunigen die Bewegung – gegen dich.</p>' +
+  'Beachte bei MP: Rund 16–17&nbsp;% des Streubesitzes sind bereits leerverkauft, etwa fünf Tagesumsätze (Stand 2.7.2026, Quelle im Magnete-Tab unter „Woher die Zahlen stammen"). ' +
+  'Dreht der Kurs nach oben, kaufen diese Shorts selbst und beschleunigen die Bewegung – gegen dich.</p>' +
   '<div class="dlgrow"><button class="btn" id="ntFetch">Kurs holen</button><button class="btn primary" id="ntGo">Trade eröffnen</button></div>' +
   '<p class="hint" id="ntKoInfo"></p>' +
   '<p class="simstatus" id="ntStatus"></p></div>' +
