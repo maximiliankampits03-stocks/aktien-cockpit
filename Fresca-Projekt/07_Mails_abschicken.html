@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fresca — Händleranfragen abschicken</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --ink: #14171a; --muted: #6b7280;
+    --line: #e3e6ea; --navy: #1f3864; --accent: #1f3864; --warn: #c00000;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171a; --card: #1c2024; --ink: #e8eaed; --muted: #9aa3ad;
+      --line: #2b3138; --navy: #7ea2e0; --accent: #2d5fb0; --warn: #ff8080;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 28px 18px 60px; background: var(--bg); color: var(--ink);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; }
+  h1 { font-size: 25px; margin: 0 0 6px; letter-spacing: -.3px; }
+  .lead { color: var(--muted); margin: 0 0 26px; }
+  h2 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: .10em;
+    color: var(--navy); margin: 34px 0 12px; padding-bottom: 7px;
+    border-bottom: 1px solid var(--line);
+  }
+  .steps {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 20px; margin-bottom: 8px;
+  }
+  .steps ol { margin: 0; padding-left: 20px; }
+  .steps li { margin: 5px 0; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 18px; margin-bottom: 12px;
+  }
+  .head { display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+  .name { font-weight: 650; font-size: 16.5px; }
+  .detail { color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+  .addr { margin-top: 7px; font-size: 13px; }
+  code { background: rgba(127,127,127,.14); padding: 2px 6px; border-radius: 4px; font-size: 12.5px; }
+  .warn { color: var(--warn); font-weight: 600; font-size: 13px; }
+  .btn {
+    flex-shrink: 0; background: var(--accent); color: #fff; text-decoration: none;
+    padding: 10px 17px; border-radius: 7px; font-weight: 600; font-size: 14px;
+    white-space: nowrap;
+  }
+  .btn:hover { filter: brightness(1.12); }
+  .note { font-size: 13.5px; color: var(--warn); margin: 12px 0 0; }
+  .note a { color: inherit; }
+  details { margin-top: 13px; }
+  summary { cursor: pointer; color: var(--muted); font-size: 13.5px; }
+  .subj { font-size: 13.5px; margin: 11px 0 8px; }
+  pre {
+    white-space: pre-wrap; word-wrap: break-word; background: var(--bg);
+    border: 1px solid var(--line); border-radius: 7px; padding: 13px;
+    font: 12.5px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace; margin: 0;
+    overflow-x: auto;
+  }
+  .check {
+    background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--warn);
+    border-radius: 10px; padding: 15px 19px; margin-top: 30px;
+  }
+  .check h3 { margin: 0 0 8px; font-size: 15px; }
+  table { border-collapse: collapse; margin-top: 9px; font-size: 14px; }
+  td { padding: 4px 14px 4px 0; }
+  td:first-child { font-weight: 650; font-family: ui-monospace, Menlo, monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Händleranfragen abschicken</h1>
+  <p class="lead">Acht Anfragen nach Fresca Toronja — der Zuckervariante. Ein Klick öffnet
+  Gmail mit Empfänger, Betreff und Text schon ausgefüllt.</p>
+
+  <div class="steps">
+    <ol>
+      <li>Auf <strong>„In Gmail öffnen"</strong> klicken — ein neuer Tab geht auf.</li>
+      <li>Text kurz überfliegen.</li>
+      <li>Senden. Zurück zu dieser Seite, nächster Laden.</li>
+    </ol>
+  </div>
+  <p class="lead" style="margin:12px 0 0;font-size:13.5px;">Alle acht am selben Tag rausschicken.
+  Du brauchst nur einen Treffer, weißt aber vorher nicht, welcher es wird.</p>
+
+  <h2>Wien</h2>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">Exotic Green</div>
+      <div class="detail">Meiselmarkt, 1150 Wien · ☎ +43 1 982 03 69</div>
+      <div class="addr"><code>office@exotic-green.at</code></div>
+    </div>
+    <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=office%40exotic-green.at&su=Anfrage%3A%20Fresca%20Toronja%20%28Zuckervariante%29%20%E2%80%93%20Verf%C3%BCgbarkeit%20oder%20Bestellung&body=Sehr%20geehrte%20Damen%20und%20Herren%2C%0A%0Aich%20suche%20das%20Erfrischungsgetr%C3%A4nk%20Fresca%20Toronja%20von%20Coca-Cola%20%E2%80%93%20und%20zwar%20die%20lateinamerikanische%20Variante%20MIT%20ZUCKER%2C%20wie%20sie%20in%20Costa%20Rica%2C%20Honduras%20oder%20Mexiko%20verkauft%20wird.%0A%0AWichtig%3A%20Es%20geht%20mir%20ausdr%C3%BCcklich%20NICHT%20um%20die%20US-Version%20%28%22Fresca%20Zero%20Sugar%22%20bzw.%20%22Sparkling%20Soda%20Water%22%29%2C%20die%20zuckerfrei%20ist.%20Die%20richtige%20Variante%20erkennt%20man%20an%20zwei%20Dingen%3A%0A-%20Der%20Strichcode%20beginnt%20mit%20744%20%28Costa%20Rica%29%20oder%20750%20%28Mexiko%29.%0A-%20In%20der%20Zutatenliste%20steht%20%22az%C3%BAcares%20%28az%C3%BAcar%29%22%2C%20nicht%20%22sin%20az%C3%BAcar%22.%0A%0AMeine%20Fragen%3A%0A%0A1.%20F%C3%BChren%20Sie%20dieses%20Produkt%20aktuell%3F%0A2.%20Falls%20nein%3A%20K%C3%B6nnen%20Sie%20es%20%C3%BCber%20Ihren%20Gro%C3%9Fh%C3%A4ndler%20bestellen%3F%0A3.%20Ich%20br%C3%A4uchte%20idealerweise%20ein%2024er-Gebinde%20%28Dosen%20354/355%20ml%29%20oder%20entsprechend%20600-ml-Flaschen.%20Was%20w%C3%A4re%20der%20Preis%3F%0A4.%20Falls%20unklar%20ist%2C%20welche%20Variante%20Sie%20f%C3%BChren%3A%20K%C3%B6nnten%20Sie%20mir%20ein%20Foto%20der%20Zutatenliste%20und%20des%20Strichcodes%20schicken%3F%0A%0AIch%20ben%C3%B6tige%20das%20Getr%C3%A4nk%20als%20Geschmacksreferenz%20f%C3%BCr%20ein%20Produktentwicklungsprojekt%20und%20werde%20voraussichtlich%20mehrfach%20bestellen.%0A%0A%C3%9Cber%20eine%20kurze%20R%C3%BCckmeldung%20freue%20ich%20mich.%20Gerne%20auch%20telefonisch.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen%0AMaximilian%20Kampits%0Amaximilian.kampits03%40gmail.com%0ATel.%3A%20%2B43%20660%206000226" target="_blank" rel="noopener">In Gmail öffnen →</a>
+  </div>
+  
+  <details>
+    <summary>Text ansehen</summary>
+    <div class="subj"><strong>Betreff:</strong> Anfrage: Fresca Toronja (Zuckervariante) – Verfügbarkeit oder Bestellung</div>
+    <pre>Sehr geehrte Damen und Herren,
+
+ich suche das Erfrischungsgetränk Fresca Toronja von Coca-Cola – und zwar die lateinamerikanische Variante MIT ZUCKER, wie sie in Costa Rica, Honduras oder Mexiko verkauft wird.
+
+Wichtig: Es geht mir ausdrücklich NICHT um die US-Version (&quot;Fresca Zero Sugar&quot; bzw. &quot;Sparkling Soda Water&quot;), die zuckerfrei ist. Die richtige Variante erkennt man an zwei Dingen:
+- Der Strichcode beginnt mit 744 (Costa Rica) oder 750 (Mexiko).
+- In der Zutatenliste steht &quot;azúcares (azúcar)&quot;, nicht &quot;sin azúcar&quot;.
+
+Meine Fragen:
+
+1. Führen Sie dieses Produkt aktuell?
+2. Falls nein: Können Sie es über Ihren Großhändler bestellen?
+3. Ich bräuchte idealerweise ein 24er-Gebinde (Dosen 354/355 ml) oder entsprechend 600-ml-Flaschen. Was wäre der Preis?
+4. Falls unklar ist, welche Variante Sie führen: Könnten Sie mir ein Foto der Zutatenliste und des Strichcodes schicken?
+
+Ich benötige das Getränk als Geschmacksreferenz für ein Produktentwicklungsprojekt und werde voraussichtlich mehrfach bestellen.
+
+Über eine kurze Rückmeldung freue ich mich. Gerne auch telefonisch.
+
+Mit freundlichen Grüßen
+Maximilian Kampits
+maximilian.kampits03@gmail.com
+Tel.: +43 660 6000226</pre>
+  </details>
+</div>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">Prosi Exotic Supermarket</div>
+      <div class="detail">Wimbergergasse 5, 1070 Wien · ☎ +43 1 974 44 44</div>
+      <div class="addr"><code>office@prosi.at</code></div>
+    </div>
+    <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=office%40prosi.at&su=Anfrage%3A%20Fresca%20Toronja%20%28Zuckervariante%29%20%E2%80%93%20Verf%C3%BCgbarkeit%20oder%20Bestellung&body=Sehr%20geehrte%20Damen%20und%20Herren%2C%0A%0Aich%20suche%20das%20Erfrischungsgetr%C3%A4nk%20Fresca%20Toronja%20von%20Coca-Cola%20%E2%80%93%20und%20zwar%20die%20lateinamerikanische%20Variante%20MIT%20ZUCKER%2C%20wie%20sie%20in%20Costa%20Rica%2C%20Honduras%20oder%20Mexiko%20verkauft%20wird.%0A%0AWichtig%3A%20Es%20geht%20mir%20ausdr%C3%BCcklich%20NICHT%20um%20die%20US-Version%20%28%22Fresca%20Zero%20Sugar%22%20bzw.%20%22Sparkling%20Soda%20Water%22%29%2C%20die%20zuckerfrei%20ist.%20Die%20richtige%20Variante%20erkennt%20man%20an%20zwei%20Dingen%3A%0A-%20Der%20Strichcode%20beginnt%20mit%20744%20%28Costa%20Rica%29%20oder%20750%20%28Mexiko%29.%0A-%20In%20der%20Zutatenliste%20steht%20%22az%C3%BAcares%20%28az%C3%BAcar%29%22%2C%20nicht%20%22sin%20az%C3%BAcar%22.%0A%0AMeine%20Fragen%3A%0A%0A1.%20F%C3%BChren%20Sie%20dieses%20Produkt%20aktuell%3F%0A2.%20Falls%20nein%3A%20K%C3%B6nnen%20Sie%20es%20%C3%BCber%20Ihren%20Gro%C3%9Fh%C3%A4ndler%20bestellen%3F%0A3.%20Ich%20br%C3%A4uchte%20idealerweise%20ein%2024er-Gebinde%20%28Dosen%20354/355%20ml%29%20oder%20entsprechend%20600-ml-Flaschen.%20Was%20w%C3%A4re%20der%20Preis%3F%0A4.%20Falls%20unklar%20ist%2C%20welche%20Variante%20Sie%20f%C3%BChren%3A%20K%C3%B6nnten%20Sie%20mir%20ein%20Foto%20der%20Zutatenliste%20und%20des%20Strichcodes%20schicken%3F%0A%0AIch%20ben%C3%B6tige%20das%20Getr%C3%A4nk%20als%20Geschmacksreferenz%20f%C3%BCr%20ein%20Produktentwicklungsprojekt%20und%20werde%20voraussichtlich%20mehrfach%20bestellen.%0A%0A%C3%9Cber%20eine%20kurze%20R%C3%BCckmeldung%20freue%20ich%20mich.%20Gerne%20auch%20telefonisch.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen%0AMaximilian%20Kampits%0Amaximilian.kampits03%40gmail.com%0ATel.%3A%20%2B43%20660%206000226" target="_blank" rel="noopener">In Gmail öffnen →</a>
+  </div>
+  
+  <details>
+    <summary>Text ansehen</summary>
+    <div class="subj"><strong>Betreff:</strong> Anfrage: Fresca Toronja (Zuckervariante) – Verfügbarkeit oder Bestellung</div>
+    <pre>Sehr geehrte Damen und Herren,
+
+ich suche das Erfrischungsgetränk Fresca Toronja von Coca-Cola – und zwar die lateinamerikanische Variante MIT ZUCKER, wie sie in Costa Rica, Honduras oder Mexiko verkauft wird.
+
+Wichtig: Es geht mir ausdrücklich NICHT um die US-Version (&quot;Fresca Zero Sugar&quot; bzw. &quot;Sparkling Soda Water&quot;), die zuckerfrei ist. Die richtige Variante erkennt man an zwei Dingen:
+- Der Strichcode beginnt mit 744 (Costa Rica) oder 750 (Mexiko).
+- In der Zutatenliste steht &quot;azúcares (azúcar)&quot;, nicht &quot;sin azúcar&quot;.
+
+Meine Fragen:
+
+1. Führen Sie dieses Produkt aktuell?
+2. Falls nein: Können Sie es über Ihren Großhändler bestellen?
+3. Ich bräuchte idealerweise ein 24er-Gebinde (Dosen 354/355 ml) oder entsprechend 600-ml-Flaschen. Was wäre der Preis?
+4. Falls unklar ist, welche Variante Sie führen: Könnten Sie mir ein Foto der Zutatenliste und des Strichcodes schicken?
+
+Ich benötige das Getränk als Geschmacksreferenz für ein Produktentwicklungsprojekt und werde voraussichtlich mehrfach bestellen.
+
+Über eine kurze Rückmeldung freue ich mich. Gerne auch telefonisch.
+
+Mit freundlichen Grüßen
+Maximilian Kampits
+maximilian.kampits03@gmail.com
+Tel.: +43 660 6000226</pre>
+  </details>
+</div>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">Casa México</div>
+      <div class="detail">Siebensterngasse 16, 1070 Wien · ☎ +43 1 315 45 39</div>
+      <div class="addr"><code>info@casamexico.at</code></div>
+    </div>
+    <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=info%40casamexico.at&su=Anfrage%3A%20Fresca%20Toronja%20%28Zuckervariante%29%20%E2%80%93%20Verf%C3%BCgbarkeit%20oder%20Bestellung&body=Sehr%20geehrte%20Damen%20und%20Herren%2C%0A%0Aich%20suche%20das%20Erfrischungsgetr%C3%A4nk%20Fresca%20Toronja%20von%20Coca-Cola%20%E2%80%93%20und%20zwar%20die%20lateinamerikanische%20Variante%20MIT%20ZUCKER%2C%20wie%20sie%20in%20Costa%20Rica%2C%20Honduras%20oder%20Mexiko%20verkauft%20wird.%0A%0AWichtig%3A%20Es%20geht%20mir%20ausdr%C3%BCcklich%20NICHT%20um%20die%20US-Version%20%28%22Fresca%20Zero%20Sugar%22%20bzw.%20%22Sparkling%20Soda%20Water%22%29%2C%20die%20zuckerfrei%20ist.%20Die%20richtige%20Variante%20erkennt%20man%20an%20zwei%20Dingen%3A%0A-%20Der%20Strichcode%20beginnt%20mit%20744%20%28Costa%20Rica%29%20oder%20750%20%28Mexiko%29.%0A-%20In%20der%20Zutatenliste%20steht%20%22az%C3%BAcares%20%28az%C3%BAcar%29%22%2C%20nicht%20%22sin%20az%C3%BAcar%22.%0A%0AMeine%20Fragen%3A%0A%0A1.%20F%C3%BChren%20Sie%20dieses%20Produkt%20aktuell%3F%20Ich%20habe%20gesehen%2C%20dass%20Sie%20Jarritos%20im%20Sortiment%20haben%20%E2%80%93%20wom%C3%B6glich%20l%C3%A4uft%20Fresca%20%C3%BCber%20denselben%20Lieferanten.%0A2.%20Falls%20nein%3A%20K%C3%B6nnen%20Sie%20es%20%C3%BCber%20Ihren%20Gro%C3%9Fh%C3%A4ndler%20bestellen%3F%0A3.%20Ich%20br%C3%A4uchte%20idealerweise%20ein%2024er-Gebinde%20%28Dosen%20354/355%20ml%29%20oder%20entsprechend%20600-ml-Flaschen.%20Was%20w%C3%A4re%20der%20Preis%3F%0A4.%20Falls%20unklar%20ist%2C%20welche%20Variante%20Sie%20f%C3%BChren%3A%20K%C3%B6nnten%20Sie%20mir%20ein%20Foto%20der%20Zutatenliste%20und%20des%20Strichcodes%20schicken%3F%0A%0AIch%20ben%C3%B6tige%20das%20Getr%C3%A4nk%20als%20Geschmacksreferenz%20f%C3%BCr%20ein%20Produktentwicklungsprojekt%20und%20werde%20voraussichtlich%20mehrfach%20bestellen.%0A%0A%C3%9Cber%20eine%20kurze%20R%C3%BCckmeldung%20freue%20ich%20mich.%20Gerne%20auch%20telefonisch.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen%0AMaximilian%20Kampits%0Amaximilian.kampits03%40gmail.com%0ATel.%3A%20%2B43%20660%206000226" target="_blank" rel="noopener">In Gmail öffnen →</a>
+  </div>
+  
+  <details>
+    <summary>Text ansehen</summary>
+    <div class="subj"><strong>Betreff:</strong> Anfrage: Fresca Toronja (Zuckervariante) – Verfügbarkeit oder Bestellung</div>
+    <pre>Sehr geehrte Damen und Herren,
+
+ich suche das Erfrischungsgetränk Fresca Toronja von Coca-Cola – und zwar die lateinamerikanische Variante MIT ZUCKER, wie sie in Costa Rica, Honduras oder Mexiko verkauft wird.
+
+Wichtig: Es geht mir ausdrücklich NICHT um die US-Version (&quot;Fresca Zero Sugar&quot; bzw. &quot;Sparkling Soda Water&quot;), die zuckerfrei ist. Die richtige Variante erkennt man an zwei Dingen:
+- Der Strichcode beginnt mit 744 (Costa Rica) oder 750 (Mexiko).
+- In der Zutatenliste steht &quot;azúcares (azúcar)&quot;, nicht &quot;sin azúcar&quot;.
+
+Meine Fragen:
+
+1. Führen Sie dieses Produkt aktuell? Ich habe gesehen, dass Sie Jarritos im Sortiment haben – womöglich läuft Fresca über denselben Lieferanten.
+2. Falls nein: Können Sie es über Ihren Großhändler bestellen?
+3. Ich bräuchte idealerweise ein 24er-Gebinde (Dosen 354/355 ml) oder entsprechend 600-ml-Flaschen. Was wäre der Preis?
+4. Falls unklar ist, welche Variante Sie führen: Könnten Sie mir ein Foto der Zutatenliste und des Strichcodes schicken?
+
+Ich benötige das Getränk als Geschmacksreferenz für ein Produktentwicklungsprojekt und werde voraussichtlich mehrfach bestellen.
+
+Über eine kurze Rückmeldung freue ich mich. Gerne auch telefonisch.
+
+Mit freundlichen Grüßen
+Maximilian Kampits
+maximilian.kampits03@gmail.com
+Tel.: +43 660 6000226</pre>
+  </details>
+</div>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">MTC Exotic Supermarket</div>
+      <div class="detail">Kagraner Platz 47 / Stättermayergasse 19</div>
+      <div class="addr"><code>mtc.supermarket.vienna@gmail.com</code></div>
+    </div>
+    <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=mtc.supermarket.vienna%40gmail.com&su=Anfrage%3A%20Fresca%20Toronja%20%28Zuckervariante%29%20%E2%80%93%20Verf%C3%BCgbarkeit%20oder%20Bestellung&body=Sehr%20geehrte%20Damen%20und%20Herren%2C%0A%0Aich%20suche%20das%20Erfrischungsgetr%C3%A4nk%20Fresca%20Toronja%20von%20Coca-Cola%20%E2%80%93%20und%20zwar%20die%20lateinamerikanische%20Variante%20MIT%20ZUCKER%2C%20wie%20sie%20in%20Costa%20Rica%2C%20Honduras%20oder%20Mexiko%20verkauft%20wird.%0A%0AWichtig%3A%20Es%20geht%20mir%20ausdr%C3%BCcklich%20NICHT%20um%20die%20US-Version%20%28%22Fresca%20Zero%20Sugar%22%20bzw.%20%22Sparkling%20Soda%20Water%22%29%2C%20die%20zuckerfrei%20ist.%20Die%20richtige%20Variante%20erkennt%20man%20an%20zwei%20Dingen%3A%0A-%20Der%20Strichcode%20beginnt%20mit%20744%20%28Costa%20Rica%29%20oder%20750%20%28Mexiko%29.%0A-%20In%20der%20Zutatenliste%20steht%20%22az%C3%BAcares%20%28az%C3%BAcar%29%22%2C%20nicht%20%22sin%20az%C3%BAcar%22.%0A%0AMeine%20Fragen%3A%0A%0A1.%20F%C3%BChren%20Sie%20dieses%20Produkt%20aktuell%3F%0A2.%20Falls%20nein%3A%20K%C3%B6nnen%20Sie%20es%20%C3%BCber%20Ihren%20Gro%C3%9Fh%C3%A4ndler%20bestellen%3F%0A3.%20Ich%20br%C3%A4uchte%20idealerweise%20ein%2024er-Gebinde%20%28Dosen%20354/355%20ml%29%20oder%20entsprechend%20600-ml-Flaschen.%20Was%20w%C3%A4re%20der%20Preis%3F%0A4.%20Falls%20unklar%20ist%2C%20welche%20Variante%20Sie%20f%C3%BChren%3A%20K%C3%B6nnten%20Sie%20mir%20ein%20Foto%20der%20Zutatenliste%20und%20des%20Strichcodes%20schicken%3F%0A%0AIch%20ben%C3%B6tige%20das%20Getr%C3%A4nk%20als%20Geschmacksreferenz%20f%C3%BCr%20ein%20Produktentwicklungsprojekt%20und%20werde%20voraussichtlich%20mehrfach%20bestellen.%0A%0A%C3%9Cber%20eine%20kurze%20R%C3%BCckmeldung%20freue%20ich%20mich.%20Gerne%20auch%20telefonisch.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen%0AMaximilian%20Kampits%0Amaximilian.kampits03%40gmail.com%0ATel.%3A%20%2B43%20660%206000226" target="_blank" rel="noopener">In Gmail öffnen →</a>
+  </div>
+  
+  <details>
+    <summary>Text ansehen</summary>
+    <div class="subj"><strong>Betreff:</strong> Anfrage: Fresca Toronja (Zuckervariante) – Verfügbarkeit oder Bestellung</div>
+    <pre>Sehr geehrte Damen und Herren,
+
+ich suche das Erfrischungsgetränk Fresca Toronja von Coca-Cola – und zwar die lateinamerikanische Variante MIT ZUCKER, wie sie in Costa Rica, Honduras oder Mexiko verkauft wird.
+
+Wichtig: Es geht mir ausdrücklich NICHT um die US-Version (&quot;Fresca Zero Sugar&quot; bzw. &quot;Sparkling Soda Water&quot;), die zuckerfrei ist. Die richtige Variante erkennt man an zwei Dingen:
+- Der Strichcode beginnt mit 744 (Costa Rica) oder 750 (Mexiko).
+- In der Zutatenliste steht &quot;azúcares (azúcar)&quot;, nicht &quot;sin azúcar&quot;.
+
+Meine Fragen:
+
+1. Führen Sie dieses Produkt aktuell?
+2. Falls nein: Können Sie es über Ihren Großhändler bestellen?
+3. Ich bräuchte idealerweise ein 24er-Gebinde (Dosen 354/355 ml) oder entsprechend 600-ml-Flaschen. Was wäre der Preis?
+4. Falls unklar ist, welche Variante Sie führen: Könnten Sie mir ein Foto der Zutatenliste und des Strichcodes schicken?
+
+Ich benötige das Getränk als Geschmacksreferenz für ein Produktentwicklungsprojekt und werde voraussichtlich mehrfach bestellen.
+
+Über eine kurze Rückmeldung freue ich mich. Gerne auch telefonisch.
+
+Mit freundlichen Grüßen
+Maximilian Kampits
+maximilian.kampits03@gmail.com
+Tel.: +43 660 6000226</pre>
+  </details>
+</div><h2>Spanien</h2>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">Distribución AmericanMarket</div>
+      <div class="detail">24er-Gebinde, ca. 26,86 € — die wichtigste Anfrage</div>
+      <div class="addr"><code>ventas@americanmarket.es</code></div>
+    </div>
+    <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=ventas%40americanmarket.es&su=Consulta%3A%20Fresca%20Toronja%20con%20az%C3%BAcar%2C%20caja%20de%2024%20%E2%80%93%20env%C3%ADo%20a%20Austria&body=Buenos%20d%C3%ADas%2C%0A%0Ales%20escribo%20desde%20Austria.%20Me%20interesa%20pedir%20una%20caja%20de%2024%20unidades%20de%20Fresca%20Toronja%20355%20ml%20que%20aparece%20en%20su%20tienda%20mayorista%20%28distribucionamericanmarket.es%29.%0A%0AEs%20importante%3A%20busco%20la%20versi%C3%B3n%20latinoamericana%20CON%20AZ%C3%9ACAR%2C%20no%20la%20versi%C3%B3n%20estadounidense%20%22sin%20az%C3%BAcar%22%20/%20%22Zero%20Sugar%22.%20La%20versi%C3%B3n%20correcta%20se%20reconoce%20por%20el%20c%C3%B3digo%20de%20barras%20que%20empieza%20por%20744%20%28Costa%20Rica%29%20o%20750%20%28M%C3%A9xico%29%2C%20y%20por%20la%20lista%20de%20ingredientes%20que%20incluye%20%22az%C3%BAcares%20%28az%C3%BAcar%29%22.%0A%0AMis%20preguntas%3A%0A%0A1.%20%C2%BFTienen%20stock%20actualmente%3F%0A2.%20%C2%BFRealizan%20env%C3%ADos%20a%20Austria%3F%20%C2%BFCu%C3%A1l%20ser%C3%ADa%20el%20coste%20y%20el%20plazo%20de%20entrega%3F%0A3.%20%C2%BFCu%C3%A1l%20ser%C3%ADa%20el%20precio%20total%20de%20una%20caja%20de%2024%20unidades%20con%20el%20env%C3%ADo%20incluido%3F%0A4.%20%C2%BFPodr%C3%ADan%20enviarme%20una%20foto%20de%20la%20lista%20de%20ingredientes%20y%20del%20c%C3%B3digo%20de%20barras%20para%20confirmar%20que%20se%20trata%20de%20la%20versi%C3%B3n%20con%20az%C3%BAcar%3F%0A%0ANecesito%20el%20producto%20como%20referencia%20de%20sabor%20para%20un%20proyecto%20de%20desarrollo%20de%20producto%2C%20por%20lo%20que%20probablemente%20repetir%C3%A9%20el%20pedido.%0A%0AMuchas%20gracias%20de%20antemano.%0A%0AUn%20cordial%20saludo%2C%0AMaximilian%20Kampits%0Amaximilian.kampits03%40gmail.com%0ATel.%3A%20%2B43%20660%206000226" target="_blank" rel="noopener">In Gmail öffnen →</a>
+  </div>
+  
+  <details>
+    <summary>Text ansehen</summary>
+    <div class="subj"><strong>Betreff:</strong> Consulta: Fresca Toronja con azúcar, caja de 24 – envío a Austria</div>
+    <pre>Buenos días,
+
+les escribo desde Austria. Me interesa pedir una caja de 24 unidades de Fresca Toronja 355 ml que aparece en su tienda mayorista (distribucionamericanmarket.es).
+
+Es importante: busco la versión latinoamericana CON AZÚCAR, no la versión estadounidense &quot;sin azúcar&quot; / &quot;Zero Sugar&quot;. La versión correcta se reconoce por el código de barras que empieza por 744 (Costa Rica) o 750 (México), y por la lista de ingredientes que incluye &quot;azúcares (azúcar)&quot;.
+
+Mis preguntas:
+
+1. ¿Tienen stock actualmente?
+2. ¿Realizan envíos a Austria? ¿Cuál sería el coste y el plazo de entrega?
+3. ¿Cuál sería el precio total de una caja de 24 unidades con el envío incluido?
+4. ¿Podrían enviarme una foto de la lista de ingredientes y del código de barras para confirmar que se trata de la versión con azúcar?
+
+Necesito el producto como referencia de sabor para un proyecto de desarrollo de producto, por lo que probablemente repetiré el pedido.
+
+Muchas gracias de antemano.
+
+Un cordial saludo,
+Maximilian Kampits
+maximilian.kampits03@gmail.com
+Tel.: +43 660 6000226</pre>
+  </details>
+</div>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">Jota Jota Foods</div>
+      <div class="detail">Importeur, Valencia</div>
+      <div class="addr"><code>info@jotajotafoods.com</code></div>
+    </div>
+    <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=info%40jotajotafoods.com&su=Consulta%3A%20Fresca%20Toronja%20con%20az%C3%BAcar%20%E2%80%93%20env%C3%ADo%20a%20Austria&body=Buenos%20d%C3%ADas%2C%0A%0Ales%20escribo%20desde%20Austria.%20Busco%20el%20refresco%20Fresca%20Toronja%20de%20Coca-Cola%2C%20concretamente%20la%20versi%C3%B3n%20latinoamericana%20CON%20AZ%C3%9ACAR%20%28Costa%20Rica%2C%20Honduras%20o%20M%C3%A9xico%29.%20En%20su%20web%20he%20visto%20%22Gaseosa%20Fresca%20Toronja%20354%20ml%22.%0A%0ANO%20busco%20la%20versi%C3%B3n%20estadounidense%20%22sin%20az%C3%BAcar%22%20/%20%22Zero%20Sugar%22.%20La%20versi%C3%B3n%20correcta%20se%20reconoce%20por%20el%20c%C3%B3digo%20de%20barras%20que%20empieza%20por%20744%20o%20750%2C%20y%20por%20la%20lista%20de%20ingredientes%20que%20incluye%20%22az%C3%BAcares%20%28az%C3%BAcar%29%22.%0A%0AMis%20preguntas%3A%0A%0A1.%20%C2%BFVenden%20tambi%C3%A9n%20a%20clientes%20particulares%2C%20o%20solo%20a%20empresas%3F%0A2.%20%C2%BFCu%C3%A1l%20ser%C3%ADa%20el%20pedido%20m%C3%ADnimo%3F%20Me%20interesar%C3%ADa%20una%20caja%20de%2024%20unidades.%0A3.%20%C2%BFRealizan%20env%C3%ADos%20a%20Austria%3F%20%C2%BFCoste%20y%20plazo%20de%20entrega%3F%0A4.%20%C2%BFPodr%C3%ADan%20confirmarme%20con%20una%20foto%20de%20la%20lista%20de%20ingredientes%20y%20del%20c%C3%B3digo%20de%20barras%20que%20es%20la%20versi%C3%B3n%20con%20az%C3%BAcar%3F%0A%0ANecesito%20el%20producto%20como%20referencia%20de%20sabor%20para%20un%20proyecto%20de%20desarrollo%20de%20producto%20y%20probablemente%20repetir%C3%A9%20el%20pedido.%0A%0AMuchas%20gracias.%0A%0AUn%20cordial%20saludo%2C%0AMaximilian%20Kampits%0Amaximilian.kampits03%40gmail.com%0ATel.%3A%20%2B43%20660%206000226" target="_blank" rel="noopener">In Gmail öffnen →</a>
+  </div>
+  
+  <details>
+    <summary>Text ansehen</summary>
+    <div class="subj"><strong>Betreff:</strong> Consulta: Fresca Toronja con azúcar – envío a Austria</div>
+    <pre>Buenos días,
+
+les escribo desde Austria. Busco el refresco Fresca Toronja de Coca-Cola, concretamente la versión latinoamericana CON AZÚCAR (Costa Rica, Honduras o México). En su web he visto &quot;Gaseosa Fresca Toronja 354 ml&quot;.
+
+NO busco la versión estadounidense &quot;sin azúcar&quot; / &quot;Zero Sugar&quot;. La versión correcta se reconoce por el código de barras que empieza por 744 o 750, y por la lista de ingredientes que incluye &quot;azúcares (azúcar)&quot;.
+
+Mis preguntas:
+
+1. ¿Venden también a clientes particulares, o solo a empresas?
+2. ¿Cuál sería el pedido mínimo? Me interesaría una caja de 24 unidades.
+3. ¿Realizan envíos a Austria? ¿Coste y plazo de entrega?
+4. ¿Podrían confirmarme con una foto de la lista de ingredientes y del código de barras que es la versión con azúcar?
+
+Necesito el producto como referencia de sabor para un proyecto de desarrollo de producto y probablemente repetiré el pedido.
+
+Muchas gracias.
+
+Un cordial saludo,
+Maximilian Kampits
+maximilian.kampits03@gmail.com
+Tel.: +43 660 6000226</pre>
+  </details>
+</div>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">Caprichos Catrachos</div>
+      <div class="detail">Madrid — einzige Quelle mit belegter EU-Lieferung</div>
+      <div class="addr"><span class="warn">Adresse noch holen</span></div>
+    </div>
+    <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&su=Consulta%3A%20Fresca%20Toronja%20%E2%80%93%20env%C3%ADo%20a%20Austria&body=Buenos%20d%C3%ADas%2C%0A%0Ales%20escribo%20desde%20Austria.%20Busco%20el%20refresco%20Fresca%20Toronja%20de%20Coca-Cola%20en%20su%20versi%C3%B3n%20centroamericana%20CON%20AZ%C3%9ACAR.%20He%20visto%20en%20su%20tienda%20la%20botella%20de%202%20litros.%0A%0ANO%20busco%20la%20versi%C3%B3n%20estadounidense%20%22sin%20az%C3%BAcar%22%20/%20%22Zero%20Sugar%22.%0A%0AMis%20preguntas%3A%0A%0A1.%20%C2%BFTienen%20stock%20actualmente%3F%20%C2%BFDisponen%20tambi%C3%A9n%20del%20formato%20en%20lata%20de%20354/355%20ml%3F%0A2.%20He%20le%C3%ADdo%20que%20realizan%20env%C3%ADos%20a%20toda%20la%20Uni%C3%B3n%20Europea.%20%C2%BFConfirman%20el%20env%C3%ADo%20a%20Austria%3F%20%C2%BFCoste%20y%20plazo%3F%0A3.%20Me%20interesar%C3%ADa%20una%20cantidad%20equivalente%20a%20unas%2024%20latas.%20%C2%BFPrecio%20total%20con%20env%C3%ADo%3F%0A4.%20%C2%BFPodr%C3%ADan%20enviarme%20una%20foto%20de%20la%20lista%20de%20ingredientes%20y%20del%20c%C3%B3digo%20de%20barras%3F%0A%0ANecesito%20el%20producto%20como%20referencia%20de%20sabor%20para%20un%20proyecto%20de%20desarrollo%20de%20producto.%0A%0AMuchas%20gracias.%0A%0AUn%20cordial%20saludo%2C%0AMaximilian%20Kampits%0Amaximilian.kampits03%40gmail.com%0ATel.%3A%20%2B43%20660%206000226" target="_blank" rel="noopener">In Gmail öffnen →</a>
+  </div>
+  <p class="note">Keine E-Mail-Adresse gefunden — hol sie über <a href="https://www.caprichoscatrachos.com/contacto/" target="_blank" rel="noopener">die Kontaktseite</a> und trag sie im Gmail-Fenster oben ein. Betreff und Text sind schon drin.</p>
+  <details>
+    <summary>Text ansehen</summary>
+    <div class="subj"><strong>Betreff:</strong> Consulta: Fresca Toronja – envío a Austria</div>
+    <pre>Buenos días,
+
+les escribo desde Austria. Busco el refresco Fresca Toronja de Coca-Cola en su versión centroamericana CON AZÚCAR. He visto en su tienda la botella de 2 litros.
+
+NO busco la versión estadounidense &quot;sin azúcar&quot; / &quot;Zero Sugar&quot;.
+
+Mis preguntas:
+
+1. ¿Tienen stock actualmente? ¿Disponen también del formato en lata de 354/355 ml?
+2. He leído que realizan envíos a toda la Unión Europea. ¿Confirman el envío a Austria? ¿Coste y plazo?
+3. Me interesaría una cantidad equivalente a unas 24 latas. ¿Precio total con envío?
+4. ¿Podrían enviarme una foto de la lista de ingredientes y del código de barras?
+
+Necesito el producto como referencia de sabor para un proyecto de desarrollo de producto.
+
+Muchas gracias.
+
+Un cordial saludo,
+Maximilian Kampits
+maximilian.kampits03@gmail.com
+Tel.: +43 660 6000226</pre>
+  </details>
+</div>
+<div class="card">
+  <div class="head">
+    <div>
+      <div class="name">América Central</div>
+      <div class="detail">Spanien, Schwerpunkt Zentralamerika</div>
+      <div class="addr"><span class="warn">Adresse noch holen</span></div>
+    </div>
+    <a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&su=Consulta%3A%20Gaseosa%20Fresca%20Toronja%20%E2%80%93%20env%C3%ADo%20a%20Austria&body=Buenos%20d%C3%ADas%2C%0A%0Ales%20escribo%20desde%20Austria.%20Busco%20la%20%22Gaseosa%20Fresca%20Toronja%20354%20ml%22%20que%20aparece%20en%20su%20tienda%20%E2%80%94%20la%20versi%C3%B3n%20centroamericana%20CON%20AZ%C3%9ACAR%2C%20no%20la%20estadounidense%20%22sin%20az%C3%BAcar%22.%0A%0AMis%20preguntas%3A%0A%0A1.%20%C2%BFTienen%20stock%20actualmente%3F%0A2.%20%C2%BFRealizan%20env%C3%ADos%20a%20Austria%3F%20%C2%BFCoste%20y%20plazo%20de%20entrega%3F%0A3.%20Me%20interesar%C3%ADa%20una%20caja%20de%2024%20unidades.%20%C2%BFPrecio%20total%20con%20env%C3%ADo%3F%0A4.%20%C2%BFPodr%C3%ADan%20enviarme%20una%20foto%20de%20la%20lista%20de%20ingredientes%20y%20del%20c%C3%B3digo%20de%20barras%20para%20confirmar%20la%20versi%C3%B3n%3F%0A%0ANecesito%20el%20producto%20como%20referencia%20de%20sabor%20para%20un%20proyecto%20de%20desarrollo%20de%20producto.%0A%0AMuchas%20gracias.%0A%0AUn%20cordial%20saludo%2C%0AMaximilian%20Kampits%0Amaximilian.kampits03%40gmail.com%0ATel.%3A%20%2B43%20660%206000226" target="_blank" rel="noopener">In Gmail öffnen →</a>
+  </div>
+  <p class="note">Keine E-Mail-Adresse gefunden — hol sie über <a href="https://americacentral.es/" target="_blank" rel="noopener">die Kontaktseite</a> und trag sie im Gmail-Fenster oben ein. Betreff und Text sind schon drin.</p>
+  <details>
+    <summary>Text ansehen</summary>
+    <div class="subj"><strong>Betreff:</strong> Consulta: Gaseosa Fresca Toronja – envío a Austria</div>
+    <pre>Buenos días,
+
+les escribo desde Austria. Busco la &quot;Gaseosa Fresca Toronja 354 ml&quot; que aparece en su tienda — la versión centroamericana CON AZÚCAR, no la estadounidense &quot;sin azúcar&quot;.
+
+Mis preguntas:
+
+1. ¿Tienen stock actualmente?
+2. ¿Realizan envíos a Austria? ¿Coste y plazo de entrega?
+3. Me interesaría una caja de 24 unidades. ¿Precio total con envío?
+4. ¿Podrían enviarme una foto de la lista de ingredientes y del código de barras para confirmar la versión?
+
+Necesito el producto como referencia de sabor para un proyecto de desarrollo de producto.
+
+Muchas gracias.
+
+Un cordial saludo,
+Maximilian Kampits
+maximilian.kampits03@gmail.com
+Tel.: +43 660 6000226</pre>
+  </details>
+</div>
+
+  <div class="check">
+    <h3>Worauf du bei den Antworten achtest</h3>
+    <p style="margin:0;font-size:14px;">Die entscheidende Rückmeldung ist das <strong>Foto vom
+    Strichcode</strong>. „Ja, haben wir" meint oft die US-Version — die ist in Europa
+    verbreiteter. Ohne Foto keine Bestellung.</p>
+    <table>
+      <tr><td>744</td><td>Costa Rica — genau dein Original ✅</td></tr>
+      <tr><td>750</td><td>Mexiko — auch Zucker, passt ✅</td></tr>
+      <tr><td>0</td><td>USA, zuckerfrei — ablehnen ❌</td></tr>
+    </table>
+    <p style="margin:12px 0 0;font-size:14px;">Wer nach 5 Werktagen nicht antwortet: bei den
+    Wienern anrufen. Nummern stehen oben bei jedem Laden.</p>
+  </div>
+</div>
+</body>
+</html>

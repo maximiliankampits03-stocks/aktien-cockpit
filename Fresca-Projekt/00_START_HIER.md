@@ -13,7 +13,8 @@ Alle Unterlagen zum Projekt an einem Ort. Neue Dateien kommen künftig ebenfalls
 | `03_Blindverkostung_Bogen.pdf` | Anleitung + Verkostungsbogen | Seite 2 je Teilnehmer ausdrucken |
 | `04_Namensrecherche_Checkliste.md` | Markendatenbanken + Prüfprotokoll | Je Namenskandidat durchgehen |
 | `05_Bezugsquellen_Referenzmuster.md` | Wo es Fresca in Europa gibt | Bezugsquellen, sortiert nach Chance |
-| `06_Mails_an_Haendler.md` | 8 fertige Anfragen (DE + ES) | Kopieren und abschicken |
+| `06_Mails_an_Haendler.md` | 8 fertige Anfragen (DE + ES) | Zum Kopieren, falls du lieber tippst |
+| `07_Mails_abschicken.html` | Klickseite: 8× Gmail vorbefüllt | **In Chrome öffnen und durchklicken** |
 
 ## Der Stand in drei Sätzen
 
